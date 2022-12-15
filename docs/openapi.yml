@@ -1,0 +1,21 @@
+# openapi: "3.0.0"
+
+# info:
+#   version: 1.0.0
+#   title: communication_app
+#   description: "communication_appのOpenAPI"
+
+# # tags:
+# #   - name: 
+# #     description:
+
+# servers:
+#   - url: ---
+#     description: production API
+#   - url: http://{host}:{port}/api/v0
+#     description: development
+#     variables:
+#       host:
+#         default: localhost
+#       port:
+#         default: '3000'
