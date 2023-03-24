@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  root 'home#index'
-
-  get 'auth/:provider/callback', to: 'sessions#create'
-  get 'auth/failure', to: redirect('/')
-  get 'log_out', to: 'sessions#destroy', as: 'log_out'
-
-  resources :sessions, only: %i[create destroy]
+  namespace :api do
+    namespace :v1 do
+      post '/authentications', to: 'authentications#create'
+      get '/auth/failure', to: 'authentications#failure'
+      get '/auth/:provider/callback', to: 'omniauth_callbacks#google_oauth2'
+    end
+  end
 end
