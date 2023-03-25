@@ -13,3 +13,6 @@ up:
 .PHONY: down
 down:
 	docker compose down
+
+deploy:
+	flyctl deploy
