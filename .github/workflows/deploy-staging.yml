@@ -12,7 +12,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: |
-          touch .env
-          echo "${{ secrets.ENV_STAGING }}" >> .env 
+      - run: | 
           flyctl deploy
