@@ -1,4 +1,4 @@
-FROM ruby:3.1
+FROM ruby:3.1.2
 
 RUN apt update -qq && apt install -y postgresql-client
 RUN mkdir /communication_app_back
