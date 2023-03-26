@@ -16,3 +16,6 @@ down:
 
 deploy:
 	flyctl deploy
+
+rubocop:
+	${DOCKER_WEB} bundle exec rubocop
