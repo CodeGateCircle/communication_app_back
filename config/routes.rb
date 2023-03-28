@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  post '/authentications', to: 'authentications#create'
-  get '/auth/failure', to: 'authentications#failure'
-  get '/auth/:provider/callback', to: 'omniauth_callbacks#google_oauth2'
+
+  get 'auth/:provider/callback', to: 'sessions#create'
+  get 'auth/failure', to: 'sessions#destroy', as: 'log_out'
+  # get 'log_out', to: 'sessions#destroy', as: 'log_out'
+  get '/go', to: 'auth#google_oauth2'
+
+  resources :sessions, only: %i[create destroy]
 end

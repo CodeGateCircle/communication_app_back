@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   class << self
-    def from_omniauth(auth_hash)
+    def find_or_create_from_auth_hash(auth_hash)
       user_params = user_params_from_auth_hash(auth_hash)
       find_or_create_by(email: user_params[:email]) do |user|
         user.update(user_params)
