@@ -11,7 +11,7 @@ class OmniauthCallbacksController < DeviseTokenAuth::OmniauthCallbacksController
       data: {
         auth_token: @token.token,
         client: @token.client,
-        uid: @resource.uid,
+        uid: @resource.uid
       },
       status: :ok
     }

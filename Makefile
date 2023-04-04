@@ -18,4 +18,4 @@ deploy:
 	flyctl deploy
 
 rubocop:
-	${DOCKER_WEB} bundle exec rubocop
+	${DOCKER_WEB} bundle exec rubocop -A
