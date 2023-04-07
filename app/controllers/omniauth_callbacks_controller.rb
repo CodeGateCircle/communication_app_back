@@ -7,13 +7,8 @@ class OmniauthCallbacksController < DeviseTokenAuth::OmniauthCallbacksController
     @token = @resource.create_token
     @resource.save
 
-    render json: {
-      data: {
-        auth_token: @token.token,
-        client: @token.client,
-        uid: @resource.uid
-      },
-      status: :ok
-    }
+    logger.debug @token.token
+
+    redirect_to "http://localhost:5173/auth/callback?access_token=#{@token.token}&uid=#{@resource.uid}&client=#{@token.client}"
   end
 end
