@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  # google 認証
+  get 'auth/:provider/callback', to: 'omniauth_callbacks#google_oauth2'
+  mount_devise_token_auth_for 'User', at: 'auth'
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  # プロフィール取得
+  get 'profile', to: 'profile#index'
 end
