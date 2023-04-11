@@ -93,6 +93,13 @@ GEM
       dotenv (= 2.8.1)
       railties (>= 3.2)
     erubi (1.11.0)
+    factory_bot (6.2.1)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
+      railties (>= 5.0.0)
+    faker (3.1.1)
+      i18n (>= 1.8.11, < 2)
     faraday (2.7.4)
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
@@ -264,6 +271,8 @@ DEPENDENCIES
   devise
   devise_token_auth
   dotenv-rails
+  factory_bot_rails
+  faker
   omniauth
   omniauth-google-oauth2
   omniauth-oauth2
