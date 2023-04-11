@@ -1,4 +1,6 @@
 class WorkspacesController < ApplicationController
+  # before_action :authenticate_user!
+
   def create
     params = create_params
 
