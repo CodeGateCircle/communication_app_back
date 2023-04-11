@@ -5,4 +5,8 @@ Rails.application.routes.draw do
 
   # プロフィール取得
   get 'profile', to: 'profile#index'
+
+  # workspace作成
+  post '/workspaces', to: 'workspaces#create'
+
 end
