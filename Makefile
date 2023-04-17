@@ -19,3 +19,6 @@ deploy:
 
 rubocop:
 	${DOCKER_WEB} bundle exec rubocop -A
+
+test:
+	${DOCKER_WEB} rspec
