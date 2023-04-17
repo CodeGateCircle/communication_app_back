@@ -4,9 +4,14 @@ class WorkspacesController < ApplicationController
   def create
     params = create_params
 
-    workspace = Workspace.create!(params)
+    workspace = Workspace.create!({
+      name: params[:name],
+      description: params[:description],
+      icon_image_url: params[:iconImageUrl],
+      cover_image_url: params[:coverImageUrl],
+    })
 
-    render :json => { data: workspace }
+    render status: 200, :json => { data: { workspace: workspace.format_res } }
   end
 
   # strong parameter

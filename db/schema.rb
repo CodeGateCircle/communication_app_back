@@ -29,11 +29,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_112022) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
-  create_table "workspaces", id: :string, force: :cascade do |t|
+  create_table "workspaces", primary_key: "workspace_id", id: :string, force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
-    t.string "iconImageUrl"
-    t.string "coverImageUrl"
+    t.string "icon_image_url"
+    t.string "cover_image_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
