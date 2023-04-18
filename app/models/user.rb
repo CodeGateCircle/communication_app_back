@@ -7,8 +7,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :rememberable, :omniauthable
   include DeviseTokenAuth::Concerns::User
 
-  self.primary_key = :uid
-  has_many :workspace_users, primary_key: :uid, foreign_key: :uid, dependent: :destroy
+  has_many :workspace_users, dependent: :destroy
   has_many :workspaces, through: :workspace_users
 
   def self.from_omniauth(auth)

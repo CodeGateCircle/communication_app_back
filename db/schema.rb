@@ -30,13 +30,15 @@ ActiveRecord::Schema[7.0].define(version: 20_230_417_143_226) do
   end
 
   create_table "workspace_users", force: :cascade do |t|
-    t.string "workspace_id"
-    t.string "uid"
+    t.bigint "workspace_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_workspace_users_on_user_id"
+    t.index ["workspace_id"], name: "index_workspace_users_on_workspace_id"
   end
 
-  create_table "workspaces", primary_key: "workspace_id", id: :string, force: :cascade do |t|
+  create_table "workspaces", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
     t.string "icon_image_url"
@@ -44,4 +46,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_417_143_226) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "workspace_users", "users"
+  add_foreign_key "workspace_users", "workspaces"
 end

@@ -12,17 +12,20 @@ class WorkspacesController < ApplicationController
                                     cover_image_url: params[:coverImageUrl]
                                   })
 
-    # workspace_user = WorkspaceUser.new({
-    #                                      workspace_id: workspace[:workspace_id],
-    #                                      uid: current_user.uid
-    #                                    })
-    # workspace_user.save
+    workspace_user = WorkspaceUser.new({
+                                         workspace_id: workspace[:id],
+                                         user_id: current_user.id
+                                       })
+    workspace_user.save
+    # TODO: 保存が成功しなかったときの対応など
 
     render status: 200, json: { data: { workspace: workspace.format_res } }
   end
 
+  private
+
   # strong parameter
   def create_params
-    params.require(:workspace).permit(:name, :description, :iconImageUrl, :coverImageUrl)
+    params.permit(:name, :description, :iconImageUrl, :coverImageUrl)
   end
 end
