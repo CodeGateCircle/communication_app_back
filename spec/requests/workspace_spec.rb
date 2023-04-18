@@ -30,6 +30,9 @@ RSpec.describe "Workspaces", type: :request do
         expect(res['data']['workspace']['description']).to eq(body[:description])
         expect(res['data']['workspace']['iconImageUrl']).to eq(body[:iconImageUrl])
         expect(res['data']['workspace']['coverImageUrl']).to eq(body[:coverImageUrl])
+
+        expect(WorkspaceUser.find_by(user_id: @user.id).workspace_id).to eq(res['data']['workspace']['id'])
+        expect(WorkspaceUser.find_by(workspace_id: res['data']['workspace']['id']).user_id).to eq(@user.id)
       end
     end
 

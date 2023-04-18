@@ -4,6 +4,7 @@ AllCops:
   NewCops: enable
 
 Metrics/BlockLength:
-  Exclude:
-    - 'spec/**/*'
-    - 'db/schema.rb'
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false

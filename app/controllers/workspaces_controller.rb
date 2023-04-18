@@ -5,21 +5,22 @@ class WorkspacesController < ApplicationController
   def create
     params = create_params
 
-    workspace = Workspace.create!({
-                                    name: params[:name],
-                                    description: params[:description],
-                                    icon_image_url: params[:iconImageUrl],
-                                    cover_image_url: params[:coverImageUrl]
-                                  })
+    Workspace.transaction do
+      workspace = Workspace.create!({
+                                      name: params[:name],
+                                      description: params[:description],
+                                      icon_image_url: params[:iconImageUrl],
+                                      cover_image_url: params[:coverImageUrl]
+                                    })
 
-    workspace_user = WorkspaceUser.new({
-                                         workspace_id: workspace[:id],
-                                         user_id: current_user.id
-                                       })
-    workspace_user.save
-    # TODO: 保存が成功しなかったときの対応など
+      workspace_user = WorkspaceUser.new({
+                                           workspace_id: workspace[:id],
+                                           user_id: current_user.id
+                                         })
+      workspace_user.save!
 
-    render status: 200, json: { data: { workspace: workspace.format_res } }
+      render status: 200, json: { data: { workspace: workspace.format_res } }
+    end
   end
 
   private
