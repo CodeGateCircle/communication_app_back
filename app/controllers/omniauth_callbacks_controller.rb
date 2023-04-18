@@ -1,3 +1,4 @@
+# omniauth
 class OmniauthCallbacksController < DeviseTokenAuth::OmniauthCallbacksController
   def google_oauth2
     # リクエストから認証情報を取得

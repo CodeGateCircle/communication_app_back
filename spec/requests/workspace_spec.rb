@@ -6,19 +6,19 @@ RSpec.describe "Workspaces", type: :request do
   end
 
   describe "POST /workspaces" do
-    let(:url) {"/workspaces"}
-    let(:tokens) {get_auth_token(@user)}
+    let(:url) { "/workspaces" }
+    let(:tokens) { get_auth_token(@user) }
     let(:body) do
       {
-        "workspace": {
-          "name": Faker::Name.name,
-          "description": Faker::Name.name,
-          "iconImageUrl": Faker::Internet.url,
-          "coverImageUrl": Faker::Internet.url
+        workspace: {
+          name: Faker::Name.name,
+          description: Faker::Name.name,
+          iconImageUrl: Faker::Internet.url,
+          coverImageUrl: Faker::Internet.url
         }
       }
     end
-    
+
     context "success" do
       it '有効なworkspaceの場合は保存される' do
         expect(FactoryBot.create(:workspace)).to be_valid
@@ -42,8 +42,5 @@ RSpec.describe "Workspaces", type: :request do
         expect(response).to have_http_status 401
       end
     end
-
   end
-
-
 end
