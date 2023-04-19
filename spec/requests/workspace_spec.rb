@@ -45,7 +45,6 @@ RSpec.describe "Workspaces", type: :request do
     let(:url) {"/workspaces/:workspace_id"}
     let(:tokens) { get_auth_token(@user) }
     let(:body_after) do {
-      id: "1",
       name: Faker::Name.name,
       description: Faker::Name.name,
       iconImageUrl: Faker::Internet.url,
@@ -54,11 +53,14 @@ RSpec.describe "Workspaces", type: :request do
     end
     
     context "success" do
+      before do
+        @workspace = FactoryBot.create(:workspace)
+      end
+
       it "can update data" do
-        put url, params: (body_after), headers: tokens
+        put url, params: body_after, headers: tokens
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
-
         expect(res['data']['workspace']['name']).to eq(body_after[:name])
         expect(res['data']['workspace']['description']).to eq(body_after[:description])
         expect(res['data']['workspace']['iconImageUrl']).to eq(body_after[:iconImageUrl])
@@ -68,7 +70,7 @@ RSpec.describe "Workspaces", type: :request do
 
     context "error" do
       it "can not update data without auth" do
-        put url, params: {update: body_after}
+        put url, params: body_after
         expect(response).to have_http_status 401
       end
     end
