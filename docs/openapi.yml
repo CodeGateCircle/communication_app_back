@@ -1,21 +1,112 @@
-# openapi: "3.0.0"
+openapi: "3.0.0"
 
-# info:
-#   version: 1.0.0
-#   title: communication_app
-#   description: "communication_appのOpenAPI"
+info:
+  version: 1.0.0
+  title: communication_app
+  description: "communication_appのOpenAPI"
 
-# # tags:
-# #   - name: 
-# #     description:
+tags:
+  - name: workspaces
+    description: about workspaces
 
-# servers:
-#   - url: ---
-#     description: production API
-#   - url: http://{host}:{port}/api/v0
-#     description: development
-#     variables:
-#       host:
-#         default: localhost
-#       port:
-#         default: '3000'
+servers:
+  - url: ---
+    description: production API
+  - url: http://{host}:{port}/api/v0
+    description: development
+    variables:
+      host:
+        default: localhost
+      port:
+        default: '3000'
+
+paths:
+  /workspaces:
+    post:
+      tags:
+        - workspaces
+      operationId: create_workspace
+      summary: Create new workspace.
+      description: Create new workspace.
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/workspace_data"
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: "#/components/schemas/name"
+                description:
+                  $ref: "#/components/schemas/description"
+                iconImageUrl:
+                  $ref: "#/components/schemas/iconImageUrl"
+                coverImageUrl:
+                  $ref: "#/components/schemas/coverImageUrl"
+
+
+
+
+components:
+  schemas:
+    workspaces_data:
+      description: explain
+      type: object
+      required:
+        - workspace
+      properties:
+        workspace:
+          description: explain
+          type: object
+          required:
+            - id
+            - name
+            - description
+            - iconImageUrl
+            - coverImageUrl
+          properties:
+            id:
+              $ref: "#/components/schemas/workspaceId"
+            name:
+              $ref: "#/components/schemas/name"
+            description:
+              $ref: "#/components/schemas/description"
+            iconImageUrl:
+              $ref: "#/components/schemas/iconImageUrl"
+            coverImageUrl:
+              $ref: "#/components/schemas/coverImageUrl"
+
+    workspaceId:
+      description: workspace unique id
+      example: 111
+      type: integer
+    
+    name:
+      description: name of workspace
+      example: Code.Gate?
+      type: string
+
+    description:
+      description: description of workspace
+      example: Code.Gate?の説明
+      type: string
+
+    iconImageUrl:
+      description: iconImageUrl of workspace
+      example: http://icon_image_url
+      type: string
+
+    coverImageUrl:
+      description: coverImageUrl of workspace
+      example: http://cover_image_url
+      type: string

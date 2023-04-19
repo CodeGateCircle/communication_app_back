@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_28_084756) do
+ActiveRecord::Schema[7.0].define(version: 20_230_417_143_226) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,4 +28,25 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_28_084756) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index %w[uid provider], name: "index_users_on_uid_and_provider", unique: true
   end
+
+  create_table "workspace_users", force: :cascade do |t|
+    t.bigint "workspace_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_workspace_users_on_user_id"
+    t.index ["workspace_id"], name: "index_workspace_users_on_workspace_id"
+  end
+
+  create_table "workspaces", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.string "icon_image_url"
+    t.string "cover_image_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "workspace_users", "users"
+  add_foreign_key "workspace_users", "workspaces"
 end

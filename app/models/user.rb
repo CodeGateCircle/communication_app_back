@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
+# user
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :rememberable, :omniauthable
   include DeviseTokenAuth::Concerns::User
+
+  has_many :workspace_users, dependent: :destroy
+  has_many :workspaces, through: :workspace_users
 
   def self.from_omniauth(auth)
     user = User.where(provider: auth.provider, uid: auth.uid).first

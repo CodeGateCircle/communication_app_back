@@ -2,3 +2,9 @@ inherit_from: .rubocop_todo.yml
 
 AllCops:
   NewCops: enable
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
