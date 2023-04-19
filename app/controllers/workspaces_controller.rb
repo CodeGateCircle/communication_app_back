@@ -28,4 +28,25 @@ class WorkspacesController < ApplicationController
   def create_params
     params.permit(:name, :description, :iconImageUrl, :coverImageUrl)
   end
+  
+  # workspace update (edit => update)
+  def update
+    workspace = Workspace.find_by(id: params[:workspace_id])
+    workspace.name = params[:name]
+    workspace.description = params[:description]
+    workspace.icon_image_url = params[:iconImageUrl]
+    workspace.cover_image_url = params[:coverImageUrl]
+
+    workspace.save
+    render json: {
+      data: {
+        workspace: {
+          name: workspace.name,
+          description: workspace.description,
+          iconImageUrl: workspace.icon_image_url,
+          coverImageUrl: workspace.cover_image_url
+        }
+      }
+    }
+  end
 end

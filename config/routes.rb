@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   # get '/workspaces', to: 'workspaces#show'
   # workspace作成
   post '/workspaces', to: 'workspaces#create'
+  put '/workspaces/:workspace_id', to: 'workspaces#update'
 end
