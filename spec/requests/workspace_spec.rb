@@ -43,4 +43,37 @@ RSpec.describe "Workspaces", type: :request do
       end
     end
   end
+
+  describe "PUT /workspaces/:workspace_id" do
+    let(:url) { "/workspaces/#{workspace.id}" }
+    let(:tokens) { get_auth_token(@user) }
+    let(:body) do
+      {
+        name: Faker::Name.name,
+        description: Faker::Name.name,
+        iconImageUrl: Faker::Internet.url,
+        coverImageUrl: Faker::Internet.url
+      }
+    end
+    let(:workspace) { FactoryBot.create(:workspace) }
+
+    context "success" do
+      it 'can update workspace' do
+        put url, params: body, headers: tokens
+        expect(response).to have_http_status :ok
+        res = JSON.parse(response.body)
+        expect(res['data']['workspace']['name']).to eq(body[:name])
+        expect(res['data']['workspace']['description']).to eq(body[:description])
+        expect(res['data']['workspace']['iconImageUrl']).to eq(body[:iconImageUrl])
+        expect(res['data']['workspace']['coverImageUrl']).to eq(body[:coverImageUrl])
+      end
+    end
+
+    context "error" do
+      it 'can not update workspace without auth' do
+        put url, params: body
+        expect(response).to have_http_status 401
+      end
+    end
+  end
 end
