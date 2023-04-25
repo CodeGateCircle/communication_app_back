@@ -7,8 +7,14 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :rememberable, :omniauthable
   include DeviseTokenAuth::Concerns::User
 
-  has_many :workspace_users, dependent: :destroy
+  # 中間テーブル
   has_many :workspaces, through: :workspace_users
+  has_many :workspaces, through: :group_users
+  has_many :groups, through: :group_users
+
+  has_many :workspace_users, dependent: :destroy
+  has_many :group_users, dependent: :destroy
+
 
   def self.from_omniauth(auth)
     user = User.where(provider: auth.provider, uid: auth.uid).first

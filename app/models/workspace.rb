@@ -1,7 +1,14 @@
 # workspace
 class Workspace < ApplicationRecord
-  has_many :workspace_users, dependent: :destroy
+  has_many :groups, dependent: :destroy
+
+  # 中間テーブル
+  has_many :groups, through: :groups_users
+  has_many :users, through: :groups_users
   has_many :users, through: :workspace_users
+
+  has_many :workspace_users, dependent: :destroy
+  has_many :group_users, dependent: :destroy
 
   def format_res
     res = attributes.symbolize_keys
@@ -10,6 +17,5 @@ class Workspace < ApplicationRecord
 
     res.delete(:created_at)
     res.delete(:updated_at)
-    res
   end
 end
