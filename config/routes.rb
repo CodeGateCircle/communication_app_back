@@ -8,7 +8,9 @@ Rails.application.routes.draw do
 
   # workspace作成
   post '/workspaces', to: 'workspaces#create'
+  # workspace更新
+  put '/workspaces/:workspace_id', to: 'workspaces#update'
 
-  # group作成
-  post '/groups', to: 'groups#create'
+  # room作成
+  post '/rooms', to: 'rooms#create'
 end

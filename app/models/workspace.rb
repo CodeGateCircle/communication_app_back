@@ -1,14 +1,11 @@
 # workspace
 class Workspace < ApplicationRecord
-  has_many :groups, dependent: :destroy
+  has_many :rooms, dependent: :destroy
 
   # 中間テーブル
-  has_many :groups, through: :groups_users
-  has_many :users, through: :groups_users
   has_many :users, through: :workspace_users
 
   has_many :workspace_users, dependent: :destroy
-  has_many :group_users, dependent: :destroy
 
   def format_res
     res = attributes.symbolize_keys

@@ -1,8 +1,8 @@
 FactoryBot.define do
-  factory :group do
+  factory :room do
     name { Faker::Name.name }
     description { Faker::Name.name }
-    icon_image_url { Faker::Internet.url }
+    category { 0 }
     workspace_id { Faker::Internet.password }
   end
 end

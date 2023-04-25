@@ -5,3 +5,10 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+
+Category.create([{id: 0, name: "general"}, {id: 1, name: "chat"}])
+
+def reset_id(tablename)
+  connection = ActiveRecord::Base.connection()
+  connection.execute("select setval('#{tablename}_id_seq',(select max(id) from #{tablename}))")
+end
