@@ -17,5 +17,6 @@ class Workspace < ApplicationRecord
 
     res.delete(:created_at)
     res.delete(:updated_at)
+    res
   end
 end

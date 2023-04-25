@@ -1,3 +1,4 @@
+# group
 class Group < ApplicationRecord
   belongs_to :workspace
 
@@ -14,5 +15,6 @@ class Group < ApplicationRecord
 
     res.delete(:created_at)
     res.delete(:updated_at)
+    res
   end
 end

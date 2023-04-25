@@ -15,7 +15,6 @@ class User < ActiveRecord::Base
   has_many :workspace_users, dependent: :destroy
   has_many :group_users, dependent: :destroy
 
-
   def self.from_omniauth(auth)
     user = User.where(provider: auth.provider, uid: auth.uid).first
     user ||= User.create(

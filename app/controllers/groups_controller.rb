@@ -14,10 +14,10 @@ class GroupsController < ApplicationController
                             })
 
       group_user = GroupUser.new({
-                                    workspace_id: group[:workspace_id],
-                                    user_id: current_user.id,
-                                    group_id: group[:id]
-                                  })
+                                   workspace_id: group[:workspace_id],
+                                   user_id: current_user.id,
+                                   group_id: group[:id]
+                                 })
       group_user.save!
 
       render status: 200, json: { data: { group: group.format_res } }

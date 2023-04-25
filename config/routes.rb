@@ -10,5 +10,5 @@ Rails.application.routes.draw do
   post '/workspaces', to: 'workspaces#create'
 
   # group作成
-  post '/group', to: 'groups#create'
+  post '/groups', to: 'groups#create'
 end

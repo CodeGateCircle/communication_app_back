@@ -18,10 +18,6 @@ RSpec.describe "Workspaces", type: :request do
     end
 
     context "success" do
-      # it '有効なworkspaceの場合は保存される' do
-      #   expect(FactoryBot.create(:workspace)).to be_valid
-      # end
-
       it 'can create workspace' do
         post url, params: body, headers: tokens
         expect(response).to have_http_status :ok
