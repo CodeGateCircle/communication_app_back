@@ -39,6 +39,14 @@ class WorkspacesController < ApplicationController
     end
   end
 
+  def delete
+
+    workspace = Workspace.find(params[:workspace_id])
+    workspace.destroy!
+
+    render status: 200, json: { success: true }
+  end
+
   private
 
   # strong parameter
