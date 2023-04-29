@@ -22,3 +22,6 @@ rubocop:
 
 test:
 	${DOCKER_WEB} rspec
+
+er:
+	$(DOCKER_WEB) rails mermaid_erd
