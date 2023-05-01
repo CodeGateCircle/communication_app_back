@@ -10,6 +10,7 @@ class Room < ApplicationRecord
   def format_res
     res = attributes.symbolize_keys
     res.transform_keys!(workspace_id: :workspaceId)
+    res.transform_keys!(category_id: :categoryId)
 
     res.delete(:created_at)
     res.delete(:updated_at)

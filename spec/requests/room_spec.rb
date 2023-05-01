@@ -14,7 +14,7 @@ RSpec.describe "Rooms", type: :request do
       {
         name: Faker::Name.name,
         description: Faker::Name.name,
-        category: 1,
+        categoryId: 0,
         workspaceId: @workspace.id
       }
     end
@@ -26,7 +26,7 @@ RSpec.describe "Rooms", type: :request do
         res = JSON.parse(response.body)
         expect(res['data']['room']['name']).to eq(body[:name])
         expect(res['data']['room']['description']).to eq(body[:description])
-        expect(res['data']['room']['category']).to eq(body[:category])
+        expect(res['data']['room']['categoryId']).to eq(body[:categoryId])
         expect(res['data']['room']['workspaceId']).to eq(body[:workspaceId])
         expect(RoomUser.find_by(user_id: @user.id).room_id).to eq(res['data']['room']['id'])
         expect(RoomUser.find_by(room_id: res['data']['room']['id']).user_id).to eq(@user.id)

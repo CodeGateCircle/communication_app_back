@@ -9,7 +9,7 @@ class RoomsController < ApplicationController
       room = Room.create!({
                             name: params[:name],
                             description: params[:description],
-                            category: params[:category],
+                            category_id: params[:categoryId],
                             workspace_id: params[:workspaceId]
                           })
 
@@ -27,7 +27,7 @@ class RoomsController < ApplicationController
 
   # strong parameter
   def create_params
-    params.permit(:name, :description, :category, :workspaceId)
+    params.permit(:name, :description, :categoryId, :workspaceId)
   end
 
   # 整数値に変換
