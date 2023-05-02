@@ -5,3 +5,13 @@
 2. `docker-compose run web rails db:create`でデータベース作成
 3. `docker-compose run web rails db:migrate`でマイグレーションファイルを実行
 4. `docker-compose up`で実行
+
+## ドキュメント
+
+### API仕様書
+
+https://codegatecircle.github.io/communication_app_back
+
+### ER図
+
+https://codegatecircle.github.io/communication_app_back/erd
