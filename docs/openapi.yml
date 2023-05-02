@@ -37,7 +37,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/workspace_data"
+                    $ref: "#/components/schemas/workspaces_data"
 
       requestBody:
         content:
