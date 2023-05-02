@@ -40,7 +40,6 @@ class WorkspacesController < ApplicationController
   end
 
   def delete
-
     workspace = Workspace.find(params[:workspace_id])
     workspace.destroy!
 

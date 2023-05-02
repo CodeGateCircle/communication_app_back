@@ -8,6 +8,8 @@ info:
 tags:
   - name: workspaces
     description: about workspaces
+  - name: rooms
+    description: about rooms
 
 servers:
   - url: ---
@@ -54,12 +56,45 @@ paths:
                 coverImageUrl:
                   $ref: "#/components/schemas/coverImageUrl"
 
+  /rooms:
+    post:
+      tags:
+        - rooms
+      operationId: create_room
+      summary: Create new room.
+      description: Create new room.
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/room_data"
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: "#/components/schemas/name"
+                description:
+                  $ref: "#/components/schemas/description"
+                category:
+                  $ref: "#/components/schemas/category"
+                workspaceId:
+                  $ref: "#/components/schemas/workspaceId"
+
 
 
 
 components:
   schemas:
-    workspaces_data:
+    workspace_data:
       description: explain
       type: object
       required:
@@ -86,9 +121,41 @@ components:
             coverImageUrl:
               $ref: "#/components/schemas/coverImageUrl"
 
+    room_data:
+      description: explain
+      type: object
+      required:
+        - room
+      properties:
+        workspace:
+          description: explain
+          type: object
+          required:
+            - id
+            - name
+            - description
+            - category
+            - workspaceId
+          properties:
+            id:
+              $ref: "#/components/schemas/roomId"
+            name:
+              $ref: "#/components/schemas/name"
+            description:
+              $ref: "#/components/schemas/description"
+            category:
+              $ref: "#/components/schemas/category"
+            workspaceId:
+              $ref: "#/components/schemas/workspaceId"
+
     workspaceId:
       description: workspace unique id
       example: 111
+      type: integer
+
+    roomId:
+      description: room unique id
+      example: 222
       type: integer
     
     name:
@@ -99,6 +166,11 @@ components:
     description:
       description: description of workspace
       example: Code.Gate?の説明
+      type: string
+
+    category:
+      description: category of room
+      example: general
       type: string
 
     iconImageUrl:

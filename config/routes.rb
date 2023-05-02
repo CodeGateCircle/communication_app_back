@@ -6,12 +6,13 @@ Rails.application.routes.draw do
   # プロフィール取得
   get 'profile', to: 'profile#index'
 
-  # workspace一覧取得
-  # get '/workspaces', to: 'workspaces#show'
   # workspace作成
   post '/workspaces', to: 'workspaces#create'
   # workspace削除
   post '/workspaces/:workspace_id/delete', to: 'workspaces#delete'
   # workspace更新
   put '/workspaces/:workspace_id', to: 'workspaces#update'
+
+  # room作成
+  post '/rooms', to: 'rooms#create'
 end

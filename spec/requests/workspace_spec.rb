@@ -18,10 +18,6 @@ RSpec.describe "Workspaces", type: :request do
     end
 
     context "success" do
-      # it '有効なworkspaceの場合は保存される' do
-      #   expect(FactoryBot.create(:workspace)).to be_valid
-      # end
-
       it 'can create workspace' do
         post url, params: body, headers: tokens
         expect(response).to have_http_status :ok
@@ -79,7 +75,7 @@ RSpec.describe "Workspaces", type: :request do
 
   describe "POST /workspaces/:workspace_id/delete" do
     let(:workspace) { FactoryBot.create(:workspace) }
-    let(:url) { "/workspaces/#{workspace.id}/delete"}
+    let(:url) { "/workspaces/#{workspace.id}/delete" }
     let(:tokens) { get_auth_token(@user) }
 
     context "success" do
@@ -96,6 +92,5 @@ RSpec.describe "Workspaces", type: :request do
         expect(response).to have_http_status 401
       end
     end
-
   end
 end

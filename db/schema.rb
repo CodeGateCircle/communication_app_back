@@ -10,9 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_17_143226) do
+ActiveRecord::Schema[7.0].define(version: 20_230_501_134_321) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "room_users", force: :cascade do |t|
+    t.bigint "room_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_room_users_on_room_id"
+    t.index ["user_id"], name: "index_room_users_on_user_id"
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.bigint "workspace_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_rooms_on_category_id"
+    t.index ["workspace_id"], name: "index_rooms_on_workspace_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
@@ -26,7 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_143226) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
+    t.index %w[uid provider], name: "index_users_on_uid_and_provider", unique: true
   end
 
   create_table "workspace_users", force: :cascade do |t|
@@ -47,6 +73,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_17_143226) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "room_users", "rooms"
+  add_foreign_key "room_users", "users"
+  add_foreign_key "rooms", "categories"
+  add_foreign_key "rooms", "workspaces"
   add_foreign_key "workspace_users", "users"
   add_foreign_key "workspace_users", "workspaces"
 end
