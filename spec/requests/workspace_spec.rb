@@ -72,4 +72,26 @@ RSpec.describe "Workspaces", type: :request do
       end
     end
   end
+
+  describe "POST /workspaces/:workspace_id/delete" do
+    let(:workspace) { FactoryBot.create(:workspace) }
+    let(:url) { "/workspaces/#{workspace.id}/delete"}
+    let(:tokens) { get_auth_token(@user) }
+
+    context "success" do
+      it 'can delete workspace' do
+        post url, headers: tokens
+        expect(response).to have_http_status :ok
+        expect(Workspace.find_by(id: workspace.id)).to be_blank
+      end
+    end
+
+    context "error" do
+      it 'cannot delete workspace' do
+        post url
+        expect(response).to have_http_status 401
+      end
+    end
+
+  end
 end
