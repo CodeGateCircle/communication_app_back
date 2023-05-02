@@ -75,7 +75,7 @@ RSpec.describe "Workspaces", type: :request do
 
   describe "POST /workspaces/:workspace_id/delete" do
     let(:workspace) { FactoryBot.create(:workspace) }
-    let(:url) { "/workspaces/#{workspace.id}/delete"}
+    let(:url) { "/workspaces/#{workspace.id}/delete" }
     let(:tokens) { get_auth_token(@user) }
 
     context "success" do
@@ -92,6 +92,5 @@ RSpec.describe "Workspaces", type: :request do
         expect(response).to have_http_status 401
       end
     end
-
   end
 end

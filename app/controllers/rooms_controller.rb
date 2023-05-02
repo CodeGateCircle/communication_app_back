@@ -33,9 +33,7 @@ class RoomsController < ApplicationController
   # 整数値に変換
   def params_int(params)
     params.each do |key, value|
-      if integer_string?(value)
-        params[key] = value.to_i
-      end
+      params[key] = value.to_i if integer_string?(value)
     end
   end
 
@@ -45,5 +43,4 @@ class RoomsController < ApplicationController
   rescue ArgumentError
     false
   end
-
 end

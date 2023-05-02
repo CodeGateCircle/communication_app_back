@@ -16,5 +16,4 @@ class Room < ApplicationRecord
     res.delete(:updated_at)
     res
   end
-
 end
