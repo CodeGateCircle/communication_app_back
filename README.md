@@ -15,3 +15,14 @@ https://codegatecircle.github.io/communication_app_back
 ### ER図
 
 https://codegatecircle.github.io/communication_app_back/erd
+
+### apiエンドポイント
+
+開発環境
+
+http://localhost:3000
+
+ステージング
+
+https://comm.fly.dev
+
