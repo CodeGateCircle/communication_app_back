@@ -10,6 +10,6 @@ class OmniauthCallbacksController < DeviseTokenAuth::OmniauthCallbacksController
 
     logger.debug @token.token
 
-    redirect_to "http://localhost:5173/auth/callback?access_token=#{@token.token}&uid=#{@resource.uid}&client=#{@token.client}"
+    redirect_to "#{ENV.fetch('FRONT_BASE_URL')}/auth/callback?access_token=#{@token.token}&uid=#{@resource.uid}&client=#{@token.client}", allow_other_host: true
   end
 end
