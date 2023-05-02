@@ -56,6 +56,52 @@ paths:
                 coverImageUrl:
                   $ref: "#/components/schemas/coverImageUrl"
 
+  /workspaces/{workspace_id}/update:
+    put:
+      tags:
+        - workspaces
+      operationId: update_workspace
+      summary: Update the workspace.
+      description: Update the workspace
+      parameters:
+        - name: workspace_id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/workspaceId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/workspace_data"
+
+  /workspaces/{workspace_id}/delete:
+    post:
+      tags:
+        - workspaces
+      operationId: delete_workspace
+      summary: Delete the workspace
+      description: Delete the workspace
+      parameters:
+        - name: workspace_id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/workspaceId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true}
+
+
   /rooms:
     post:
       tags:
