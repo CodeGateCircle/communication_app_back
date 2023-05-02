@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :room_user do
-    room_id { Faker::Internet.password }
-    user_id { Faker::Internet.password }
+    association :room, factory: :room_id
+    association :user, factory: :user_id
   end
 end
