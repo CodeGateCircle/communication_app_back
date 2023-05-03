@@ -1,6 +1,8 @@
 # workspace
 class Workspace < ApplicationRecord
-  has_many :rooms, dependent: :destroy
+  has_many :rooms, through: :categories
+
+  has_many :categories, dependent: :destroy
 
   # 中間テーブル
   has_many :users, through: :workspace_users
