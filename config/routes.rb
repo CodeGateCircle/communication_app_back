@@ -19,4 +19,6 @@ Rails.application.routes.draw do
 
   # category作成
   post '/categories', to: 'category#create'
+  # category更新
+  put '/categories/:category_id', to: 'category#update'
 end
