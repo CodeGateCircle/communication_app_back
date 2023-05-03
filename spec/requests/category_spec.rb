@@ -22,7 +22,7 @@ RSpec.describe "Categories", type: :request do
 
         res = JSON.parse(response.body)
         expect(res['data']['category']['name']).to eq(body[:name])
-        expect(res['data']['category']['workspace_id']).to eq(body[:workspace_id])
+        expect(res['data']['category']['workspaceId']).to eq(body[:workspace_id])
       end
     end
   end
