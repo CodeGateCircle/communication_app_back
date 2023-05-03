@@ -5,7 +5,7 @@ RSpec.describe "Rooms", type: :request do
     @user = FactoryBot.create(:user)
     @workspace = FactoryBot.create(:workspace)
     @workspace_user = FactoryBot.create(:workspace_user, workspace_id: @workspace.id, user_id: @user.id)
-    @category = FactoryBot.create(:category)
+    @category = FactoryBot.create(:category, workspace_id: @workspace.id)
   end
 
   describe "POST /rooms" do
