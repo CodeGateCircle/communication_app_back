@@ -18,5 +18,5 @@ Rails.application.routes.draw do
   post '/rooms', to: 'rooms#create'
 
   # category作成
-  post 'category/create'
+  post '/categories', to: 'category#create'
 end
