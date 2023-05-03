@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'category/create'
   # google 認証
   get 'auth/:provider/callback', to: 'omniauth_callbacks#google_oauth2'
   mount_devise_token_auth_for 'User', at: 'auth'
