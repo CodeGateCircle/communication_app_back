@@ -9,7 +9,6 @@ class CategoryController < ApplicationController
                                       name: params[:name],
                                       workspace_id: params[:workspace_id]
                                   })
-      category.save!
 
       render status: 200, json: { data: { category: category.format_res } }
     end
