@@ -56,6 +56,8 @@ paths:
                 coverImageUrl:
                   $ref: "#/components/schemas/coverImageUrl"
 
+
+  #　update
   /workspaces/{workspace_id}:
     put:
       tags:
@@ -79,6 +81,20 @@ paths:
                 properties:
                   data:
                     $ref: "#/components/schemas/workspace_data"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: "#/components/schemas/name"
+                description:
+                  $ref: "#/components/schemas/description"
+                iconImageUrl:
+                  $ref: "#/components/schemas/iconImageUrl"
+                coverImageUrl:
+                  $ref: "#/components/schemas/coverImageUrl"
 
   /workspaces/{workspace_id}/delete:
     post:
@@ -99,7 +115,7 @@ paths:
           content:
             application/json:
               schema:
-                example: { success: true}
+                example: { success: true }
 
 
   /rooms:
@@ -130,8 +146,8 @@ paths:
                   $ref: "#/components/schemas/name"
                 description:
                   $ref: "#/components/schemas/description"
-                category:
-                  $ref: "#/components/schemas/category"
+                categoryId:
+                  $ref: "#/components/schemas/categoryId"
                 workspaceId:
                   $ref: "#/components/schemas/workspaceId"
 
@@ -180,7 +196,7 @@ components:
             - id
             - name
             - description
-            - category
+            - categoryId
             - workspaceId
           properties:
             id:
@@ -189,8 +205,8 @@ components:
               $ref: "#/components/schemas/name"
             description:
               $ref: "#/components/schemas/description"
-            category:
-              $ref: "#/components/schemas/category"
+            categoryId:
+              $ref: "#/components/schemas/categoryId"
             workspaceId:
               $ref: "#/components/schemas/workspaceId"
 
@@ -214,10 +230,10 @@ components:
       example: Code.Gate?の説明
       type: string
 
-    category:
-      description: category of room
-      example: general
-      type: string
+    categoryId:
+      description: category unique id
+      example: 0
+      type: integer
 
     iconImageUrl:
       description: iconImageUrl of workspace
