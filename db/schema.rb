@@ -74,6 +74,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_03_063301) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "categories", "workspaces"
   add_foreign_key "room_users", "rooms"
   add_foreign_key "room_users", "users"
   add_foreign_key "rooms", "categories"

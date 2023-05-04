@@ -3,27 +3,14 @@ class CategoryController < ApplicationController
 
   def create
     params = create_params
-
-    Category.transaction do
+    if auth_workspace_edit
+      render status: 400, text: "cannot edit workspace without auth"
+    else
       category = Category.create!({
                                       name: params[:name],
                                       workspace_id: params[:workspace_id]
                                   })
-      category.save!
 
-      render status: 200, json: { data: { category: category.format_res } }
-    end
-  end
-
-  def update
-    params = create_params
-
-    Category.transaction do
-      category = Category.find(params[:category_id])
-      category.update!({
-                         name: params[:name],
-                         workspace_id: params[:workspace_id]
-                       })
       render status: 200, json: { data: { category: category.format_res } }
     end
   end
@@ -31,6 +18,12 @@ class CategoryController < ApplicationController
   private
 
   def create_params
-    params.permit(:category_id, :name, :workspace_id)
+    params.permit(:name, :workspaceId)
+  end
+
+  def auth_workspace_edit
+    user = WorkspaceUser.find_by(workspace_id: params[:workspaceId])
+
+    user.user_id != current_user.id
   end
 end
