@@ -9,8 +9,8 @@ RSpec.describe "Categories", type: :request do
       workspace_id: @workspace.id,
       user_id: @user.id
     )
-    @user_other = FactoryBot.create(:user)
   end
+
   describe "POST /categories" do
     let(:url) { "/categories" }
     let(:tokens) { get_auth_token(@user) }
@@ -38,25 +38,23 @@ RSpec.describe "Categories", type: :request do
 
     context "error" do
       it "cannot edit workspace without auth" do
+        @user_other = FactoryBot.create(:user)
         post url, params: body, headers: get_auth_token(@user_other)
-        expect(response).to have_http_status 400
+        expect(response).to have_http_status 401
       end
     end
-
-
   end
 
   describe "PUT /categories/:category_id" do
     let(:url) { "/categories/#{category.id}" }
     let(:tokens) { get_auth_token(@user) }
-    let(:workspace) { FactoryBot.create(:workspace)}
     let(:body) do
       {
         name: Faker::Name.name,
-        workspace_id: @workspace.id
+        workspaceId: @workspace.id
       }
     end
-    let(:category) {FactoryBot.create(:category)}
+    let(:category) { FactoryBot.create(:category) }
 
     context "success" do
       it 'can update category' do
@@ -71,7 +69,8 @@ RSpec.describe "Categories", type: :request do
 
     context "error" do
       it 'can not update category without auth' do
-        put url, params: body
+        @user_other = FactoryBot.create(:user)
+        put url, params: body, headers: get_auth_token(@user_other)
         expect(response).to have_http_status 401
       end
     end
