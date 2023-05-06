@@ -46,24 +46,31 @@ RSpec.describe "Categories", type: :request do
   end
 
   describe "GET /categories" do
-    let(:workspace) { FactoryBot.create(:workspace) }
+    let(:url) { "/categories" }
     let(:tokens) { get_auth_token(@user) }
-    let(:workspace_user)  {
-      FactoryBot.create(
-        :workspace_user,
-        workspace: workspace,
-        user: @user
-      )
-    }
-    let(:body) do { workspaceId: workspace.id } end
-    let(:category) { FactoryBot.create_list(:category, 5, workspace: workspace) }
+    let(:body) do
+      {
+        workspaceId: @workspace.id
+      }
+    end
 
     context "success" do
-      it 'can get categories' do
-        get "/categories", params: body, headers: tokens
+      it "can get categories" do
+        category = FactoryBot.create(:category, workspace: @workspace)
+        get url, params: body, headers: tokens
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
-        expect(res['data']['categories'][0]).not_to eq(current_user.id)
+        expect(res['data'].size).to eq(1)
+        expect(res['data']['categories'][0]['workspaceId'] == category.workspace_id).to be true
+        expect(res['data']['categories'][0]['id'] == category.id).to be true
+      end
+    end
+
+    context "error" do
+      it "cannot get categories without auth" do
+        @user_other = FactoryBot.create(:user)
+        get url, params: body, headers: get_auth_token(@user_other)
+        expect(response).to have_http_status 401
       end
     end
   end
