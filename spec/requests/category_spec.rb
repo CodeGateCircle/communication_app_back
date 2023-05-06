@@ -45,6 +45,29 @@ RSpec.describe "Categories", type: :request do
     end
   end
 
+  describe "GET /categories" do
+    let(:workspace) { FactoryBot.create(:workspace) }
+    let(:tokens) { get_auth_token(@user) }
+    let(:workspace_user)  {
+      FactoryBot.create(
+        :workspace_user,
+        workspace: workspace,
+        user: @user
+      )
+    }
+    let(:body) do { workspaceId: workspace.id } end
+    let(:category) { FactoryBot.create_list(:category, 5, workspace: workspace) }
+
+    context "success" do
+      it 'can get categories' do
+        get "/categories", params: body, headers: tokens
+        expect(response).to have_http_status :ok
+        res = JSON.parse(response.body)
+        expect(res['data']['categories'][0]).not_to eq(current_user.id)
+      end
+    end
+  end
+
   describe "PUT /categories/:category_id" do
     let(:url) { "/categories/#{category.id}" }
     let(:tokens) { get_auth_token(@user) }

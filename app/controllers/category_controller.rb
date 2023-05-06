@@ -15,6 +15,16 @@ class CategoryController < ApplicationController
     end
   end
 
+  def index
+    params = create_params
+
+    category_list = Category.find_by(workspace_id: params[:workspaceId])
+
+    return_item = { data: { categories: category_list } }
+    logger.debug(json: return_item)
+    render status: 200, json: return_item.as_json
+  end
+
   def update
     params = create_params
     if auth_workspace_edit
