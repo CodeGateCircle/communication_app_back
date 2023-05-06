@@ -56,13 +56,19 @@ RSpec.describe "Categories", type: :request do
 
     context "success" do
       it "can get categories" do
-        category = FactoryBot.create(:category, workspace: @workspace)
+        all_index = 10
+        category = FactoryBot.create_list(:category, all_index, workspace: @workspace)
         get url, params: body, headers: tokens
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
-        expect(res['data'].size).to eq(1)
-        expect(res['data']['categories'][0]['workspaceId'] == category.workspace_id).to be true
-        expect(res['data']['categories'][0]['id'] == category.id).to be true
+        expect(res['data']['categories'].size).to eq(all_index)
+        expect(res['data']['categories'][0]['workspaceId'] == category[0][:workspace_id]).to be true
+        expect(res['data']['categories'][0]['name'] == category[0][:name]).to be true
+
+        category.each_with_index do |cat, n|
+          expect(res['data']['categories'][n]['workspaceId'] == cat[:workspace_id]).to be true
+          expect(res['data']['categories'][n]['name'] == cat[:name]).to be true  
+        end
       end
     end
 
