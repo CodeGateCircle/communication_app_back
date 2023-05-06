@@ -27,6 +27,22 @@ class CategoryController < ApplicationController
     end
   end
 
+  def delete
+    params = create_params
+    if auth_edit_with_categoryid
+      render status: 401, text: "cannot edit category of workspace without auth"
+    else
+      if not Room.find_by(category_id: params[:category_id])
+        category = Category.find(params[:category_id])
+        category.destroy!
+
+        render status: 200, json: { success: true }
+      else
+        render status: 401, text: "some rooms in this category exist, so cannot delete category"
+      end
+    end
+  end
+
   private
 
   def create_params
@@ -37,5 +53,10 @@ class CategoryController < ApplicationController
     user = WorkspaceUser.find_by(workspace_id: params[:workspaceId])
 
     user.user_id != current_user.id
+  end
+
+  def auth_edit_with_categoryid
+    params[:workspaceId] = Category.find(params[:category_id]).workspace_id
+    auth_workspace_edit
   end
 end
