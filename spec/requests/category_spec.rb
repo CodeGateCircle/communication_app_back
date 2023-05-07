@@ -116,9 +116,7 @@ RSpec.describe "Categories", type: :request do
     let(:url) { "/categories/#{category.id}/delete" }
     let(:tokens) { get_auth_token(@user) }
     let(:category) { FactoryBot.create(:category, workspace: @workspace) }
-    # can delete
-    # - auth have
-    # - rooms in this category don't exist
+
     context "success" do
       it 'can delete category' do
         post url, headers: tokens
