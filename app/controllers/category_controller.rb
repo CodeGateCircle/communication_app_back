@@ -63,10 +63,10 @@ class CategoryController < ApplicationController
   def auth_workspace_edit
     params = create_params
     user = WorkspaceUser.find_by(workspace_id: params[:workspaceId])
-    if user.blank?
-      false
+    if user.blank? # blank -> true -> false
+      true
     else
-      user.user_id != current_user.id
+      user.user_id != current_user.id # eq -> true, ne -> false
     end
   end
 
