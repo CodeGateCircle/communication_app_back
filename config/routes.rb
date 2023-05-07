@@ -15,4 +15,6 @@ Rails.application.routes.draw do
 
   # room作成
   post '/rooms', to: 'rooms#create'
+  # room一覧取得
+  get '/rooms', to: 'rooms#show'
 end

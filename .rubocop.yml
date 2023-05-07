@@ -8,3 +8,6 @@ Metrics/BlockLength:
 
 Metrics/MethodLength:
   Enabled: false
+
+Metrics/AbcSize:
+  Max: 30

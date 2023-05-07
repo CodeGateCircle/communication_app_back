@@ -23,11 +23,38 @@ class RoomsController < ApplicationController
     end
   end
 
+  def show
+    params = params_int(show_params)
+
+    if belong_to_workspace?(params[:workspaceId])
+      render status: 401, json: { error: { text: "あなたはこのワークスペースに属していません" } }
+    else
+      categories = Category.where(workspace_id: params[:workspaceId])
+      # workspaceにroomがあるかどうかの確認
+      if categories.blank?
+        render status: 200, json: { data: { categories: } }
+        return
+      end
+      rooms = categories.map(&:category_show_format_res)
+
+      room_users = RoomUser.where(user_id: current_user.id).pluck(:id)
+      rooms.each_with_index do |category, i|
+        rooms[i].store('rooms', Room.where(id: room_users).where(category_id: category['id']).where(is_deleted: false).select(:id, :name).map(&:room_show_format_res))
+      end
+
+      render status: 200, json: { data: { categories: rooms } }
+    end
+  end
+
   private
 
   # strong parameter
   def create_params
     params.permit(:name, :description, :categoryId, :workspaceId)
+  end
+
+  def show_params
+    params.permit(:workspaceId)
   end
 
   # 整数値に変換
@@ -42,5 +69,11 @@ class RoomsController < ApplicationController
     true
   rescue ArgumentError
     false
+  end
+
+  # ユーザーがworkspaceに属しているかチェック
+  def belong_to_workspace?(workspace_id)
+    user = WorkspaceUser.find_by(workspace_id:, user_id: current_user.id)
+    user.nil?
   end
 end
