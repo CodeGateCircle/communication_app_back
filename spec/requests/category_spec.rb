@@ -39,10 +39,8 @@ RSpec.describe "Categories", type: :request do
     context "error" do
       it "cannot edit workspace without auth" do
         post url, params: body, headers: get_auth_token(@user_other)
-        expect(response).to have_http_status 400
+        expect(response).to have_http_status 401
       end
     end
-
-
   end
 end
