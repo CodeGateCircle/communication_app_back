@@ -9,8 +9,8 @@ class WorkspacesController < ApplicationController
       workspace = Workspace.create!({
                                       name: params[:name],
                                       description: params[:description],
-                                      icon_image_url: params[:iconImageUrl],
-                                      cover_image_url: params[:coverImageUrl]
+                                      icon_image_url: params[:icon_image_url],
+                                      cover_image_url: params[:cover_image_url]
                                     })
 
       workspace_user = WorkspaceUser.new({
@@ -31,8 +31,8 @@ class WorkspacesController < ApplicationController
       workspace.update!({
                           name: params[:name],
                           description: params[:description],
-                          icon_image_url: params[:iconImageUrl],
-                          cover_image_url: params[:coverImageUrl]
+                          icon_image_url: params[:icon_image_url],
+                          cover_image_url: params[:cover_image_url]
                         })
 
       render status: 200, json: { data: { workspace: workspace.format_res } }
@@ -50,10 +50,10 @@ class WorkspacesController < ApplicationController
 
   # strong parameter
   def create_params
-    params.permit(:name, :description, :iconImageUrl, :coverImageUrl)
+    params.permit(:name, :description, :icon_image_url, :cover_image_url)
   end
 
   def create_params_id
-    params.permit(:workspace_id, :name, :description, :iconImageUrl, :coverImageUrl)
+    params.permit(:workspace_id, :name, :description, :icon_image_url, :cover_image_url)
   end
 end
