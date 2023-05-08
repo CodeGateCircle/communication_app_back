@@ -65,7 +65,7 @@ class CategoryController < ApplicationController
   end
 
   def delete_params
-    params.permit(:category_id, :name, :workspaceId)
+    params.permit(:category_id, :workspaceId)
   end
 
   def auth_workspace_edit
