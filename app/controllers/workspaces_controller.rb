@@ -19,7 +19,7 @@ class WorkspacesController < ApplicationController
                                          })
       workspace_user.save!
 
-      render status: 200, json: { data: { workspace: workspace.format_res } }
+      render status: 200, json: workspace, serializer: WorkspaceSerializer
     end
   end
 
@@ -35,7 +35,7 @@ class WorkspacesController < ApplicationController
                           cover_image_url: params[:cover_image_url]
                         })
 
-      render status: 200, json: { data: { workspace: workspace.format_res } }
+      render status: 200, json: workspace, serializer: WorkspaceSerializer
     end
   end
 
