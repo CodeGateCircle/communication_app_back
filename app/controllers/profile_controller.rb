@@ -3,6 +3,6 @@ class ProfileController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    render json: { data: current_user} , each_serializer: UserSerializer
+    render json: current_user , serializer: UserSerializer
   end
 end

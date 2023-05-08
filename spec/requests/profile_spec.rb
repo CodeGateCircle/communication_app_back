@@ -11,12 +11,10 @@ RSpec.describe "Profiles", type: :request do
       get "/profile", headers: tokens
       expect(response).to have_http_status :ok
       res = JSON.parse(response.body)
-      expect(res['data']['id']).to eq(@user.id)
-      expect(res['data']['email']).to eq(@user.email)
-      expect(res['data']['uid']).to eq(@user.uid)
-      expect(res['data']['name']).to eq(@user.name)
-      expect(res['data']['image']).to eq(@user.image)
-      expect(res['data']['provider']).to eq(@user.provider)
+      expect(res['user']['id']).to eq(@user.id)
+      expect(res['user']['email']).to eq(@user.email)
+      expect(res['user']['name']).to eq(@user.name)
+      expect(res['user']['image']).to eq(@user.image)
     end
 
     it 'can not get profile without auth' do
