@@ -2,6 +2,11 @@
 class WorkspacesController < ApplicationController
   before_action :authenticate_user!
 
+  def index
+    workspaces = current_user.workspaces
+    render json: { data: { workspaces: workspaces.map(&:format_res) } }
+  end
+
   def create
     params = create_params
 
