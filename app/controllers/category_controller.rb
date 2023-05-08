@@ -27,7 +27,7 @@ class CategoryController < ApplicationController
   end
 
   def update
-    params = create_params
+    params = update_params
     if auth_workspace_edit
       render status: 401, text: "cannot edit category of workspace without auth"
     else
@@ -39,7 +39,7 @@ class CategoryController < ApplicationController
   end
 
   def delete
-    params = create_params
+    params = delete_params
     if auth_edit_with_categoryid
       render status: 401, text: "cannot edit category of workspace without auth"
     else
@@ -57,6 +57,14 @@ class CategoryController < ApplicationController
   private
 
   def create_params
+    params.permit(:category_id, :name, :workspaceId)
+  end
+
+  def update_params
+    params.permit(:category_id, :name, :workspaceId)
+  end
+
+  def delete_params
     params.permit(:category_id, :name, :workspaceId)
   end
 
