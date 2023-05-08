@@ -6,8 +6,8 @@ RSpec.describe "Categories", type: :request do
     @workspace = FactoryBot.create(:workspace)
     @workspace_user = FactoryBot.create(
       :workspace_user,
-      workspace_id: @workspace.id,
-      user_id: @user.id
+      workspace: @workspace,
+      user: @user
     )
   end
 
@@ -54,7 +54,7 @@ RSpec.describe "Categories", type: :request do
         workspaceId: @workspace.id
       }
     end
-    let(:category) { FactoryBot.create(:category) }
+    let(:category) { FactoryBot.create(:category, workspace: @workspace) }
 
     context "success" do
       it 'can update category' do
