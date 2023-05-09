@@ -76,6 +76,11 @@ class CategoryController < ApplicationController
     else
       user.user_id != current_user.id # eq -> true, ne -> false
     end
+    if user.blank? # blank -> true -> false
+      true
+    else
+      user.user_id != current_user.id # eq -> true, ne -> false
+    end
   end
 
   def auth_edit_with_categoryid
