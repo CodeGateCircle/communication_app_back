@@ -75,4 +75,38 @@ RSpec.describe "Categories", type: :request do
       end
     end
   end
+
+  describe "POST /categories/:category_id/delete" do
+    let(:url) { "/categories/#{category.id}/delete" }
+    let(:tokens) { get_auth_token(@user) }
+    let(:category) { FactoryBot.create(:category, workspace: @workspace) }
+    # can delete
+    # - auth have
+    # - rooms in this category don't exist
+    context "success" do
+      it 'can delete category' do
+        post url, headers: tokens
+        expect(response).to have_http_status :ok
+        expect(Room.find_by(category_id: category.id)).to be_blank
+        expect(Category.find_by(id: category.id)).to be_blank
+      end
+    end
+    # cannot delete
+    # - no auth
+    # + auth have
+    # + some rooms in this category exist
+    context "error" do
+      it 'cannot delete it because some rooms in this category exist' do
+        @room = FactoryBot.create(:room, category: category, workspace: @workspace)
+        post url, headers: tokens
+        expect(response).to have_http_status 401
+      end
+
+      it 'cannot delete it because no auth' do
+        @user_other = FactoryBot.create(:user)
+        post url, headers: get_auth_token(@user_other)
+        expect(response).to have_http_status 401
+      end
+    end
+  end
 end

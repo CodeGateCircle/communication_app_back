@@ -22,4 +22,6 @@ Rails.application.routes.draw do
   post '/categories', to: 'category#create'
   # category更新
   put '/categories/:category_id', to: 'category#update'
+  # category削除
+  post '/categories/:category_id/delete', to: 'category#delete'
 end
