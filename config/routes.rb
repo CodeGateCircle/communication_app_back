@@ -17,4 +17,6 @@ Rails.application.routes.draw do
   post '/rooms', to: 'rooms#create'
   # room一覧取得
   get '/rooms', to: 'rooms#index'
+  # room削除
+  post '/rooms/:room_id/delete', to: 'rooms#delete'
 end

@@ -53,7 +53,7 @@ RSpec.describe "Rooms", type: :request do
     end
   end
 
-  describe "GET /rooms" do
+  describe "GET /rooms/{workspace_id}" do
     let(:url) { "/rooms" }
     let(:tokens) { get_auth_token(@user) }
     let(:body) do

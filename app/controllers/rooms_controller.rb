@@ -24,7 +24,7 @@ class RoomsController < ApplicationController
   end
 
   def index
-    params = params_int(show_params)
+    params = params_int(index_params)
 
     if belong_to_workspace?(params[:workspaceId])
       render status: 401, json: { error: { text: "あなたはこのワークスペースに属していません" } }
@@ -52,6 +52,13 @@ class RoomsController < ApplicationController
     end
   end
 
+  def delete
+    room = Room.find(params[:room_id])
+    
+
+    render status: 200, json: { success: true }
+  end
+
   private
 
   # strong parameter
@@ -59,8 +66,12 @@ class RoomsController < ApplicationController
     params.permit(:name, :description, :categoryId, :workspaceId)
   end
 
-  def show_params
+  def index_params
     params.permit(:workspaceId)
+  end
+
+  def delete_params
+    params.permit(:roomId)
   end
 
   # 整数値に変換
