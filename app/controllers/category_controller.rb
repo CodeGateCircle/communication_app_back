@@ -1,3 +1,4 @@
+# category
 class CategoryController < ApplicationController
   before_action :authenticate_user!
 
@@ -7,8 +8,8 @@ class CategoryController < ApplicationController
       render status: 401, text: "cannot edit category of workspace without auth"
     else
       category = Category.create!({
-                                      name: params[:name],
-                                      workspace_id: params[:workspaceId]
+                                    name: params[:name],
+                                    workspace_id: params[:workspaceId]
                                   })
 
       render status: 200, json: { data: { category: category.format_res } }
@@ -17,7 +18,7 @@ class CategoryController < ApplicationController
 
   def index
     params = create_params
-    if auth_workspace_edit
+    if auth_workspace_edit(params[:workspace_id])
       render status: 401, text: "cannot edit category of workspace without auth"
     else
       categories = Category.where(workspace_id: params[:workspaceId])
@@ -28,7 +29,7 @@ class CategoryController < ApplicationController
 
   def update
     params = update_params
-    if auth_workspace_edit
+    if auth_workspace_edit(params[:workspace_id])
       render status: 401, text: "cannot edit category of workspace without auth"
     else
       category = Category.find(params[:category_id])
@@ -42,15 +43,13 @@ class CategoryController < ApplicationController
     params = delete_params
     if auth_edit_with_categoryid
       render status: 401, text: "cannot edit category of workspace without auth"
-    else
-      if not Room.find_by(category_id: params[:category_id])
-        category = Category.find(params[:category_id])
-        category.destroy!
+    elsif !Room.find_by(category_id: params[:category_id])
+      category = Category.find(params[:category_id])
+      category.destroy!
 
-        render status: 200, json: { success: true }
-      else
-        render status: 401, text: "some rooms in this category exist, so cannot delete category"
-      end
+      render status: 200, json: { success: true }
+    else
+      render status: 401, text: "some rooms in this category exist, so cannot delete category"
     end
   end
 

@@ -68,15 +68,15 @@ RSpec.describe "Rooms", type: :request do
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
 
-        categories = Category.where(workspace_id: @workspace.id)
-        room_ids = RoomUser.where(user_id: @user.id).pluck(:id)
+        categories = Category.where(workspace_id: @workspace.id).order(id: "DESC")
+        room_ids = RoomUser.where(user_id: @user.id).order(id: "DESC").pluck(:id)
 
         expect(res['data']['categories'].size).to eq(categories.length)
         categories.each_with_index do |category, i|
           expect(category.id).to eq(res['data']['categories'][i]['id'])
           expect(category.name).to eq(res['data']['categories'][i]['name'])
 
-          rooms = Room.where(id: room_ids).where(category_id: category.id).where(is_deleted: false)
+          rooms = Room.where(id: room_ids).where(category_id: category.id).where(is_deleted: false).order(id: "DESC")
 
           expect(res['data']['categories'][i]['rooms'].size).to eq(rooms.length)
           rooms.each_with_index do |room, j|
@@ -106,15 +106,15 @@ RSpec.describe "Rooms", type: :request do
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
 
-        categories = Category.where(workspace_id: @workspace.id)
-        room_ids = RoomUser.where(user_id: @user_other.id).pluck(:id)
+        categories = Category.where(workspace_id: @workspace.id).order(id: "DESC")
+        room_ids = RoomUser.where(user_id: @user_other.id).order(id: "DESC").pluck(:id)
 
         expect(res['data']['categories'].size).to eq(categories.length)
         categories.each_with_index do |category, i|
           expect(category.id).to eq(res['data']['categories'][i]['id'])
           expect(category.name).to eq(res['data']['categories'][i]['name'])
 
-          rooms = Room.where(id: room_ids).where(category_id: category.id).where(is_deleted: false)
+          rooms = Room.where(id: room_ids).where(category_id: category.id).where(is_deleted: false).order(id: "DESC")
 
           expect(res['data']['categories'][i]['rooms'].size).to eq(rooms.length)
           rooms.each_with_index do |room, j|

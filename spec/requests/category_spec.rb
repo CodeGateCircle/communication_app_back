@@ -67,7 +67,7 @@ RSpec.describe "Categories", type: :request do
 
         category.each_with_index do |cat, n|
           expect(res['data']['categories'][n]['workspaceId'] == cat[:workspace_id]).to be true
-          expect(res['data']['categories'][n]['name'] == cat[:name]).to be true  
+          expect(res['data']['categories'][n]['name'] == cat[:name]).to be true
         end
       end
     end
@@ -131,7 +131,7 @@ RSpec.describe "Categories", type: :request do
     # + some rooms in this category exist
     context "error" do
       it 'cannot delete it because some rooms in this category exist' do
-        @room = FactoryBot.create(:room, category: category, workspace: @workspace)
+        @room = FactoryBot.create(:room, category:, workspace: @workspace)
         post url, headers: tokens
         expect(response).to have_http_status 401
       end
