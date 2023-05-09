@@ -3,7 +3,7 @@ class CategoryController < ApplicationController
 
   def create
     params = create_params
-    if auth_workspace_edit
+    if auth_workspace_edit(params[:workspaceId])
       render status: 401, text: "cannot edit category of workspace without auth"
     else
       category = Category.create!({
@@ -21,9 +21,9 @@ class CategoryController < ApplicationController
     params.permit(:category_id, :name, :workspaceId)
   end
 
-  def auth_workspace_edit
+  def auth_workspace_edit(workspace_id)
     params = create_params
-    users = WorkspaceUser.where(workspace_id: params[:workspaceId])
+    users = WorkspaceUser.where(workspace_id: workspace_id)
     if users.blank? # blank -> true -> false
       true
     else
@@ -40,6 +40,6 @@ class CategoryController < ApplicationController
 
   def auth_edit_with_categoryid
     params[:workspaceId] = Category.find(params[:category_id]).workspace_id
-    auth_workspace_edit
+    auth_workspace_edit(params[:workspaceId])
   end
 end
