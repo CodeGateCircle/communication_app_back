@@ -50,7 +50,7 @@ RSpec.describe "Categories", type: :request do
     let(:tokens) { get_auth_token(@user) }
     let(:body) do
       {
-        workspaceId: @workspace.id
+        workspace_id: @workspace.id
       }
     end
 

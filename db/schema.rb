@@ -18,7 +18,8 @@ ActiveRecord::Schema[7.0].define(version: 20_230_508_070_213) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "workspace_id"
+    t.bigint "workspace_id"
+    t.index ["workspace_id"], name: "index_categories_on_workspace_id"
   end
 
   create_table "room_users", force: :cascade do |t|
