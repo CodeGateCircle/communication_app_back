@@ -22,9 +22,9 @@ class CategoryController < ApplicationController
   end
 
   def auth_workspace_edit(workspace_id)
-    params = create_params
     users = WorkspaceUser.where(workspace_id: workspace_id)
-    if users.blank? # blank -> true -> false
+
+    if !current_user.workspaces.exists?(id: workspace_id)
       true
     else
       flag = false
