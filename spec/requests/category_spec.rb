@@ -45,6 +45,42 @@ RSpec.describe "Categories", type: :request do
     end
   end
 
+  describe "GET /categories" do
+    let(:url) { "/categories" }
+    let(:tokens) { get_auth_token(@user) }
+    let(:body) do
+      {
+        workspaceId: @workspace.id
+      }
+    end
+
+    context "success" do
+      it "can get categories" do
+        all_index = 10
+        category = FactoryBot.create_list(:category, all_index, workspace: @workspace)
+        get url, params: body, headers: tokens
+        expect(response).to have_http_status :ok
+        res = JSON.parse(response.body)
+        expect(res['data']['categories'].size).to eq(all_index)
+        expect(res['data']['categories'][0]['workspaceId'] == category[0][:workspace_id]).to be true
+        expect(res['data']['categories'][0]['name'] == category[0][:name]).to be true
+
+        category.each_with_index do |cat, n|
+          expect(res['data']['categories'][n]['workspaceId'] == cat[:workspace_id]).to be true
+          expect(res['data']['categories'][n]['name'] == cat[:name]).to be true  
+        end
+      end
+    end
+
+    context "error" do
+      it "cannot get categories without auth" do
+        @user_other = FactoryBot.create(:user)
+        get url, params: body, headers: get_auth_token(@user_other)
+        expect(response).to have_http_status 401
+      end
+    end
+  end
+
   describe "PUT /categories/:category_id" do
     let(:url) { "/categories/#{category.id}" }
     let(:tokens) { get_auth_token(@user) }
@@ -80,9 +116,7 @@ RSpec.describe "Categories", type: :request do
     let(:url) { "/categories/#{category.id}/delete" }
     let(:tokens) { get_auth_token(@user) }
     let(:category) { FactoryBot.create(:category, workspace: @workspace) }
-    # can delete
-    # - auth have
-    # - rooms in this category don't exist
+
     context "success" do
       it 'can delete category' do
         post url, headers: tokens

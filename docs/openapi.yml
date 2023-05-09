@@ -147,6 +147,34 @@ paths:
                 workspaceId:
                   $ref: "#/components/schemas/workspaceId"
 
+    get:
+      tags:
+        - categories
+      operationId: get_categories
+      summary: Get categories.
+      description: Get categories.
+      parameters:
+        - name: workspace_id
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/workspaceId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    properties:
+                      categories:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/category_data"
+
+
   /categories/{category_id}:
     put:
       tags:
@@ -181,6 +209,27 @@ paths:
                 workspaceId:
                   $ref: "#/components/schemas/workspaceId"
 
+  /categories/{category_id}/delete:
+    post:
+      tags:
+        - categories
+      operationId: delete_category
+      summary: Delete the category
+      description: Delete the category
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/categoryId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true }
+
   /rooms:
     post:
       tags:
@@ -213,8 +262,6 @@ paths:
                   $ref: "#/components/schemas/categoryId"
                 workspaceId:
                   $ref: "#/components/schemas/workspaceId"
-
-
 
 
 components:

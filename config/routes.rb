@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   # google 認証
   get 'auth/:provider/callback', to: 'omniauth_callbacks#google_oauth2'
   mount_devise_token_auth_for 'User', at: 'auth'
@@ -20,6 +19,8 @@ Rails.application.routes.draw do
 
   # category作成
   post '/categories', to: 'category#create'
+  # category取得
+  get '/categories', to: 'category#index'
   # category更新
   put '/categories/:category_id', to: 'category#update'
   # category削除
