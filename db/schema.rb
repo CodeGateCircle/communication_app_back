@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema[7.0].define(version: 20_230_507_005_931) do
-=======
-ActiveRecord::Schema[7.0].define(version: 2023_05_03_063301) do
->>>>>>> origin
+ActiveRecord::Schema[7.0].define(version: 2023_05_08_070213) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,12 +18,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_03_063301) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-<<<<<<< HEAD
-    t.bigint "workspace_id"
-    t.index ["workspace_id"], name: "index_categories_on_workspace_id"
-=======
     t.integer "workspace_id"
->>>>>>> origin
   end
 
   create_table "room_users", force: :cascade do |t|
