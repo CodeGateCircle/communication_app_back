@@ -68,15 +68,15 @@ RSpec.describe "Rooms", type: :request do
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
 
-        categories = Category.where(workspace_id: @workspace.id)
-        room_ids = RoomUser.where(user_id: @user.id).pluck(:id)
+        categories = Category.where(workspace_id: @workspace.id).order(id: "DESC")
+        room_ids = RoomUser.where(user_id: @user.id).order(id: "DESC").pluck(:id)
 
         expect(res['data']['categories'].size).to eq(categories.length)
         categories.each_with_index do |category, i|
           expect(category.id).to eq(res['data']['categories'][i]['id'])
           expect(category.name).to eq(res['data']['categories'][i]['name'])
 
-          rooms = Room.where(id: room_ids).where(category_id: category.id).where(is_deleted: false)
+          rooms = Room.where(id: room_ids).where(category_id: category.id).where(is_deleted: false).order(id: "DESC")
 
           expect(res['data']['categories'][i]['rooms'].size).to eq(rooms.length)
           rooms.each_with_index do |room, j|
@@ -106,15 +106,15 @@ RSpec.describe "Rooms", type: :request do
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
 
-        categories = Category.where(workspace_id: @workspace.id)
-        room_ids = RoomUser.where(user_id: @user_other.id).pluck(:id)
+        categories = Category.where(workspace_id: @workspace.id).order(id: "DESC")
+        room_ids = RoomUser.where(user_id: @user_other.id).order(id: "DESC").pluck(:id)
 
         expect(res['data']['categories'].size).to eq(categories.length)
         categories.each_with_index do |category, i|
           expect(category.id).to eq(res['data']['categories'][i]['id'])
           expect(category.name).to eq(res['data']['categories'][i]['name'])
 
-          rooms = Room.where(id: room_ids).where(category_id: category.id).where(is_deleted: false)
+          rooms = Room.where(id: room_ids).where(category_id: category.id).where(is_deleted: false).order(id: "DESC")
 
           expect(res['data']['categories'][i]['rooms'].size).to eq(rooms.length)
           rooms.each_with_index do |room, j|
@@ -137,6 +137,33 @@ RSpec.describe "Rooms", type: :request do
         expect(response).to have_http_status 401
         res = JSON.parse(response.body)
         expect("あなたはこのワークスペースに属していません").to eq(res['error']['text'])
+      end
+    end
+  end
+
+  describe "POST /rooms/:room_id/delete" do
+    let(:url) { "/rooms/#{@room.id}/delete" }
+    let(:tokens) { get_auth_token(@user) }
+    context "success" do
+      it 'can delete room' do
+        post url, headers: tokens
+        expect(response).to have_http_status :ok
+        expect(Room.find_by(id: @room.id).is_deleted).to eq(true)
+        expect(Room.find_by(id: @room.id).category_id).to eq(nil)
+      end
+    end
+    context "error" do
+      it 'can not show room without auth' do
+        post url
+        expect(response).to have_http_status 401
+      end
+
+      it 'you are not belong to this room' do
+        @user_other = FactoryBot.create(:user)
+        post url, headers: get_auth_token(@user_other)
+        expect(response).to have_http_status 401
+        res = JSON.parse(response.body)
+        expect("あなたはこのルームに属していません").to eq(res['error']['text'])
       end
     end
   end

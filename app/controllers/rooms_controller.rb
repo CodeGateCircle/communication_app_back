@@ -29,7 +29,7 @@ class RoomsController < ApplicationController
     if belong_to_workspace?(params[:workspaceId])
       render status: 401, json: { error: { text: "あなたはこのワークスペースに属していません" } }
     else
-      categories = Category.where(workspace_id: params[:workspaceId])
+      categories = Category.where(workspace_id: params[:workspaceId]).order(id: "DESC")
       # workspaceにroomがあるかどうかの確認
       if categories.blank?
         render status: 200, json: { data: { categories: } }
@@ -38,7 +38,7 @@ class RoomsController < ApplicationController
 
       rooms = categories.map(&:category_show_format_res)
 
-      room_maps = Room.where(id: current_user.rooms).where(is_deleted: false)
+      room_maps = Room.where(id: current_user.rooms).where(is_deleted: false).order(id: "DESC")
 
       categories.each_with_index do |category, i|
         tmp = []
@@ -52,6 +52,19 @@ class RoomsController < ApplicationController
     end
   end
 
+  def delete
+    params = params_int(delete_params)
+
+    if belong_to_room?(params[:room_id])
+      render status: 401, json: { error: { text: "あなたはこのルームに属していません" } }
+      return
+    end
+
+    Room.find(params[:room_id]).update!(is_deleted: true, category_id: nil)
+
+    render status: 200, json: { success: true }
+  end
+
   private
 
   # strong parameter
@@ -61,6 +74,10 @@ class RoomsController < ApplicationController
 
   def show_params
     params.permit(:workspaceId)
+  end
+
+  def delete_params
+    params.permit(:room_id)
   end
 
   # 整数値に変換

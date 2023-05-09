@@ -158,6 +158,12 @@ paths:
       operationId: show_room
       summary:  Show your rooms.
       description: Show your rooms.
+      parameters:
+        - name: workspace_id
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/workspaceId"
       responses:
         200:
           description: Successful operation
@@ -187,6 +193,56 @@ paths:
                                     $ref: "#/components/schemas/roomId"
                                   name:
                                     $ref: "#/components/schemas/roomName"
+        401:
+          description: Error operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      text:
+                        description: error message
+                        example: you are not belong to this workspace
+                        type: string
+
+
+  /rooms/{room_id}/delete:
+    post:
+      tags:
+        - rooms
+      operationId: delete_room
+      summary: Delete the room
+      description: Delete the room
+      parameters:
+        - name: room_id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/roomId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true }   
+        401:
+          description: Error operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      text:
+                        description: error message
+                        example: you are not belong to this room
+                        type: string
 
 
 components:
