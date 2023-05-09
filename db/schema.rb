@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[7.0].define(version: 20_230_507_005_931) do
+=======
+ActiveRecord::Schema[7.0].define(version: 2023_05_03_063301) do
+>>>>>>> origin
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,8 +22,12 @@ ActiveRecord::Schema[7.0].define(version: 20_230_507_005_931) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+<<<<<<< HEAD
     t.bigint "workspace_id"
     t.index ["workspace_id"], name: "index_categories_on_workspace_id"
+=======
+    t.integer "workspace_id"
+>>>>>>> origin
   end
 
   create_table "room_users", force: :cascade do |t|
@@ -55,7 +63,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_507_005_931) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index %w[uid provider], name: "index_users_on_uid_and_provider", unique: true
+    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
   create_table "workspace_users", force: :cascade do |t|
@@ -63,6 +71,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_507_005_931) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "role", default: 3, null: false
     t.index ["user_id"], name: "index_workspace_users_on_user_id"
     t.index ["workspace_id"], name: "index_workspace_users_on_workspace_id"
   end
