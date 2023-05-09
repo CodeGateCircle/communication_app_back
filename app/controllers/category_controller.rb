@@ -49,10 +49,27 @@ class CategoryController < ApplicationController
     params.permit(:category_id, :name, :workspaceId)
   end
 
-  def auth_workspace_edit
-    user = WorkspaceUser.find_by(workspace_id: params[:workspaceId])
+  def update_params
+    params.permit(:category_id, :name, :workspaceId)
+  end
 
-    user.user_id != current_user.id
+  def delete_params
+    params.permit(:category_id, :workspaceId)
+  end
+
+  def auth_workspace_edit
+    params = create_params
+    user = WorkspaceUser.find_by(workspace_id: params[:workspaceId])
+    if user.blank? # blank -> true -> false
+      true
+    else
+      user.user_id != current_user.id # eq -> true, ne -> false
+    end
+  end
+
+  def auth_edit_with_categoryid
+    params[:workspaceId] = Category.find(params[:category_id]).workspace_id
+    auth_workspace_edit
   end
 
   def auth_edit_with_categoryid
