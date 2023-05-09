@@ -8,6 +8,8 @@ info:
 tags:
   - name: workspaces
     description: about workspaces
+  - name: categories
+    description: about categories
   - name: rooms
     description: about rooms
 
@@ -116,6 +118,68 @@ paths:
               schema:
                 example: { success: true }
 
+  /categories:
+    post:
+      tags:
+        - categories
+      operationId: create_category
+      summary: Create new category.
+      description: Create new category.
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/category_data"
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: "#/components/schemas/name"
+                workspaceId:
+                  $ref: "#/components/schemas/workspaceId"
+
+  /categories/{category_id}:
+    put:
+      tags:
+        - categories
+      operationId: update_category
+      summary: Update the category
+      description: Update the category
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/categoryId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/category_data"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: "#/components/schemas/name"
+                workspaceId:
+                  $ref: "#/components/schemas/workspaceId"
 
   /rooms:
     post:
@@ -182,6 +246,21 @@ components:
             coverImageUrl:
               $ref: "#/components/schemas/coverImageUrl"
 
+    category_data:
+      description: explain
+      type: object
+      required:
+        - id
+        - name
+        - workspaceId
+      properties:
+        id:
+          $ref: "#/components/schemas/categoryId"
+        name:
+          $ref: "#/components/schemas/name"
+        workspaceId:
+          $ref: "#/components/schemas/workspaceId"
+
     room_data:
       description: explain
       type: object
@@ -231,7 +310,7 @@ components:
 
     categoryId:
       description: category unique id
-      example: 0
+      example: 2
       type: integer
 
     iconImageUrl:
