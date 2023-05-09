@@ -23,7 +23,7 @@ class RoomsController < ApplicationController
     end
   end
 
-  def show
+  def index
     params = params_int(show_params)
 
     if belong_to_workspace?(params[:workspaceId])
@@ -70,5 +70,5 @@ class RoomsController < ApplicationController
   rescue ArgumentError
     false
   end
-  
+
 end
