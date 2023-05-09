@@ -4,8 +4,8 @@ class Room < ApplicationRecord
   belongs_to :category
 
   # 中間テーブル
-  has_many :users, through: :room_users
   has_many :room_users, dependent: :destroy
+  has_many :users, through: :room_users
 
   def format_res
     res = attributes.symbolize_keys

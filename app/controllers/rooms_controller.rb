@@ -37,9 +37,8 @@ class RoomsController < ApplicationController
       end
       rooms = categories.map(&:category_show_format_res)
 
-      room_users = RoomUser.where(user_id: current_user.id).pluck(:id)
       rooms.each_with_index do |category, i|
-        rooms[i].store('rooms', Room.where(id: room_users).where(category_id: category['id']).where(is_deleted: false).select(:id, :name).map(&:room_show_format_res))
+        rooms[i].store('rooms', Room.where(id: current_user.rooms).where(category_id: category['id']).where(is_deleted: false).select(:id, :name).map(&:room_show_format_res))
       end
 
       render status: 200, json: { data: { categories: rooms } }
