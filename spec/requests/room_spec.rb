@@ -13,8 +13,8 @@ RSpec.describe "Rooms", type: :request do
     @category2 = FactoryBot.create(:category, workspace_id: @workspace.id)
     @room1 = FactoryBot.create(:room, category_id: @category1.id, workspace_id: @workspace.id)
     @room_user1 = FactoryBot.create(:room_user, room_id: @room1.id, user_id: @user.id)
-    # @room2 = FactoryBot.create(:room, category_id: @category1.id, workspace_id: @workspace.id)
-    # @room_user2 = FactoryBot.create(:room_user, room_id: @room2.id, user_id: @user.id)
+    @room2 = FactoryBot.create(:room, category_id: @category1.id, workspace_id: @workspace.id)
+    @room_user2 = FactoryBot.create(:room_user, room_id: @room2.id, user_id: @user.id)
     @room3 = FactoryBot.create(:room, category_id: @category2.id, workspace_id: @workspace.id)
     @room_user3 = FactoryBot.create(:room_user, room_id: @room3.id, user_id: @user.id)
   end
