@@ -22,20 +22,7 @@ class CategoryController < ApplicationController
   end
 
   def auth_workspace_edit(workspace_id)
-    users = WorkspaceUser.where(workspace_id: workspace_id)
-
-    if !current_user.workspaces.exists?(id: workspace_id)
-      true
-    else
-      flag = false
-      users.each do |user|
-        if user.user_id != current_user.id # eq -> true, ne -> false
-          flag = true
-          break
-        end
-      end
-      flag
-    end
+    !current_user.workspaces.exists?(id: workspace_id)
   end
 
   def auth_edit_with_categoryid
