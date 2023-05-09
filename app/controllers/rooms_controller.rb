@@ -35,10 +35,17 @@ class RoomsController < ApplicationController
         render status: 200, json: { data: { categories: } }
         return
       end
+
       rooms = categories.map(&:category_show_format_res)
 
-      rooms.each_with_index do |category, i|
-        rooms[i].store('rooms', Room.where(id: current_user.rooms).where(category_id: category['id']).where(is_deleted: false).select(:id, :name).map(&:room_show_format_res))
+      room_maps = Room.where(id: current_user.rooms).where(is_deleted: false)
+
+      categories.each_with_index do |category, i|
+        tmp = []
+        room_maps.each_with_index do |room_map, _j|
+          tmp.push(room_map.room_show_format_res) if room_map.category_id == category.id
+        end
+        rooms[i].store('rooms', tmp)
       end
 
       render status: 200, json: { data: { categories: rooms } }
@@ -69,5 +76,4 @@ class RoomsController < ApplicationController
   rescue ArgumentError
     false
   end
-
 end

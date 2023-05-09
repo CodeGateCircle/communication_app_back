@@ -13,8 +13,8 @@ RSpec.describe "Rooms", type: :request do
     @category2 = FactoryBot.create(:category, workspace_id: @workspace.id)
     @room1 = FactoryBot.create(:room, category_id: @category1.id, workspace_id: @workspace.id)
     @room_user1 = FactoryBot.create(:room_user, room_id: @room1.id, user_id: @user.id)
-    @room2 = FactoryBot.create(:room, category_id: @category1.id, workspace_id: @workspace.id)
-    @room_user2 = FactoryBot.create(:room_user, room_id: @room2.id, user_id: @user.id)
+    # @room2 = FactoryBot.create(:room, category_id: @category1.id, workspace_id: @workspace.id)
+    # @room_user2 = FactoryBot.create(:room_user, room_id: @room2.id, user_id: @user.id)
     @room3 = FactoryBot.create(:room, category_id: @category2.id, workspace_id: @workspace.id)
     @room_user3 = FactoryBot.create(:room_user, room_id: @room3.id, user_id: @user.id)
   end
@@ -71,15 +71,17 @@ RSpec.describe "Rooms", type: :request do
         categories = Category.where(workspace_id: @workspace.id)
         room_ids = RoomUser.where(user_id: @user.id).pluck(:id)
 
-        res['data']['categories'].each_with_index do |_catefory, i|
-          expect(categories[i].id).to eq(res['data']['categories'][i]['id'])
-          expect(categories[i].name).to eq(res['data']['categories'][i]['name'])
+        expect(res['data']['categories'].size).to eq(categories.length)
+        categories.each_with_index do |category, i|
+          expect(category.id).to eq(res['data']['categories'][i]['id'])
+          expect(category.name).to eq(res['data']['categories'][i]['name'])
 
-          rooms = Room.where(id: room_ids).where(category_id: categories[i].id).where(is_deleted: false)
+          rooms = Room.where(id: room_ids).where(category_id: category.id).where(is_deleted: false)
 
-          res['data']['categories'][i]['rooms'].each_with_index do |_room, j|
-            expect(rooms[j].id).to eq(res['data']['categories'][i]['room'][j]['id'])
-            expect(rooms[j].name).to eq(res['data']['categories'][i]['room'][j]['name'])
+          expect(res['data']['categories'][i]['rooms'].size).to eq(rooms.length)
+          rooms.each_with_index do |room, j|
+            expect(room.id).to eq(res['data']['categories'][i]['rooms'][j]['id'])
+            expect(room.name).to eq(res['data']['categories'][i]['rooms'][j]['name'])
           end
         end
       end
@@ -107,15 +109,17 @@ RSpec.describe "Rooms", type: :request do
         categories = Category.where(workspace_id: @workspace.id)
         room_ids = RoomUser.where(user_id: @user_other.id).pluck(:id)
 
-        res['data']['categories'].each_with_index do |_catefory, i|
-          expect(categories[i].id).to eq(res['data']['categories'][i]['id'])
-          expect(categories[i].name).to eq(res['data']['categories'][i]['name'])
+        expect(res['data']['categories'].size).to eq(categories.length)
+        categories.each_with_index do |category, i|
+          expect(category.id).to eq(res['data']['categories'][i]['id'])
+          expect(category.name).to eq(res['data']['categories'][i]['name'])
 
-          rooms = Room.where(id: room_ids).where(category_id: categories[i].id).where(is_deleted: false)
+          rooms = Room.where(id: room_ids).where(category_id: category.id).where(is_deleted: false)
 
-          res['data']['categories'][i]['rooms'].each_with_index do |_room, j|
-            expect(rooms[j].id).to eq(res['data']['categories'][i]['room'][j]['id'])
-            expect(rooms[j].name).to eq(res['data']['categories'][i]['room'][j]['name'])
+          expect(res['data']['categories'][i]['rooms'].size).to eq(rooms.length)
+          rooms.each_with_index do |room, j|
+            expect(room.id).to eq(res['data']['categories'][i]['rooms'][j]['id'])
+            expect(room.name).to eq(res['data']['categories'][i]['rooms'][j]['name'])
           end
         end
       end

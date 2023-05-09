@@ -8,8 +8,8 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
 
   # 中間テーブル
-  has_many :workspaces, through: :workspace_users
   has_many :workspace_users, dependent: :destroy
+  has_many :workspaces, through: :workspace_users
 
   has_many :room_users, dependent: :destroy
   has_many :rooms, through: :room_users
