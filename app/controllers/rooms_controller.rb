@@ -24,12 +24,12 @@ class RoomsController < ApplicationController
   end
 
   def index
-    params = params_int(show_params)
+    params = params_int(index_params)
 
-    if belong_to_workspace?(params[:workspaceId])
+    if belong_to_workspace?(params[:workspace_id])
       render status: 401, json: { error: { text: "あなたはこのワークスペースに属していません" } }
     else
-      categories = Category.where(workspace_id: params[:workspaceId]).order(id: "DESC")
+      categories = Category.where(workspace_id: params[:workspace_id]).order(id: "DESC")
       # workspaceにroomがあるかどうかの確認
       if categories.blank?
         render status: 200, json: { data: { categories: } }
@@ -72,8 +72,8 @@ class RoomsController < ApplicationController
     params.permit(:name, :description, :categoryId, :workspaceId)
   end
 
-  def show_params
-    params.permit(:workspaceId)
+  def index_params
+    params.permit(:workspace_id)
   end
 
   def delete_params

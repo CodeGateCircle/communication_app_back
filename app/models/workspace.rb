@@ -1,6 +1,6 @@
 # workspace
 class Workspace < ApplicationRecord
-  has_many :rooms, dependent: :destroy
+  has_many :rooms, through: :categories
 
   has_many :categories, dependent: :destroy
 

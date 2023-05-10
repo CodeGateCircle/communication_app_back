@@ -58,7 +58,7 @@ RSpec.describe "Rooms", type: :request do
     let(:tokens) { get_auth_token(@user) }
     let(:body) do
       {
-        workspaceId: @workspace.id
+        workspace_id: @workspace.id
       }
     end
 
@@ -91,7 +91,7 @@ RSpec.describe "Rooms", type: :request do
         @user_other = FactoryBot.create(:user)
         @workspace_user = FactoryBot.create(:workspace_user, workspace_id: @workspace_other.id, user_id: @user_other.id)
         params = {
-          workspaceId: @workspace_other.id
+          workspace_id: @workspace_other.id
         }
         get url, params:, headers: get_auth_token(@user_other)
         expect(response).to have_http_status :ok
