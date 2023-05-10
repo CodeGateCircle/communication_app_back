@@ -263,15 +263,17 @@ paths:
                 workspaceId:
                   $ref: "#/components/schemas/workspaceId"
 
+  /rooms/{workspace_id}:
     get:
       tags:
         - rooms
-      operationId: show_room
-      summary:  Show your rooms.
-      description: Show your rooms.
+      operationId: index_room
+      summary:  Index your rooms.
+      description: Index your rooms.
       parameters:
         - name: workspace_id
           in: query
+          description: 'workspace_id'
           required: true
           schema:
             $ref: "#/components/schemas/workspaceId"

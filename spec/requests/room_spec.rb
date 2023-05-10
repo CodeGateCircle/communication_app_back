@@ -53,7 +53,7 @@ RSpec.describe "Rooms", type: :request do
     end
   end
 
-  describe "GET /rooms" do
+  describe "GET /rooms/{workspace_id}" do
     let(:url) { "/rooms" }
     let(:tokens) { get_auth_token(@user) }
     let(:body) do
@@ -107,7 +107,7 @@ RSpec.describe "Rooms", type: :request do
         res = JSON.parse(response.body)
 
         categories = Category.where(workspace_id: @workspace.id).order(id: "DESC")
-        room_ids = RoomUser.where(user_id: @user_other.id).order(id: "DESC").pluck(:id)
+        room_ids = RoomUser.where(user_id: @user_other.id).order(id: "DESC").pluck(:room_id)
 
         expect(res['data']['categories'].size).to eq(categories.length)
         categories.each_with_index do |category, i|
