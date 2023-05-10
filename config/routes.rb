@@ -19,11 +19,7 @@ Rails.application.routes.draw do
   # room一覧取得
   get '/rooms', to: 'rooms#index'
   # room削除
-<<<<<<< HEAD
-  post 'rooms/:room_id/delete', to: 'rooms#delete'
-=======
   post '/rooms/:room_id/delete', to: 'rooms#delete'
->>>>>>> main
 
   # category作成
   post '/categories', to: 'category#create'
