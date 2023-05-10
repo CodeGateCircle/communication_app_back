@@ -13,4 +13,14 @@ class Category < ApplicationRecord
     res.delete(:updated_at)
     res
   end
+
+  # id, nameのみ返す
+  def category_show_format_res
+    res = attributes.symbolize_keys
+
+    res.delete(:workspace_id)
+    res.delete(:created_at)
+    res.delete(:updated_at)
+    res
+  end
 end

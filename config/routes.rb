@@ -16,6 +16,10 @@ Rails.application.routes.draw do
 
   # room作成
   post '/rooms', to: 'rooms#create'
+  # room一覧取得
+  get '/rooms', to: 'rooms#index'
+  # room削除
+  post '/rooms/:room_id/delete', to: 'rooms#delete'
 
   # category作成
   post '/categories', to: 'category#create'

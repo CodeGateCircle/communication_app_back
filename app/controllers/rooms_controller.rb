@@ -23,11 +23,48 @@ class RoomsController < ApplicationController
     end
   end
 
+  def index
+    params = params_int(index_params)
+
+    if belong_to_workspace?(params[:workspace_id])
+      render status: 401, json: { error: { text: "あなたはこのワークスペースに属していません" } }
+    else
+      categories = Category.where(workspace_id: params[:workspace_id]).order(id: "DESC")
+      # workspaceにroomがあるかどうかの確認
+      if categories.blank?
+        render status: 200, json: { data: { categories: } }
+        return
+      end
+
+      rooms = categories.map(&:category_show_format_res)
+
+      room_maps = Room.where(id: current_user.rooms).where(is_deleted: false).order(id: "DESC")
+
+      categories.each_with_index do |category, i|
+        tmp = []
+        room_maps.each_with_index do |room_map, _j|
+          tmp.push(room_map.room_show_format_res) if room_map.category_id == category.id
+        end
+        rooms[i].store('rooms', tmp)
+      end
+
+      render status: 200, json: { data: { categories: rooms } }
+    end
+  end
+
   private
 
   # strong parameter
   def create_params
     params.permit(:name, :description, :categoryId, :workspaceId)
+  end
+
+  def index_params
+    params.permit(:workspace_id)
+  end
+
+  def delete_params
+    params.permit(:roomId)
   end
 
   # 整数値に変換
