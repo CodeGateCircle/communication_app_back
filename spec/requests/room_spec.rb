@@ -69,7 +69,7 @@ RSpec.describe "Rooms", type: :request do
         res = JSON.parse(response.body)
 
         categories = Category.where(workspace_id: @workspace.id).order(id: "DESC")
-        room_ids = RoomUser.where(user_id: @user.id).order(id: "DESC").pluck(:id)
+        room_ids = RoomUser.where(user_id: @user.id).order(id: "DESC").pluck(:room_id)
 
         expect(res['data']['categories'].size).to eq(categories.length)
         categories.each_with_index do |category, i|
