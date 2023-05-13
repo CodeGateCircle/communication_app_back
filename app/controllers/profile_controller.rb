@@ -7,4 +7,16 @@ class ProfileController < ApplicationController
       data: current_user
     }
   end
+
+  def edit
+    params = update_params
+    current_user.name = params[:name]
+    current_user.image = params[:image]
+  end
+
+  private
+
+  def update_params
+    params.permit(:name, :image)
+  end
 end

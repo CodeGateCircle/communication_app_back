@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   mount_devise_token_auth_for 'User', at: 'auth'
 
   # プロフィール取得
-  get 'profile', to: 'profile#index'
+  get '/profile', to: 'profile#index'
+  # プロフィール更新
+  post '/profile/edit', to: 'profile#edit'
 
   get '/workspaces', to: 'workspaces#index'
   # workspace作成
