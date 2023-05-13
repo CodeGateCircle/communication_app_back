@@ -5,7 +5,7 @@ RSpec.describe "Profiles", type: :request do
     @user = FactoryBot.create(:user)
   end
 
-  describe "GET /index" do
+  describe "PUT /index" do
     it 'can get profile' do
       tokens = get_auth_token(@user)
       get "/profile", headers: tokens
@@ -21,6 +21,28 @@ RSpec.describe "Profiles", type: :request do
 
     it 'can not get profile without auth' do
       get "/profile"
+      expect(response).to have_http_status 401
+    end
+  end
+
+  describe "GET /profile/edit" do
+    let(:token) { get_auth_token(@user) }
+    let(:body) do
+      {
+        name: Faker::Name.name,
+        image: Faker::Internet.url
+      }
+    end
+    it 'can update profile' do
+      put '/profile/edit', params: body, headers: token
+      expect(response).to have_http_status :ok
+      res = JSON.parse(response.body)
+      expect(res['data']['name']).to eq(@user.name)
+      expect(res['data']['image']).to eq(@user.image)
+    end
+
+    it 'cannot edit profile without auth' do
+      put '/profile/edit', params: body
       expect(response).to have_http_status 401
     end
   end

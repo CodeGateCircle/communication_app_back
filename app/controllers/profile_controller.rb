@@ -10,8 +10,15 @@ class ProfileController < ApplicationController
 
   def edit
     params = update_params
-    current_user.name = params[:name]
-    current_user.image = params[:image]
+    user = User.find(current_user.id)
+    user.update({
+                  name: params[:name],
+                  image: params[:image]
+                })
+
+    render json: {
+      data: current_user
+    }
   end
 
   private
