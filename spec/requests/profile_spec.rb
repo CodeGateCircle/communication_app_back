@@ -5,7 +5,7 @@ RSpec.describe "Profiles", type: :request do
     @user = FactoryBot.create(:user)
   end
 
-  describe "PUT /index" do
+  describe "GET /index" do
     it 'can get profile' do
       tokens = get_auth_token(@user)
       get "/profile", headers: tokens
@@ -25,7 +25,7 @@ RSpec.describe "Profiles", type: :request do
     end
   end
 
-  describe "GET /profile/edit" do
+  describe "PUT /profile/edit" do
     let(:token) { get_auth_token(@user) }
     let(:body) do
       {
