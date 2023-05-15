@@ -15,4 +15,4 @@ jobs:
       - name: swagger-cli
         uses: vaibhav-jain/spectral-action/@v2.6
         with:
-          file_path: docs/openapi.yaml
+          file_path: docs/openapi.yml
