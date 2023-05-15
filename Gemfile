@@ -43,6 +43,9 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-oauth2'
 gem 'rack-cors'
 
+gem 'active_model_serializers'
+
+
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem 'factory_bot_rails'

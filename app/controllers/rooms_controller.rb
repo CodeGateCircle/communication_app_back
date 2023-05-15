@@ -9,8 +9,8 @@ class RoomsController < ApplicationController
       room = Room.create!({
                             name: params[:name],
                             description: params[:description],
-                            category_id: params[:categoryId],
-                            workspace_id: params[:workspaceId]
+                            category_id: params[:category_id],
+                            workspace_id: params[:workspace_id]
                           })
 
       room_user = RoomUser.new({
@@ -56,7 +56,7 @@ class RoomsController < ApplicationController
 
   # strong parameter
   def create_params
-    params.permit(:name, :description, :categoryId, :workspaceId)
+    params.permit(:name, :description, :category_id, :workspace_id)
   end
 
   def index_params
