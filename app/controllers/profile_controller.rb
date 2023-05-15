@@ -17,7 +17,7 @@ class ProfileController < ApplicationController
                 })
 
     render json: {
-      data: current_user
+      data: user
     }
   end
 

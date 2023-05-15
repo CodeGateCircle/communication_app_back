@@ -25,7 +25,7 @@ RSpec.describe "Profiles", type: :request do
     end
   end
 
-  describe "PUT /profile/edit" do
+  describe "PUT /profile" do
     let(:token) { get_auth_token(@user) }
     let(:body) do
       {
@@ -34,7 +34,7 @@ RSpec.describe "Profiles", type: :request do
       }
     end
     it 'can update profile' do
-      put '/profile/edit', params: body, headers: token
+      put '/profile', params: body, headers: token
       expect(response).to have_http_status :ok
       res = JSON.parse(response.body)
       expect(res['data']['name']).to eq(body[:name])
@@ -42,7 +42,7 @@ RSpec.describe "Profiles", type: :request do
     end
 
     it 'cannot edit profile without auth' do
-      put '/profile/edit', params: body
+      put '/profile', params: body
       expect(response).to have_http_status 401
     end
   end
