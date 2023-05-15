@@ -21,7 +21,7 @@ rubocop:
 	$(DOCKER_WEB) bundle exec rubocop -A
 
 test:
-	rspec
+	$(DOCKER_WEB) rspec
 
 er:
 	$(DOCKER_WEB) rails mermaid_erd
