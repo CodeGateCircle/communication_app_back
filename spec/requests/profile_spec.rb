@@ -22,4 +22,26 @@ RSpec.describe "Profiles", type: :request do
       expect(response).to have_http_status 401
     end
   end
+
+  describe "PUT /profile" do
+    let(:token) { get_auth_token(@user) }
+    let(:body) do
+      {
+        name: Faker::Name.name,
+        image: Faker::Internet.url
+      }
+    end
+    it 'can update profile' do
+      put '/profile', params: body, headers: token
+      expect(response).to have_http_status :ok
+      res = JSON.parse(response.body)
+      expect(res['data']['name']).to eq(body[:name])
+      expect(res['data']['image']).to eq(body[:image])
+    end
+
+    it 'cannot edit profile without auth' do
+      put '/profile', params: body
+      expect(response).to have_http_status 401
+    end
+  end
 end

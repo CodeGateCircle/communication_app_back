@@ -6,6 +6,8 @@ info:
   description: "communication_appのOpenAPI"
 
 tags:
+  - name: users
+    description: about users
   - name: workspaces
     description: about workspaces
   - name: categories
@@ -25,6 +27,51 @@ servers:
         default: '3000'
 
 paths:
+  /profile:
+    get:
+      tags:
+        - users
+      operationId: get_user
+      summary: Get user data.
+      description: Get user data.
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/userData"
+
+    put:
+      tags:
+        - users
+      operationId: update_user
+      summary: Update the user.
+      description: Update the user.
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/userData"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: "#/components/schemas/userName"
+                image:
+                  $ref: "#/components/schemas/userImageUrl"
+
   /workspaces:
     post:
       tags:
@@ -136,7 +183,7 @@ paths:
               type: object
               properties:
                 name:
-                  $ref: "#/components/schemas/name"
+                  $ref: "#/components/schemas/categoryName"
                 workspaceId:
                   $ref: "#/components/schemas/workspaceId"
 
@@ -166,7 +213,6 @@ paths:
                         type: array
                         items:
                           $ref: "#/components/schemas/category_data"
-
 
   /categories/{category_id}:
     put:
@@ -198,7 +244,7 @@ paths:
               type: object
               properties:
                 name:
-                  $ref: "#/components/schemas/name"
+                  $ref: "#/components/schemas/categoryName"
                 workspaceId:
                   $ref: "#/components/schemas/workspaceId"
 
@@ -303,6 +349,30 @@ paths:
 
 components:
   schemas:
+    userData:
+      description: explain
+      type: object
+      required:
+        - user
+      properties:
+        user:
+          description: explain
+          type: object
+          required:
+            - id
+            - name
+            - email
+            - iconImageUrl
+          properties:
+            id:
+              $ref: "#/components/schemas/userId"
+            name:
+              $ref: "#/components/schemas/userName"
+            email:
+              $ref: "#/components/schemas/userEmail"
+            userImageUrl:
+              $ref: "#/components/schemas/userImageUrl"
+
     workspace_data:
       description: explain
       type: object
@@ -341,7 +411,7 @@ components:
         id:
           $ref: "#/components/schemas/categoryId"
         name:
-          $ref: "#/components/schemas/name"
+          $ref: "#/components/schemas/categoryName"
         workspaceId:
           $ref: "#/components/schemas/workspaceId"
 
@@ -371,6 +441,26 @@ components:
               $ref: "#/components/schemas/categoryId"
             workspaceId:
               $ref: "#/components/schemas/workspaceId"
+
+    userId:
+      description: user unique id
+      example: 1
+      type: integer
+
+    userName:
+      description: name of user
+      example: Tony
+      type: string
+
+    userEmail:
+      description: email of user
+      example: user@example.com
+      type: string
+
+    userImageUrl:
+      description: image url of user
+      example: https://example.com/user_icon
+      type: string
 
     workspaceId:
       description: workspace unique id
