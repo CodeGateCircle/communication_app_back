@@ -43,9 +43,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/user_data"
+                    $ref: "#/components/schemas/userData"
 
-  /profile/edit:
     put:
       tags:
         - users
@@ -61,7 +60,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/components/schemas/user_data"
+                    $ref: "#/components/schemas/userData"
       requestBody:
         content:
           application/json:
@@ -357,7 +356,7 @@ paths:
 
 components:
   schemas:
-    user_data:
+    userData:
       description: explain
       type: object
       required:

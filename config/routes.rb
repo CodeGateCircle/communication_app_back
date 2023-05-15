@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   # プロフィール取得
   get '/profile', to: 'profile#index'
   # プロフィール更新
-  put '/profile/edit', to: 'profile#edit'
+  put '/profile', to: 'profile#edit'
 
   get '/workspaces', to: 'workspaces#index'
   # workspace作成
