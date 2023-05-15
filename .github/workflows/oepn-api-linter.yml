@@ -5,14 +5,16 @@ on:
   pull_request:
 
 jobs:
-  build:
+  test_job:
     runs-on: ubuntu-latest
-
+    name: check
     steps:
-      - uses: actions/checkout@v2
+      # first checkout your code
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
-      - name: swagger-cli
-        uses: vaibhav-jain/spectral-action/@v2.6
+      # then use redoc-cli-github-action to generate your HTML bundle
+      - name: redoc-cli test
+        uses: seeebiii/redoc-cli-github-action@v10
         with:
-          file_path: docs/openapi.yml
+          args: 'bundle docs/openapi.yml'
