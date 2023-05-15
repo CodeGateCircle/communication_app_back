@@ -348,7 +348,7 @@ components:
         id:
           $ref: "#/components/schemas/categoryId"
         name:
-          $ref: "#/components/schemas/categoryName"
+          $ref: "#/components/schemas/category"
         workspaceId:
           $ref: "#/components/schemas/workspaceId"
 
