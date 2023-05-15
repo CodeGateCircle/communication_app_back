@@ -8,6 +8,8 @@ info:
 tags:
   - name: workspaces
     description: about workspaces
+  - name: categories
+    description: about categories
   - name: rooms
     description: about rooms
 
@@ -44,15 +46,15 @@ paths:
               type: object
               properties:
                 name:
-                  $ref: "#/components/schemas/name"
+                  $ref: "#/components/schemas/workspaceName"
                 description:
-                  $ref: "#/components/schemas/description"
+                  $ref: "#/components/schemas/workspaceDescription"
                 iconImageUrl:
                   $ref: "#/components/schemas/iconImageUrl"
                 coverImageUrl:
                   $ref: "#/components/schemas/coverImageUrl"
 
-  #　update
+  # update
   /workspaces/{workspace_id}:
     put:
       tags:
@@ -80,9 +82,9 @@ paths:
               type: object
               properties:
                 name:
-                  $ref: "#/components/schemas/name"
+                  $ref: "#/components/schemas/workspaceName"
                 description:
-                  $ref: "#/components/schemas/description"
+                  $ref: "#/components/schemas/workspaceDescription"
                 iconImageUrl:
                   $ref: "#/components/schemas/iconImageUrl"
                 coverImageUrl:
@@ -109,6 +111,117 @@ paths:
               schema:
                 example: { success: true }
 
+  /categories:
+    post:
+      tags:
+        - categories
+      operationId: create_category
+      summary: Create new category.
+      description: Create new category.
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/category_data"
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: "#/components/schemas/name"
+                workspaceId:
+                  $ref: "#/components/schemas/workspaceId"
+
+    get:
+      tags:
+        - categories
+      operationId: get_categories
+      summary: Get categories.
+      description: Get categories.
+      parameters:
+        - name: workspace_id
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/workspaceId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    properties:
+                      categories:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/category_data"
+
+
+  /categories/{category_id}:
+    put:
+      tags:
+        - categories
+      operationId: update_category
+      summary: Update the category
+      description: Update the category
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/categoryId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/category_data"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: "#/components/schemas/name"
+                workspaceId:
+                  $ref: "#/components/schemas/workspaceId"
+
+  /categories/{category_id}/delete:
+    post:
+      tags:
+        - categories
+      operationId: delete_category
+      summary: Delete the category
+      description: Delete the category
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/categoryId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true }
 
   /rooms:
     post:
@@ -135,15 +248,57 @@ paths:
               type: object
               properties:
                 name:
-                  $ref: "#/components/schemas/name"
+                  $ref: "#/components/schemas/roomName"
                 description:
-                  $ref: "#/components/schemas/description"
+                  $ref: "#/components/schemas/roomDescription"
                 categoryId:
                   $ref: "#/components/schemas/categoryId"
                 workspaceId:
                   $ref: "#/components/schemas/workspaceId"
 
-
+  /rooms/{workspace_id}:
+    get:
+      tags:
+        - rooms
+      operationId: index_room
+      summary:  Index your rooms.
+      description: Index your rooms.
+      parameters:
+        - name: workspace_id
+          in: query
+          description: 'workspace_id'
+          required: true
+          schema:
+            $ref: "#/components/schemas/workspaceId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      categories:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              $ref: "#/components/schemas/categoryId"
+                            name:
+                              $ref: "#/components/schemas/categoryName"
+                            rooms:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  id:
+                                    $ref: "#/components/schemas/roomId"
+                                  name:
+                                    $ref: "#/components/schemas/roomName"
 
 
 components:
@@ -167,13 +322,28 @@ components:
             id:
               $ref: "#/components/schemas/workspaceId"
             name:
-              $ref: "#/components/schemas/name"
+              $ref: "#/components/schemas/workspaceName"
             description:
-              $ref: "#/components/schemas/description"
+              $ref: "#/components/schemas/workspaceDescription"
             iconImageUrl:
               $ref: "#/components/schemas/iconImageUrl"
             coverImageUrl:
               $ref: "#/components/schemas/coverImageUrl"
+
+    category_data:
+      description: explain
+      type: object
+      required:
+        - id
+        - name
+        - workspaceId
+      properties:
+        id:
+          $ref: "#/components/schemas/categoryId"
+        name:
+          $ref: "#/components/schemas/name"
+        workspaceId:
+          $ref: "#/components/schemas/workspaceId"
 
     room_data:
       description: explain
@@ -194,9 +364,9 @@ components:
             id:
               $ref: "#/components/schemas/roomId"
             name:
-              $ref: "#/components/schemas/name"
+              $ref: "#/components/schemas/roomName"
             description:
-              $ref: "#/components/schemas/description"
+              $ref: "#/components/schemas/roomDescription"
             categoryId:
               $ref: "#/components/schemas/categoryId"
             workspaceId:
@@ -207,32 +377,47 @@ components:
       example: 111
       type: integer
 
+    workspaceName:
+      description: name of workspace
+      example: Code.Gate?
+      type: string
+
+    workspaceDescription:
+      description: description of workspace
+      example: Code.Gate?の説明
+      type: string
+
+    iconImageUrl:
+      description: iconImageUrl
+      example: http://icon_image_url
+      type: string
+
+    coverImageUrl:
+      description: coverImageUrl
+      example: http://cover_image_url
+      type: string
+
     roomId:
       description: room unique id
       example: 222
       type: integer
     
-    name:
-      description: name of workspace
-      example: Code.Gate?
+    roomName:
+      description: name of room
+      example: 雑談
       type: string
 
-    description:
-      description: description of workspace
-      example: Code.Gate?の説明
+    roomDescription:
+      description: room of workspace
+      example: 雑談の説明
       type: string
 
     categoryId:
       description: category unique id
-      example: 0
+      example: 2
       type: integer
 
-    iconImageUrl:
-      description: iconImageUrl of workspace
-      example: http://icon_image_url
-      type: string
-
-    coverImageUrl:
-      description: coverImageUrl of workspace
-      example: http://cover_image_url
+    categoryName:
+      description: name of category
+      example: general
       type: string

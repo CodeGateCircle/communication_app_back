@@ -5,6 +5,37 @@ RSpec.describe "Workspaces", type: :request do
     @user = FactoryBot.create(:user)
   end
 
+  describe "GET /workspaces" do
+    let(:url) { "/workspaces" }
+    let(:tokens) { get_auth_token(@user) }
+
+    before(:each) do
+      @workspace1 = FactoryBot.create(:workspace)
+      @workspace_user1 = FactoryBot.create(:workspace_user, user_id: @user.id, workspace_id: @workspace1.id)
+      @workspace2 = FactoryBot.create(:workspace)
+      @workspace_user2 = FactoryBot.create(:workspace_user, user_id: @user.id, workspace_id: @workspace2.id)
+    end
+
+    context "success" do
+      it 'can get workspaces' do
+        get url, headers: tokens
+        expect(response).to have_http_status :ok
+        res = JSON.parse(response.body)
+        expect(res['data']['workspaces'].length).to eq(2)
+        expect(res['data']['workspaces'][0]['id']).to eq(@workspace1.id)
+        expect(res['data']['workspaces'][0]['name']).to eq(@workspace1.name)
+        expect(res['data']['workspaces'][0]['iconImageUrl']).to eq(@workspace1.icon_image_url)
+        expect(res['data']['workspaces'][0]['description']).to eq(@workspace1.description)
+        expect(res['data']['workspaces'][0]['coverImageUrl']).to eq(@workspace1.cover_image_url)
+        expect(res['data']['workspaces'][1]['id']).to eq(@workspace2.id)
+        expect(res['data']['workspaces'][1]['name']).to eq(@workspace2.name)
+        expect(res['data']['workspaces'][1]['iconImageUrl']).to eq(@workspace2.icon_image_url)
+        expect(res['data']['workspaces'][1]['description']).to eq(@workspace2.description)
+        expect(res['data']['workspaces'][1]['coverImageUrl']).to eq(@workspace2.cover_image_url)
+      end
+    end
+  end
+
   describe "POST /workspaces" do
     let(:url) { "/workspaces" }
     let(:tokens) { get_auth_token(@user) }

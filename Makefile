@@ -18,10 +18,11 @@ deploy:
 	flyctl deploy
 
 rubocop:
-	${DOCKER_WEB} bundle exec rubocop -A
+	$(DOCKER_WEB) bundle exec rubocop -A
 
 test:
-	${DOCKER_WEB} rspec
+	$(DOCKER_WEB) rspec
 
 er:
 	$(DOCKER_WEB) rails mermaid_erd
+
