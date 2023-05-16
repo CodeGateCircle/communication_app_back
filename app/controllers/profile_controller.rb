@@ -19,6 +19,16 @@ class ProfileController < ApplicationController
     }
   end
 
+  def delete
+    if !current_user.is_deleted
+      current_user.update({ is_deleted: true })
+
+      render status: 200, json: { status: "success" }
+    else
+      render status: 400, json: { status: "failure" }
+    end
+  end
+
   private
 
   def update_params

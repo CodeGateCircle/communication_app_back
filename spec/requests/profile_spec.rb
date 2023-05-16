@@ -44,4 +44,23 @@ RSpec.describe "Profiles", type: :request do
       expect(response).to have_http_status 401
     end
   end
+
+  # delete profile
+  describe "POST /profile/delete" do
+    let(:tokens) { get_auth_token(@user) }
+
+    context "success" do
+      it 'can delete profile' do
+        post '/profile/delete', headers: tokens
+        expect(response).to have_http_status :ok
+        expect(User.find(@user.id).is_deleted).to be true
+      end
+    end
+    context "error" do
+      it 'cannot delete profile' do
+        post '/profile/delete'
+        expect(response).to have_http_status 401
+      end
+    end
+  end
 end
