@@ -1,15 +1,15 @@
-# category
+# Category
 class CategoryController < ApplicationController
   before_action :authenticate_user!
 
   def create
     params = create_params
-    if auth_workspace_edit(params[:workspaceId])
+    if auth_workspace_edit(params[:workspace_id])
       render status: 401, text: "cannot edit category of workspace without auth"
     else
       category = Category.create!({
                                     name: params[:name],
-                                    workspace_id: params[:workspaceId]
+                                    workspace_id: params[:workspace_id]
                                   })
 
       render status: 200, json: { data: { category: category.format_res } }
@@ -29,7 +29,7 @@ class CategoryController < ApplicationController
 
   def update
     params = update_params
-    if auth_workspace_edit(params[:workspaceId])
+    if auth_workspace_edit(params[:workspace_id])
       render status: 401, text: "cannot edit category of workspace without auth"
     else
       category = Category.find(params[:category_id])
@@ -56,7 +56,7 @@ class CategoryController < ApplicationController
   private
 
   def create_params
-    params.permit(:category_id, :name, :workspaceId)
+    params.permit(:category_id, :name, :workspace_id)
   end
 
   def index_params
@@ -64,11 +64,11 @@ class CategoryController < ApplicationController
   end
 
   def update_params
-    params.permit(:category_id, :name, :workspaceId)
+    params.permit(:category_id, :name, :workspace_id)
   end
 
   def delete_params
-    params.permit(:category_id, :workspaceId)
+    params.permit(:category_id, :workspace_id)
   end
 
   def auth_workspace_edit(workspace_id)
@@ -76,7 +76,7 @@ class CategoryController < ApplicationController
   end
 
   def auth_edit_with_categoryid
-    params[:workspaceId] = Category.find(params[:category_id]).workspace_id
-    auth_workspace_edit(params[:workspaceId])
+    params[:workspace_id] = Category.find(params[:category_id]).workspace_id
+    auth_workspace_edit(params[:workspace_id])
   end
 end

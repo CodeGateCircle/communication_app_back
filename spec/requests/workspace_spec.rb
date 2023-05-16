@@ -53,13 +53,13 @@ RSpec.describe "Workspaces", type: :request do
         post url, params: body, headers: tokens
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
-        expect(res['data']['workspace']['name']).to eq(body[:name])
-        expect(res['data']['workspace']['description']).to eq(body[:description])
-        expect(res['data']['workspace']['iconImageUrl']).to eq(body[:iconImageUrl])
-        expect(res['data']['workspace']['coverImageUrl']).to eq(body[:coverImageUrl])
+        expect(res['workspace']['name']).to eq(body[:name])
+        expect(res['workspace']['description']).to eq(body[:description])
+        expect(res['workspace']['iconImageUrl']).to eq(body[:iconImageUrl])
+        expect(res['workspace']['coverImageUrl']).to eq(body[:coverImageUrl])
 
-        expect(WorkspaceUser.find_by(user_id: @user.id).workspace_id).to eq(res['data']['workspace']['id'])
-        expect(WorkspaceUser.find_by(workspace_id: res['data']['workspace']['id']).user_id).to eq(@user.id)
+        expect(WorkspaceUser.find_by(user_id: @user.id).workspace_id).to eq(res['workspace']['id'])
+        expect(WorkspaceUser.find_by(workspace_id: res['workspace']['id']).user_id).to eq(@user.id)
       end
     end
 
@@ -89,10 +89,10 @@ RSpec.describe "Workspaces", type: :request do
         put url, params: body, headers: tokens
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
-        expect(res['data']['workspace']['name']).to eq(body[:name])
-        expect(res['data']['workspace']['description']).to eq(body[:description])
-        expect(res['data']['workspace']['iconImageUrl']).to eq(body[:iconImageUrl])
-        expect(res['data']['workspace']['coverImageUrl']).to eq(body[:coverImageUrl])
+        expect(res['workspace']['name']).to eq(body[:name])
+        expect(res['workspace']['description']).to eq(body[:description])
+        expect(res['workspace']['iconImageUrl']).to eq(body[:iconImageUrl])
+        expect(res['workspace']['coverImageUrl']).to eq(body[:coverImageUrl])
       end
     end
 
