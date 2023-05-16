@@ -72,6 +72,20 @@ paths:
                 image:
                   $ref: "#/components/schemas/userImageUrl"
 
+    post:
+      tags:
+        - users
+      operationId: delete_profile
+      summary: Delete profile.
+      description: Delete profile
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true }
+
   /workspaces:
     post:
       tags:
