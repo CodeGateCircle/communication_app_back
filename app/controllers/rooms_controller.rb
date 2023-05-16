@@ -52,6 +52,19 @@ class RoomsController < ApplicationController
     end
   end
 
+  def delete
+    params = params_int(delete_params)
+
+    if belong_to_room?(params[:room_id])
+      render status: 401, json: { error: { text: "あなたはこのルームに属していません" } }
+      return
+    end
+
+    Room.find(params[:room_id]).update!(is_deleted: true, category_id: nil)
+
+    render status: 200, json: { success: true }
+  end
+
   private
 
   # strong parameter
@@ -64,7 +77,7 @@ class RoomsController < ApplicationController
   end
 
   def delete_params
-    params.permit(:roomId)
+    params.permit(:room_id)
   end
 
   # 整数値に変換

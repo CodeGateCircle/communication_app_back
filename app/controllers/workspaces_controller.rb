@@ -3,7 +3,7 @@ class WorkspacesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    workspaces = current_user.workspaces
+    workspaces = current_user.workspaces.order(id: "ASC")
     render json: { data: { workspaces: workspaces.map(&:format_res) } }
   end
 
