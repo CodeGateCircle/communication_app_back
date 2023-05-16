@@ -20,9 +20,8 @@ class ProfileController < ApplicationController
   end
 
   def delete
-    user = User.find(current_user.id)
-    if !user.is_deleted
-      user.update({ is_deleted: true })
+    if !current_user.is_deleted
+      current_user.update({ is_deleted: true })
 
       render status: 200, json: { status: "success" }
     else
