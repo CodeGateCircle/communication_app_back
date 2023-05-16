@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   # プロフィール更新
   put '/profile', to: 'profile#edit'
   # プロフィール削除
-  post '/profile', to: 'profile#delete'
+  post '/profile/delete', to: 'profile#delete'
 
   get '/workspaces', to: 'workspaces#index'
   # workspace作成
