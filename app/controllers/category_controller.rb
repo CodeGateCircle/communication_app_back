@@ -1,6 +1,6 @@
 # Category
 class CategoryController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :snake_to_camel_params
 
   def create
     params = create_params
@@ -12,7 +12,7 @@ class CategoryController < ApplicationController
                                     workspace_id: params[:workspace_id]
                                   })
 
-      render status: 200, json: category, serializer: CategorySerializer
+      render status: 200, json: category
     end
   end
 
