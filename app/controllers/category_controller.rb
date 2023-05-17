@@ -12,7 +12,7 @@ class CategoryController < ApplicationController
                                     workspace_id: params[:workspace_id]
                                   })
 
-      render status: 200, json: { data: { category: category.format_res } }
+      render status: 200, json: category, serializer: CategorySerializer
     end
   end
 
