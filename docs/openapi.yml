@@ -485,7 +485,7 @@ components:
       required:
         - room
       properties:
-        workspace:
+        room:
           description: explain
           type: object
           required:
