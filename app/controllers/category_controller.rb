@@ -23,7 +23,7 @@ class CategoryController < ApplicationController
     else
       categories = Category.where(workspace_id: params[:workspace_id])
 
-      render status: 200, json: { data: { categories: categories.map(&:format_res) } }
+      render status: 200, json: categories, each_serializer: CategorySerializer
     end
   end
 
@@ -35,7 +35,7 @@ class CategoryController < ApplicationController
       category = Category.find(params[:category_id])
       category.update!({ name: params[:name] })
 
-      render status: 200, json: { data: { category: category.format_res } }
+      render status: 200, json: category
     end
   end
 

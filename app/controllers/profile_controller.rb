@@ -3,7 +3,7 @@ class ProfileController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    render json: current_user , serializer: UserSerializer
+    render json: current_user, serializer: UserSerializer
   end
 
   def edit
@@ -20,12 +20,12 @@ class ProfileController < ApplicationController
   end
 
   def delete
-    if !current_user.is_deleted
+    if current_user.is_deleted
+      render status: 400, json: { status: "failure" }
+    else
       current_user.update({ is_deleted: true })
 
       render status: 200, json: { status: "success" }
-    else
-      render status: 400, json: { status: "failure" }
     end
   end
 
