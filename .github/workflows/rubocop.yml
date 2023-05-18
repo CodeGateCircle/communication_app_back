@@ -1,19 +1,15 @@
-name: reviewdog
-on: [push, pull_request]
+name: rubocop
+
+on: [pull_request]
 jobs:
   rubocop:
-    name: runner / rubocop
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
-        uses: actions/checkout@v1
-      - uses: ruby/setup-ruby@v1
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@0a29871fe2b0200a17a4497bae54fe5df0d973aa # v1.115.3
         with:
-          ruby-version: 3.1.3
-      - name: rubocop
-        uses: reviewdog/action-rubocop@v1
-        with:
-          rubocop_version: gemfile
-          rubocop_extensions: rubocop-rails:gemfile rubocop-rspec:gemfile
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review 
+          bundler-cache: true
+      - name: Lint Ruby files
+        run: bundle exec rubocop --parallel
