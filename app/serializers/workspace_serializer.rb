@@ -1,3 +1,4 @@
+# workspace
 class WorkspaceSerializer < ActiveModel::Serializer
   type :workspace
 
