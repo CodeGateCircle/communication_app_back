@@ -19,7 +19,7 @@ class RoomsController < ApplicationController
                                })
       room_user.save!
 
-      render status: 200, json: { data: { room: room.format_res } }
+      render status: 200, json: room
     end
   end
 
@@ -32,7 +32,7 @@ class RoomsController < ApplicationController
       categories = Category.where(workspace_id: params[:workspace_id]).order(id: "DESC")
       # workspaceにroomがあるかどうかの確認
       if categories.blank?
-        render status: 200, json: { data: { categories: } }
+        render status: 200, json: { categories: }
         return
       end
 
@@ -45,10 +45,10 @@ class RoomsController < ApplicationController
         room_maps.each_with_index do |room_map, _j|
           tmp.push(room_map.room_show_format_res) if room_map.category_id == category.id
         end
-        rooms[i].store('rooms', tmp)
+        rooms[i].store(:rooms, tmp)
       end
-
-      render status: 200, json: { data: { categories: rooms } }
+      p rooms
+      render status: 200, json: rooms, each_serializer: CategorySerializer
     end
   end
 

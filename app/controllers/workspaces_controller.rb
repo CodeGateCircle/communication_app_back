@@ -4,7 +4,7 @@ class WorkspacesController < ApplicationController
 
   def index
     workspaces = current_user.workspaces.order(id: "ASC")
-    render json: { data: { workspaces: workspaces.map(&:format_res) } }
+    render json: workspaces, each_serializer: WorkspaceSerializer
   end
 
   def create
@@ -24,7 +24,7 @@ class WorkspacesController < ApplicationController
                                          })
       workspace_user.save!
 
-      render status: 200, json: workspace, serializer: WorkspaceSerializer
+      render status: 200, json: workspace
     end
   end
 
@@ -40,7 +40,7 @@ class WorkspacesController < ApplicationController
                           cover_image_url: params[:cover_image_url]
                         })
 
-      render status: 200, json: workspace, serializer: WorkspaceSerializer
+      render status: 200, json: workspace
     end
   end
 

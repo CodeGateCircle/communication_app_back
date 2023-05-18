@@ -252,6 +252,8 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.27.0)
       parser (>= 3.2.1.0)
+    ruby-debug-ide (0.7.3)
+      rake (>= 0.8.1)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     snaky_hash (2.0.1)
@@ -294,6 +296,7 @@ DEPENDENCIES
   rails-mermaid_erd
   rspec-rails
   rubocop
+  ruby-debug-ide
   tzinfo-data
 
 RUBY VERSION
