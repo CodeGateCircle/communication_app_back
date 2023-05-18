@@ -11,8 +11,11 @@ class CategoryController < ApplicationController
                                     name: params[:name],
                                     workspace_id: params[:workspace_id]
                                   })
-
-      render status: 200, json: { data: { category: category.format_res } }
+      p @return
+      category = create_return(category)
+      @return = CategorySerializer.new(category)
+      p @return
+      return_format
     end
   end
 
@@ -78,5 +81,10 @@ class CategoryController < ApplicationController
   def auth_edit_with_categoryid
     params[:workspace_id] = Category.find(params[:category_id]).workspace_id
     auth_workspace_edit(params[:workspace_id])
+  end
+  
+  def create_return(category)
+    p category
+    JSON.parse(category.to_json)
   end
 end

@@ -1,11 +1,17 @@
 # application
 class ApplicationController < ActionController::API
   include DeviseTokenAuth::Concerns::SetUserByToken
+  @return = {}
 
   before_action :snake_to_camel_params
 
   def snake_to_camel_params
     params.deep_transform_keys!(&:underscore)
+  end
+
+  def return_format
+    p @return
+    render json: { data: @return }
   end
 
   # ユーザーがworkspaceに属しているかチェック

@@ -30,7 +30,9 @@ RSpec.describe "Categories", type: :request do
         expect(workspace_user).not_to be_nil
         expect(workspace_user.user_id).to eq(@user.id)
 
+        p response
         res = JSON.parse(response.body)
+        p res
         expect(res['data']['category']['name']).to eq(body[:name])
         expect(res['data']['category']['workspaceId']).to eq(body[:workspaceId])
       end
