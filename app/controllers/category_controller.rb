@@ -1,6 +1,6 @@
 # Category
 class CategoryController < ApplicationController
-  before_action :authenticate_user!, :snake_to_camel_params
+  before_action :authenticate_user!
 
   def create
     params = create_params
