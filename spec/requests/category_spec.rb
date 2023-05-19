@@ -31,8 +31,8 @@ RSpec.describe "Categories", type: :request do
         expect(workspace_user.user_id).to eq(@user.id)
 
         res = JSON.parse(response.body)
-        expect(res['data']['category']['name']).to eq(body[:name])
-        expect(res['data']['category']['workspaceId']).to eq(body[:workspaceId])
+        expect(res['category']['name']).to eq(body[:name])
+        expect(res['category']['workspaceId']).to eq(body[:workspaceId])
       end
     end
 
@@ -61,13 +61,13 @@ RSpec.describe "Categories", type: :request do
         get url, params: body, headers: tokens
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
-        expect(res['data']['categories'].size).to eq(all_index)
-        expect(res['data']['categories'][0]['workspaceId'] == category[0][:workspace_id]).to be true
-        expect(res['data']['categories'][0]['name'] == category[0][:name]).to be true
+        expect(res['categories'].size).to eq(all_index)
+        expect(res['categories'][0]['workspaceId'] == category[0][:workspace_id]).to be true
+        expect(res['categories'][0]['name'] == category[0][:name]).to be true
 
         category.each_with_index do |cat, n|
-          expect(res['data']['categories'][n]['workspaceId'] == cat[:workspace_id]).to be true
-          expect(res['data']['categories'][n]['name'] == cat[:name]).to be true
+          expect(res['categories'][n]['workspaceId'] == cat[:workspace_id]).to be true
+          expect(res['categories'][n]['name'] == cat[:name]).to be true
         end
       end
     end
@@ -98,8 +98,8 @@ RSpec.describe "Categories", type: :request do
         expect(response).to have_http_status :ok
 
         res = JSON.parse(response.body)
-        expect(res['data']['category']['name']).to eq(body[:name])
-        expect(res['data']['category']['workspace_id']).to eq(body[:workspace_id])
+        expect(res['category']['name']).to eq(body[:name])
+        expect(res['category']['workspace_id']).to eq(body[:workspace_id])
       end
     end
 

@@ -1,3 +1,4 @@
+# user
 class UserSerializer < ActiveModel::Serializer
   type :user
 

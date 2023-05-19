@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_15_072728) do
+ActiveRecord::Schema[7.0].define(version: 20_230_515_072_728) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -56,7 +56,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_15_072728) do
     t.datetime "updated_at", null: false
     t.boolean "is_deleted", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
+    t.index %w[uid provider], name: "index_users_on_uid_and_provider", unique: true
   end
 
   create_table "workspace_users", force: :cascade do |t|
