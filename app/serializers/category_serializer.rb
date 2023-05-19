@@ -3,10 +3,6 @@ class CategorySerializer < ActiveModel::Serializer
   type :category
 
   attributes :id, :name
-  attribute :workspace_id?
-  has_many :room,
-           each_serializer: RoomSerializer, 
-           if: -> { object[:rooms].present? } do
-    object[:rooms]
-  end
+  attribute :workspace_id, if: -> { object.workspace_id.present? }
+  has_many :rooms, if: -> { object[:rooms].present? && p(object) }, serializer: RoomSerializer
 end

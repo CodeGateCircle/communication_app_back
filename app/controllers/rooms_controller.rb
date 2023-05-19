@@ -29,26 +29,24 @@ class RoomsController < ApplicationController
     if belong_to_workspace?(params[:workspace_id])
       render status: 401, json: { error: { text: "あなたはこのワークスペースに属していません" } }
     else
-      categories = Category.where(workspace_id: params[:workspace_id]).order(id: "DESC")
+      categories = Category.where(workspace_id: params[:workspace_id]).order(id: :desc)
       # workspaceにroomがあるかどうかの確認
       if categories.blank?
-        render status: 200, json: { categories: }
+        render status: 200, json: categories
         return
       end
 
-      rooms = categories.map(&:category_show_format_res)
+      each_category = categories.map(&:category_show_format_res)
 
-      room_maps = Room.where(id: current_user.rooms).where(is_deleted: false).order(id: "DESC")
-
+      room_maps = Room.where(id: current_user.rooms).where(is_deleted: false).order(id: :desc)
       categories.each_with_index do |category, i|
         tmp = []
         room_maps.each_with_index do |room_map, _j|
           tmp.push(room_map.room_show_format_res) if room_map.category_id == category.id
         end
-        rooms[i].store(:rooms, tmp)
+        each_category[i].store(:rooms, tmp)
       end
-      p rooms
-      render status: 200, json: rooms, each_serializer: CategorySerializer
+      render status: 200, json: each_category.to_json, each_serializer: CategorySerializer
     end
   end
 

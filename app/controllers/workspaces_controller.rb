@@ -29,7 +29,7 @@ class WorkspacesController < ApplicationController
   end
 
   def update
-    params = create_params_id
+    params = create_params
 
     Workspace.transaction do
       workspace = Workspace.find(params[:workspace_id])
@@ -55,10 +55,6 @@ class WorkspacesController < ApplicationController
 
   # strong parameter
   def create_params
-    params.permit(:name, :description, :icon_image_url, :cover_image_url)
-  end
-
-  def create_params_id
     params.permit(:workspace_id, :name, :description, :icon_image_url, :cover_image_url)
   end
 end
