@@ -3,7 +3,7 @@ class WorkspacesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    workspaces = current_user.workspaces.order(id: "ASC")
+    workspaces = current_user.workspaces.order(id: :asc)
     render json: workspaces, each_serializer: WorkspaceSerializer
   end
 

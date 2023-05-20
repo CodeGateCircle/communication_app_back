@@ -4,53 +4,60 @@ class CategoryController < ApplicationController
 
   def create
     params = create_params
-    if auth_workspace_edit(params[:workspace_id])
+    if belong_to_workspace?(params[:workspace_id])
       render status: 401, text: "cannot edit category of workspace without auth"
-    else
-      category = Category.create!({
-                                    name: params[:name],
-                                    workspace_id: params[:workspace_id]
-                                  })
-
-      render status: 200, json: category
+      return
     end
+
+    category = Category.create!({
+                                  name: params[:name],
+                                  workspace_id: params[:workspace_id]
+                                })
+
+    render status: 200, json: category
   end
 
   def index
     params = index_params
-    if auth_workspace_edit(params[:workspace_id])
+    if belong_to_workspace?(params[:workspace_id])
       render status: 401, text: "cannot edit category of workspace without auth"
-    else
-      categories = Category.where(workspace_id: params[:workspace_id])
-
-      render status: 200, json: categories, each_serializer: CategorySerializer
+      return
     end
+
+    categories = Category.where(workspace_id: params[:workspace_id])
+
+    render status: 200, json: categories, each_serializer: CategorySerializer
   end
 
   def update
     params = update_params
-    if auth_workspace_edit(params[:workspace_id])
+    if belong_to_workspace?(params[:workspace_id])
       render status: 401, text: "cannot edit category of workspace without auth"
-    else
-      category = Category.find(params[:category_id])
-      category.update!({ name: params[:name] })
-
-      render status: 200, json: category
+      return
     end
+
+    category = Category.find(params[:category_id])
+    category.update!({ name: params[:name] })
+
+    render status: 200, json: category
   end
 
   def delete
     params = delete_params
     if auth_edit_with_categoryid
       render status: 401, text: "cannot edit category of workspace without auth"
-    elsif !Room.find_by(category_id: params[:category_id])
-      category = Category.find(params[:category_id])
-      category.destroy!
-
-      render status: 200, json: { success: true }
-    else
-      render status: 401, text: "some rooms in this category exist, so cannot delete category"
+      return
     end
+
+    if Room.find_by(category_id: params[:category_id])
+      render status: 401, text: "some rooms in this category exist, so cannot delete category"
+      return
+    end
+
+    category = Category.find(params[:category_id])
+    category.destroy!
+
+    render status: 200, json: { success: true }
   end
 
   private
@@ -71,12 +78,8 @@ class CategoryController < ApplicationController
     params.permit(:category_id, :workspace_id)
   end
 
-  def auth_workspace_edit(workspace_id)
-    !current_user.workspaces.exists?(id: workspace_id)
-  end
-
   def auth_edit_with_categoryid
     params[:workspace_id] = Category.find(params[:category_id]).workspace_id
-    auth_workspace_edit(params[:workspace_id])
+    belong_to_workspace?(params[:workspace_id])
   end
 end
