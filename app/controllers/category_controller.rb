@@ -79,7 +79,7 @@ class CategoryController < ApplicationController
   end
 
   def auth_edit_with_categoryid
-    params[:workspace_id] = Category.find(params[:category_id]).workspace_id
-    belong_to_workspace?(params[:workspace_id])
+    workspace_id = Category.find(params[:category_id]).workspace_id
+    belong_to_workspace?(workspace_id)
   end
 end
