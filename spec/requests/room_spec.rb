@@ -9,14 +9,16 @@ RSpec.describe "Rooms", type: :request do
     @room = FactoryBot.create(:room, category_id: @category.id, workspace_id: @workspace.id)
     @room_user = FactoryBot.create(:room_user, room_id: @room.id, user_id: @user.id)
 
+    @user1 = FactoryBot.create(:user)
+    @workspace_user1 = FactoryBot.create(:workspace_user, workspace_id: @workspace.id, user_id: @user1.id)
     @category1 = FactoryBot.create(:category, workspace_id: @workspace.id)
     @category2 = FactoryBot.create(:category, workspace_id: @workspace.id)
     @room1 = FactoryBot.create(:room, category_id: @category1.id, workspace_id: @workspace.id)
-    @room_user1 = FactoryBot.create(:room_user, room_id: @room1.id, user_id: @user.id)
+    @room1_user = FactoryBot.create(:room_user, room_id: @room1.id, user_id: @user.id)
     @room2 = FactoryBot.create(:room, category_id: @category1.id, workspace_id: @workspace.id)
-    @room_user2 = FactoryBot.create(:room_user, room_id: @room2.id, user_id: @user.id)
+    @room2_user = FactoryBot.create(:room_user, room_id: @room2.id, user_id: @user.id)
     @room3 = FactoryBot.create(:room, category_id: @category2.id, workspace_id: @workspace.id)
-    @room_user3 = FactoryBot.create(:room_user, room_id: @room3.id, user_id: @user.id)
+    @room3_user = FactoryBot.create(:room_user, room_id: @room3.id, user_id: @user.id)
   end
 
   describe "POST /rooms" do
@@ -191,9 +193,60 @@ RSpec.describe "Rooms", type: :request do
       end
     end
     context "error" do
-      it 'can not update workspace without auth' do
+      it 'can not update room without auth' do
         put url, params: body
         expect(response).to have_http_status 401
+      end
+    end
+  end
+
+  describe "POST /rooms/:room_id/invite" do
+    let(:url) { "/rooms/#{@room.id}/invite" }
+    let(:tokens) { get_auth_token(@user) }
+    let(:body) do
+      {
+        userId: @user1.id
+      }
+    end
+    context "success" do
+      it 'can invite room' do
+        post url, params: body, headers: tokens
+        expect(response).to have_http_status :ok
+        res = JSON.parse(response.body)
+        expect(RoomUser.where(room_id: @room.id, user_id: @user1.id).length).to eq(1)
+      end
+    end
+
+    context "error" do
+      it 'can not invite room without auth' do
+        post url, params: body
+        expect(response).to have_http_status 401
+      end
+      it 'you are not belong to this room' do
+        @user_other = FactoryBot.create(:user)
+        post url, params: body, headers: get_auth_token(@user_other)
+        expect(response).to have_http_status 401
+        res = JSON.parse(response.body)
+        expect("あなたはこのルームに属していません").to eq(res['error']['text'])
+      end
+      it 'this user is not belong to this workspace' do
+        @user_other = FactoryBot.create(:user)
+        body_other = {
+          userId: @user_other.id
+        }
+        post url, params: body_other, headers: get_auth_token(@user)
+        expect(response).to have_http_status 401
+        res = JSON.parse(response.body)
+        expect("そのユーザーはこのワークスペースに属していません").to eq(res['error']['text'])
+      end
+      it 'this user is already belong to this room' do
+        body_other = {
+          userId: @user.id
+        }
+        post url, params: body_other, headers: get_auth_token(@user)
+        expect(response).to have_http_status 401
+        res = JSON.parse(response.body)
+        expect("そのユーザーはすでにこのルームに所属しています").to eq(res['error']['text'])
       end
     end
   end

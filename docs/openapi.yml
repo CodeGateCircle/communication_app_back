@@ -435,6 +435,37 @@ paths:
                 categoryId:
                   $ref: "#/components/schemas/categoryId"
 
+  /rooms/{room_id}/invite:
+    post:
+      tags:
+        - rooms
+      operationId: invite_room
+      summary: Invite the room
+      description: Invite the room
+      parameters:
+        - name: room_id
+          in: path
+          required: true
+          schema:
+            $ref: "#components/schemas/roomId"
+      responses:
+        200:
+          description:  Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true }  
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  $ref: "#/components/schemas/userId"
+                
+
+
 
 components:
   schemas:

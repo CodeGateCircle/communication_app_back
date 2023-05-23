@@ -79,7 +79,7 @@ class RoomsController < ApplicationController
   end
 
   def invite
-    params = params_ing(invite_params)
+    params = params_int(invite_params)
 
     if belong_to_room?(params[:room_id], current_user.id)
       render status: 401, json: { error: { text: "あなたはこのルームに属していません" } }
