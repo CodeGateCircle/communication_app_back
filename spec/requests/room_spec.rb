@@ -19,6 +19,8 @@ RSpec.describe "Rooms", type: :request do
     @room2_user = FactoryBot.create(:room_user, room_id: @room2.id, user_id: @user.id)
     @room3 = FactoryBot.create(:room, category_id: @category2.id, workspace_id: @workspace.id)
     @room3_user = FactoryBot.create(:room_user, room_id: @room3.id, user_id: @user.id)
+    @deleted_room = FactoryBot.create(:room, is_deleted: true, category_id: @category.id, workspace_id: @workspace.id)
+    @deleted_room_user = FactoryBot.create(:room_user, room_id: @deleted_room.id, user_id: @user.id)
   end
 
   describe "POST /rooms" do
@@ -246,6 +248,13 @@ RSpec.describe "Rooms", type: :request do
         expect(response).to have_http_status 401
         res = JSON.parse(response.body)
         expect("そのユーザーはすでにこのルームに所属しています").to eq(res['error']['text'])
+      end
+      it 'this room is not exist' do
+        url_other = "/rooms/#{@deleted_room.id}/invite"
+        post url_other, params: body, headers: get_auth_token(@user)
+        expect(response).to have_http_status 401
+        res = JSON.parse(response.body)
+        expect("そのルームは存在していません").to eq(res['error']['text'])
       end
     end
   end

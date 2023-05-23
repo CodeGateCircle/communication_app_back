@@ -19,4 +19,9 @@ class ApplicationController < ActionController::API
     user = RoomUser.find_by(room_id:, user_id:)
     user.nil?
   end
+
+  # ルームが存在しているかチェック
+  def exist_room?(room_id)
+    Room.find(room_id).is_deleted
+  end
 end

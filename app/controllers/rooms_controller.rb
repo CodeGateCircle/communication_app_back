@@ -92,6 +92,11 @@ class RoomsController < ApplicationController
       return
     end
 
+    if exist_room?(params[:room_id])
+      render status: 401, json: { error: { text: "そのルームは存在していません" } }
+      return
+    end
+
     unless belong_to_room?(params[:room_id], params[:user_id])
       render status: 401, json: { error: { text: "そのユーザーはすでにこのルームに所属しています" } }
       return
