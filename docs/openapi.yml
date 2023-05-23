@@ -398,6 +398,39 @@ paths:
                         example: you are not belong to this room
                         type: string
 
+  /rooms/{room_id}:
+    put:
+      tags:
+        - rooms
+      operationId: update_room 
+      summary: Update the room
+      description: Update the room
+      parameters:
+        - name: room_id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/roomId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/room_data"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  $ref: "#/components/schemas/roomName"
+                description:
+                  $ref: "#/components/schemas/roomDescription"
+                categoryId:
+                  $ref: "#/components/schemas/categoryId"
+
 
 components:
   schemas:

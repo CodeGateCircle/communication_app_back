@@ -50,6 +50,24 @@ class RoomsController < ApplicationController
     end
   end
 
+  def update
+    params = params_int(update_params)
+
+    if belong_to_room?(params[:room_id])
+      render status: 401, json: { error: { text: "あなたはこのルームに属していません" } }
+      return
+    end
+
+    room = Room.find(params[:room_id])
+    room.update!({
+                   name: params[:name],
+                   description: params[:description],
+                   category_id: params[:category_id]
+                 })
+
+    render status: 200, json: room, serializer: RoomSerializer
+  end
+
   def delete
     params = params_int(delete_params)
 
@@ -72,6 +90,10 @@ class RoomsController < ApplicationController
 
   def index_params
     params.permit(:workspace_id)
+  end
+
+  def update_params
+    params.permit(:room_id, :name, :description, :category_id)
   end
 
   def delete_params
