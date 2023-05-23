@@ -10,13 +10,13 @@ class ApplicationController < ActionController::API
 
   # ユーザーがworkspaceに属しているかチェック
   def belong_to_workspace?(workspace_id, user_id)
-    user = WorkspaceUser.find_by(workspace_id:, user_id: user_id)
+    user = WorkspaceUser.find_by(workspace_id:, user_id:)
     user.nil?
   end
 
   # ユーザーがroomに属しているかチェック
   def belong_to_room?(room_id, user_id)
-    user = RoomUser.find_by(room_id:, user_id: user_id)
+    user = RoomUser.find_by(room_id:, user_id:)
     user.nil?
   end
 end

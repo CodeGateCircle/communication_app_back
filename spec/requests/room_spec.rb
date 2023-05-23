@@ -212,7 +212,6 @@ RSpec.describe "Rooms", type: :request do
       it 'can invite room' do
         post url, params: body, headers: tokens
         expect(response).to have_http_status :ok
-        res = JSON.parse(response.body)
         expect(RoomUser.where(room_id: @room.id, user_id: @user1.id).length).to eq(1)
       end
     end

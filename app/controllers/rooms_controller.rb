@@ -92,15 +92,15 @@ class RoomsController < ApplicationController
       return
     end
 
-    if !belong_to_room?(params[:room_id], params[:user_id])
+    unless belong_to_room?(params[:room_id], params[:user_id])
       render status: 401, json: { error: { text: "そのユーザーはすでにこのルームに所属しています" } }
       return
     end
 
     RoomUser.create!({
-      room_id: params[:room_id],
-      user_id: params[:user_id],
-    })
+                       room_id: params[:room_id],
+                       user_id: params[:user_id]
+                     })
 
     render status: 200, json: { success: true }
   end
