@@ -167,4 +167,34 @@ RSpec.describe "Rooms", type: :request do
       end
     end
   end
+
+  describe "PUT /rooms/:room_id" do
+    let(:url) { "/rooms/#{@room.id}" }
+    let(:tokens) { get_auth_token(@user) }
+    let(:body) do
+      {
+        name: Faker::Name.name,
+        description: Faker::Name.name,
+        categoryId: @category1.id
+      }
+    end
+    context "success" do
+      it 'can update room' do
+        put url, params: body, headers: tokens
+        expect(response).to have_http_status :ok
+        res = JSON.parse(response.body)
+        expect(res['room']['id']).to eq(@room.id)
+        expect(res['room']['name']).to eq(body[:name])
+        expect(res['room']['description']).to eq(body[:description])
+        expect(res['room']['categoryId']).to eq(body[:categoryId])
+        expect(res['room']['workspaceId']).to eq(@room.workspace_id)
+      end
+    end
+    context "error" do
+      it 'can not update workspace without auth' do
+        put url, params: body
+        expect(response).to have_http_status 401
+      end
+    end
+  end
 end
