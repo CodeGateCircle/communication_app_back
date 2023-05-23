@@ -3,7 +3,7 @@ class ProfileController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    render json: current_user, serializer: UserSerializer
+    render json: current_user
   end
 
   def edit
@@ -14,9 +14,7 @@ class ProfileController < ApplicationController
                   image: params[:image]
                 })
 
-    render json: {
-      data: user
-    }
+    render json: user
   end
 
   def delete

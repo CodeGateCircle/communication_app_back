@@ -21,17 +21,17 @@ RSpec.describe "Workspaces", type: :request do
         get url, headers: tokens
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
-        expect(res['data']['workspaces'].length).to eq(2)
-        expect(res['data']['workspaces'][0]['id']).to eq(@workspace1.id)
-        expect(res['data']['workspaces'][0]['name']).to eq(@workspace1.name)
-        expect(res['data']['workspaces'][0]['iconImageUrl']).to eq(@workspace1.icon_image_url)
-        expect(res['data']['workspaces'][0]['description']).to eq(@workspace1.description)
-        expect(res['data']['workspaces'][0]['coverImageUrl']).to eq(@workspace1.cover_image_url)
-        expect(res['data']['workspaces'][1]['id']).to eq(@workspace2.id)
-        expect(res['data']['workspaces'][1]['name']).to eq(@workspace2.name)
-        expect(res['data']['workspaces'][1]['iconImageUrl']).to eq(@workspace2.icon_image_url)
-        expect(res['data']['workspaces'][1]['description']).to eq(@workspace2.description)
-        expect(res['data']['workspaces'][1]['coverImageUrl']).to eq(@workspace2.cover_image_url)
+        expect(res['workspaces'].length).to eq(2)
+        expect(res['workspaces'][0]['id']).to eq(@workspace1.id)
+        expect(res['workspaces'][0]['name']).to eq(@workspace1.name)
+        expect(res['workspaces'][0]['iconImageUrl']).to eq(@workspace1.icon_image_url)
+        expect(res['workspaces'][0]['description']).to eq(@workspace1.description)
+        expect(res['workspaces'][0]['coverImageUrl']).to eq(@workspace1.cover_image_url)
+        expect(res['workspaces'][1]['id']).to eq(@workspace2.id)
+        expect(res['workspaces'][1]['name']).to eq(@workspace2.name)
+        expect(res['workspaces'][1]['iconImageUrl']).to eq(@workspace2.icon_image_url)
+        expect(res['workspaces'][1]['description']).to eq(@workspace2.description)
+        expect(res['workspaces'][1]['coverImageUrl']).to eq(@workspace2.cover_image_url)
       end
     end
   end

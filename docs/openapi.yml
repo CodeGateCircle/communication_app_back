@@ -40,10 +40,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    $ref: "#/components/schemas/userData"
+                $ref: "#/components/schemas/userData"
 
     put:
       tags:
@@ -57,10 +54,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    $ref: "#/components/schemas/userData"
+                $ref: "#/components/schemas/userData"
       requestBody:
         content:
           application/json:
@@ -221,7 +215,15 @@ paths:
                   categories:
                     type: array
                     items:
-                      $ref: "#/components/schemas/category_data"
+                      type: object
+                      description: カテゴリー一覧
+                      properties: 
+                        id:
+                          $ref: "#/components/schemas/categoryId"
+                        name:
+                          $ref: '#/components/schemas/categoryName'
+                        workspaceId:
+                          $ref: '#/components/schemas/workspaceId'
 
   /categories/{category_id}:
     put:
@@ -288,10 +290,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    $ref: "#/components/schemas/room_data"
+                $ref: "#/components/schemas/room_data"
 
       requestBody:
         content:
@@ -330,27 +329,24 @@ paths:
               schema:
                 type: object
                 properties:
-                  data:
-                    type: object
-                    properties:
-                      categories:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              $ref: "#/components/schemas/categoryId"
-                            name:
-                              $ref: "#/components/schemas/categoryName"
-                            rooms:
-                              type: array
-                              items:
-                                type: object
-                                properties:
-                                  id:
-                                    $ref: "#/components/schemas/roomId"
-                                  name:
-                                    $ref: "#/components/schemas/roomName"
+                  categories:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          $ref: "#/components/schemas/categoryId"
+                        name:
+                          $ref: "#/components/schemas/categoryName"
+                        rooms:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                $ref: "#/components/schemas/roomId"
+                              name:
+                                $ref: "#/components/schemas/roomName"
         401:
           description: Error operation
           content:
@@ -528,12 +524,20 @@ components:
         - name
         - workspaceId
       properties:
-        id:
-          $ref: "#/components/schemas/categoryId"
-        name:
-          $ref: "#/components/schemas/categoryName"
-        workspaceId:
-          $ref: "#/components/schemas/workspaceId"
+        category:
+          description: explain
+          type: object
+          required:
+            - id
+            - name
+            - workspaceId
+          properties:
+            id:
+              $ref: "#/components/schemas/categoryId"
+            name:
+              $ref: "#/components/schemas/categoryName"
+            workspaceId:
+              $ref: "#/components/schemas/workspaceId"
 
     room_data:
       description: explain

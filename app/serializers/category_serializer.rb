@@ -2,5 +2,7 @@
 class CategorySerializer < ActiveModel::Serializer
   type :category
 
-  attributes :id, :name, :workspace_id
+  attributes :id, :name
+  attribute :workspace_id, if: -> { object.workspace_id.present? }
+  has_many :rooms, if: -> { object[:rooms].present? }, serializer: RoomSerializer
 end
