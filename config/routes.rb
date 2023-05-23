@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   # プロフィール削除
   post '/profile/delete', to: 'profile#delete'
 
+  # workspace取得
   get '/workspaces', to: 'workspaces#index'
   # workspace作成
   post '/workspaces', to: 'workspaces#create'
@@ -17,15 +18,9 @@ Rails.application.routes.draw do
   post '/workspaces/:workspace_id/delete', to: 'workspaces#delete'
   # workspace更新
   put '/workspaces/:workspace_id', to: 'workspaces#update'
-
-  # room作成
-  post '/rooms', to: 'rooms#create'
-  # room一覧取得
-  get '/rooms', to: 'rooms#index'
-  # room更新
-  put '/rooms/:room_id', to: 'rooms#update'
-  # room削除
-  post '/rooms/:room_id/delete', to: 'rooms#delete'
+  # workspace招待
+  post '/workspaces/invite', to: 'workspaces#invite'
+  post '/workspaces/invite/confirm', 'workspaces#confirm'
 
   # category作成
   post '/categories', to: 'category#create'
@@ -35,4 +30,13 @@ Rails.application.routes.draw do
   put '/categories/:category_id', to: 'category#update'
   # category削除
   post '/categories/:category_id/delete', to: 'category#delete'
+
+  # room作成
+  post '/rooms', to: 'rooms#create'
+  # room一覧取得
+  get '/rooms', to: 'rooms#index'
+  # room更新
+  put '/rooms/:room_id', to: 'rooms#update'
+  # room削除
+  post '/rooms/:room_id/delete', to: 'rooms#delete'
 end

@@ -51,6 +51,20 @@ class WorkspacesController < ApplicationController
     render status: 200, json: { success: true }
   end
 
+  def invite
+    # # もし、過去に作ったURLがあるとき
+    # URLをreturn
+    url = Invite.find_by()
+
+    # # なかったとき
+    # URLを生成する
+    # return
+  end
+
+  def confirm
+
+  end
+
   private
 
   # strong parameter
