@@ -26,7 +26,7 @@ class RoomsController < ApplicationController
   def index
     params = params_int(index_params)
 
-    if belong_to_workspace?(params[:workspace_id])
+    if belong_to_workspace?(params[:workspace_id], current_user.id)
       render status: 401, json: { error: { text: "あなたはこのワークスペースに属していません" } }
     else
       categories = Category.where(workspace_id: params[:workspace_id]).order(id: "DESC")
@@ -68,12 +68,39 @@ class RoomsController < ApplicationController
   def delete
     params = params_int(delete_params)
 
-    if belong_to_room?(params[:room_id])
+    if belong_to_room?(params[:room_id], current_user.id)
       render status: 401, json: { error: { text: "あなたはこのルームに属していません" } }
       return
     end
 
     Room.find(params[:room_id]).update!(is_deleted: true, category_id: nil)
+
+    render status: 200, json: { success: true }
+  end
+
+  def invite
+    params = params_ing(invite_params)
+
+    if belong_to_room?(params[:room_id], current_user.id)
+      render status: 401, json: { error: { text: "あなたはこのルームに属していません" } }
+      return
+    end
+
+    workspace_id = Room.find(params[:room_id]).workspace_id
+    if belong_to_workspace?(workspace_id, params[:user_id])
+      render status: 401, json: { error: { text: "そのユーザーはこのワークスペースに属していません" } }
+      return
+    end
+
+    if !belong_to_room?(params[:room_id], params[:user_id])
+      render status: 401, json: { error: { text: "そのユーザーはすでにこのルームに所属しています" } }
+      return
+    end
+
+    RoomUser.create!({
+      room_id: params[:room_id],
+      user_id: params[:user_id],
+    })
 
     render status: 200, json: { success: true }
   end
@@ -95,6 +122,10 @@ class RoomsController < ApplicationController
 
   def delete_params
     params.permit(:room_id)
+  end
+
+  def invite_params
+    params.permit(:room_id, :user_id)
   end
 
   # 整数値に変換
