@@ -35,8 +35,8 @@ RSpec.describe "Profiles", type: :request do
       put '/profile', params: body, headers: token
       expect(response).to have_http_status :ok
       res = JSON.parse(response.body)
-      expect(res['data']['name']).to eq(body[:name])
-      expect(res['data']['image']).to eq(body[:image])
+      expect(res['user']['name']).to eq(body[:name])
+      expect(res['user']['image']).to eq(body[:image])
     end
 
     it 'cannot edit profile without auth' do
