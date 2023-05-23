@@ -185,10 +185,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    $ref: "#/components/schemas/category_data"
+                $ref: "#/components/schemas/category_data"
 
       requestBody:
         content:
@@ -221,12 +218,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  data:
-                    properties:
-                      categories:
-                        type: array
-                        items:
-                          $ref: "#/components/schemas/category_data"
+                  categories:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/category_data"
 
   /categories/{category_id}:
     put:
@@ -247,10 +242,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    $ref: "#/components/schemas/category_data"
+                $ref: "#/components/schemas/category_data"
       requestBody:
         content:
           application/json:
