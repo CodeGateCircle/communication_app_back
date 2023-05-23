@@ -195,6 +195,14 @@ RSpec.describe "Rooms", type: :request do
         put url, params: body
         expect(response).to have_http_status 401
       end
+
+      it 'you are not belong to this room' do
+        @user_other = FactoryBot.create(:user)
+        put url, params: body, headers: get_auth_token(@user_other)
+        expect(response).to have_http_status 401
+        res = JSON.parse(response.body)
+        expect("あなたはこのルームに属していません").to eq(res['error']['text'])
+      end
     end
   end
 end

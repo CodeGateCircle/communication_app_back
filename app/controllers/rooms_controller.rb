@@ -55,6 +55,11 @@ class RoomsController < ApplicationController
   def update
     params = params_int(update_params)
 
+    if belong_to_room?(params[:room_id])
+      render status: 401, json: { error: { text: "あなたはこのルームに属していません" } }
+      return
+    end
+
     room = Room.find(params[:room_id])
     room.update!({
                    name: params[:name],
