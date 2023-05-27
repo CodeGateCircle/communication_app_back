@@ -124,4 +124,32 @@ RSpec.describe "Workspaces", type: :request do
       end
     end
   end
+
+  describe "invitation session" do
+    let(:url_sender) { "/workspaces/invite" }
+    let(:token_s) { get_auth_token(@user) }
+
+    before(:each) do
+      @workspace = FactoryBot.create(:workspace)
+      @workspace_user = FactoryBot.create(:workspace_user, user_id: @user.id, workspace_id: @workspace.id)
+
+      @invitee = FactoryBot.create(:user)
+      token_r = get_auth_token(@invitee)
+    end
+
+    context "success" do
+      it 'can invite user for workspace' do
+        post url_sender, headers: token_s
+        expect(response).to have_http_status :ok
+        p "return"
+        res = JSON.parse(response.body)
+        expect(res['exist']).to be false
+        p res['url']
+        p "invitation send ok"
+
+        post
+      end
+    end
+  end
+
 end
