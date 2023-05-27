@@ -124,4 +124,36 @@ RSpec.describe "Workspaces", type: :request do
       end
     end
   end
+
+  describe "POST /workspaces/invite" do
+    # 必要なもの
+    # workspace(only user), workspaceUser(only user)
+    # user(another, user)
+    before(:each) do
+      @workspace = FactoryBot.create(:workspace)
+      FactoryBot.create(:workspace_user, workspace_id: @workspace.id, user_id: @user.id)
+      @another = FactoryBot.create(:user)
+    end
+
+    let(:token) { get_auth_token(@user) }
+    let(:url) { "/workspaces/invite/" }
+    let(:body) do
+      {
+        workspace_id: @workspace.id,
+        user_id: @another.id,
+        email: @another.email
+      }
+    end
+
+    context "success" do
+      it "can invite" do
+        post url, params: body, headers: token
+        expect(response).to have_http_status :ok
+
+        res = JSON.parse(response.body)
+        expect(res["user_id"]).to eq(@another.id)
+        expect(res["workspace_id"]).to eq(@workspace.id)
+      end
+    end
+  end
 end

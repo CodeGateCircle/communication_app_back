@@ -51,10 +51,32 @@ class WorkspacesController < ApplicationController
     render status: 200, json: { success: true }
   end
 
+  def invite
+    params = invite_params
+
+    if User.find(params[:user_id]).email != params[:email]
+      render status: 400, json: { status: "no user" }
+      return
+    end
+    workspace_user = WorkspaceUser.new({
+                                         workspace_id: params[:workspace_id],
+                                         user_id: params[:user_id]
+                                       })
+    if workspace_user.save!
+      render status: 200, json: workspace_user
+    else
+      render status: 400, json: { status: "cannot add new user in workspace" }
+    end
+  end
+
   private
 
   # strong parameter
   def create_params
     params.permit(:workspace_id, :name, :description, :icon_image_url, :cover_image_url)
+  end
+
+  def invite_params
+    params.permit(:workspace_id, :user_id, :email)
   end
 end
