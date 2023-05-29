@@ -53,7 +53,7 @@ class RoomsController < ApplicationController
   def update
     params = params_int(update_params)
 
-    if belong_to_room?(params[:room_id])
+    if belong_to_room?(params[:room_id], current_user.id)
       render status: 401, json: { error: { text: "あなたはこのルームに属していません" } }
       return
     end
@@ -113,6 +113,23 @@ class RoomsController < ApplicationController
     render status: 200, json: { success: true }
   end
 
+  def remove
+    params = remove_params
+
+    if belong_to_room?(params[:room_id], current_user.id)
+      render status: 401, json: { error: { text: "あなたはこのルームに属していません" } }
+      return
+    end
+
+    if exist_room?(params[:room_id])
+      render status: 401, json: { error: { text: "そのルームは存在していません" } }
+      return
+    end
+
+    RoomUser.where(room_id: params[:room_id], user_id: params[:user_id]).delete_all
+    render status: 200, json: { success: true }
+  end
+
   private
 
   # strong parameter
@@ -134,6 +151,10 @@ class RoomsController < ApplicationController
 
   def invite_params
     params.permit(:room_id, :user_id)
+  end
+
+  def remove_params
+    params.permit(:room_id, user_id: [])
   end
 
   # 整数値に変換

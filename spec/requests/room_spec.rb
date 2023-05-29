@@ -266,4 +266,58 @@ RSpec.describe "Rooms", type: :request do
       end
     end
   end
+
+  describe "POST /rooms/:room_id/remove" do
+    let(:url) { "/rooms/#{@room.id}/remove" }
+    let(:tokens) { get_auth_token(@user) }
+    let(:body) do
+      {
+        userId: [@userA.id, @userB.id, @userC.id]
+      }
+    end
+    before(:each) do
+      @userA = FactoryBot.create(:user)
+      @room_userA = FactoryBot.create(:room_user, room_id: @room.id, user_id: @userA.id)
+      @userB = FactoryBot.create(:user)
+      @room_userB = FactoryBot.create(:room_user, room_id: @room.id, user_id: @userB.id)
+      @userC = FactoryBot.create(:user)
+      @room_userC = FactoryBot.create(:room_user, room_id: @room.id, user_id: @userC.id)
+      @userD = FactoryBot.create(:user)
+      @room_userD = FactoryBot.create(:room_user, room_id: @room.id, user_id: @userD.id)
+    end
+    context "success" do
+      it 'can update room' do
+        post url, params: body, headers: tokens
+        expect(response).to have_http_status :ok
+        # res = JSON.parse(response.body)
+        expect(RoomUser.where(room_id: @room.id, user_id: @user.id)[0].id).to eq(@room_user.id)
+        expect(RoomUser.where(room_id: @room.id, user_id: @userA.id)).to be_blank
+        expect(RoomUser.where(room_id: @room.id, user_id: @userB.id)).to be_blank
+        expect(RoomUser.where(room_id: @room.id, user_id: @userC.id)).to be_blank
+        expect(RoomUser.where(room_id: @room.id, user_id: @userD.id)[0].id).to eq(@room_userD.id)
+      end
+    end
+    context "error" do
+      it 'can not remove room without auth' do
+        post url, params: body
+        expect(response).to have_http_status 401
+      end
+
+      it 'you are not belong to this room' do
+        @user_other = FactoryBot.create(:user)
+        post url, params: body, headers: get_auth_token(@user_other)
+        expect(response).to have_http_status 401
+        res = JSON.parse(response.body)
+        expect("あなたはこのルームに属していません").to eq(res['error']['text'])
+      end
+
+      it 'this room is not exist' do
+        url_other = "/rooms/#{@deleted_room.id}/remove"
+        post url_other, params: body, headers: get_auth_token(@user)
+        expect(response).to have_http_status 401
+        res = JSON.parse(response.body)
+        expect("そのルームは存在していません").to eq(res['error']['text'])
+      end
+    end
+  end
 end
