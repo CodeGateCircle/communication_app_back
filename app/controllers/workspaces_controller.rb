@@ -52,15 +52,23 @@ class WorkspacesController < ApplicationController
   end
 
   def invite
+    # params[:user_id]...man who send invitation
     params = invite_params
 
-    if User.find(params[:user_id]).email != params[:email]
+    unless User.find_by(email: params[:email])
       render status: 400, json: { status: "no user" }
       return
     end
+
+    unless WorkspaceUser.find_by(user_id: params[:user_id], workspace_id: params[:workspace_id])
+      render status: 401, json: { status: "no auth" }
+      return
+    end
+
+    user_id = User.find_by(email: params[:email]).id
     workspace_user = WorkspaceUser.new({
                                          workspace_id: params[:workspace_id],
-                                         user_id: params[:user_id]
+                                         user_id: user_id
                                        })
     if workspace_user.save!
       render status: 200, json: workspace_user

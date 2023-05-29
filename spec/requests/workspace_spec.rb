@@ -131,21 +131,24 @@ RSpec.describe "Workspaces", type: :request do
     # user(another, user)
     before(:each) do
       @workspace = FactoryBot.create(:workspace)
+      @workspace1 = FactoryBot.create(:workspace)
       FactoryBot.create(:workspace_user, workspace_id: @workspace.id, user_id: @user.id)
       @another = FactoryBot.create(:user)
     end
 
     let(:token) { get_auth_token(@user) }
     let(:url) { "/workspaces/invite/" }
-    let(:body) do
-      {
-        workspace_id: @workspace.id,
-        user_id: @another.id,
-        email: @another.email
-      }
-    end
+
 
     context "success" do
+      let(:body) do
+        {
+          user_id: @user.id,
+          workspace_id: @workspace.id,
+          email: @another.email
+        }
+      end
+
       it "can invite" do
         post url, params: body, headers: token
         expect(response).to have_http_status :ok
@@ -153,6 +156,20 @@ RSpec.describe "Workspaces", type: :request do
         res = JSON.parse(response.body)
         expect(res["user_id"]).to eq(@another.id)
         expect(res["workspace_id"]).to eq(@workspace.id)
+      end
+    end
+
+    context "error" do
+      let(:body) do {
+        user_id: @user.id,
+        workspace_id: @workspace1.id,
+        email: @another.email
+      }
+      end
+
+      it "cannot invite" do
+        post url, params: body, headers: token
+        expect(response).to have_http_status 401
       end
     end
   end
