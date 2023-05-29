@@ -139,7 +139,6 @@ RSpec.describe "Workspaces", type: :request do
     let(:token) { get_auth_token(@user) }
     let(:url) { "/workspaces/invite/" }
 
-
     context "success" do
       let(:body) do
         {
@@ -160,11 +159,12 @@ RSpec.describe "Workspaces", type: :request do
     end
 
     context "error" do
-      let(:body) do {
-        user_id: @user.id,
-        workspace_id: @workspace1.id,
-        email: @another.email
-      }
+      let(:body) do
+        {
+          user_id: @user.id,
+          workspace_id: @workspace1.id,
+          email: @another.email
+        }
       end
 
       it "cannot invite" do

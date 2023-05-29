@@ -68,7 +68,7 @@ class WorkspacesController < ApplicationController
     user_id = User.find_by(email: params[:email]).id
     workspace_user = WorkspaceUser.new({
                                          workspace_id: params[:workspace_id],
-                                         user_id: user_id
+                                         user_id:
                                        })
     if workspace_user.save!
       render status: 200, json: workspace_user
