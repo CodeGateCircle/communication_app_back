@@ -174,5 +174,28 @@ RSpec.describe "Workspaces", type: :request do
         expect(response).to have_http_status 400
       end
     end
+
+    context "test code" do
+      # @user @workspace @other_ws
+      # @another @body_t
+      # workspace_user : workspace - user
+
+      # token url
+      it "workspace owner-member" do
+        body = {
+          workspace_id: @workspace.id,
+          email: @user.id
+        }
+        post url, params: body, headers: token
+        expect(response).to have_http_status 400
+      end
+
+      it "workspace member-member" do
+        post url, params: @body_t, headers: token
+        expect(response).to have_http_status :ok
+        post url, params: @body_t, headers: token
+        expect(response).to have_http_status 400
+      end
+    end
   end
 end

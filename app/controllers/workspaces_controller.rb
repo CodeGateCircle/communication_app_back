@@ -67,7 +67,7 @@ class WorkspacesController < ApplicationController
       return
     end
 
-    if WorkspaceUser.find_by(workspace_id: params[:workspace_id], user_id: invitee_id) != nil
+    if WorkspaceUser.find_by(workspace_id: params[:workspace_id], user_id: invitee_id)
       render status: 400, json: { status: "exist now" }
       return
     end
