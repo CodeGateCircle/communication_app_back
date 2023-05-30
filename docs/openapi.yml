@@ -186,8 +186,6 @@ paths:
             schema:
               type: object
               properties:
-                user_id:
-                  $ref: "#/components/schemas/userId"
                 workspace_id:
                   $ref: "#/components/schemas/workspaceId"
                 email:

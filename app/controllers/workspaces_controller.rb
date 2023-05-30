@@ -60,21 +60,24 @@ class WorkspacesController < ApplicationController
       return
     end
 
-    unless WorkspaceUser.find_by(user_id: params[:user_id], workspace_id: params[:workspace_id])
+    invitee_id = User.find_by(email: params[:email]).id
+
+    if belong_to_workspace?(params[:workspace_id])
       render status: 401, json: { status: "no auth" }
       return
     end
 
-    user_id = User.find_by(email: params[:email]).id
-    workspace_user = WorkspaceUser.new({
-                                         workspace_id: params[:workspace_id],
-                                         user_id:
-                                       })
-    if workspace_user.save!
-      render status: 200, json: workspace_user
-    else
-      render status: 400, json: { status: "cannot add new user in workspace" }
+    if WorkspaceUser.find_by(workspace_id: params[:workspace_id], user_id: invitee_id) != nil
+      render status: 400, json: { status: "exist now" }
+      return
     end
+
+    workspace_user = WorkspaceUser.create!({
+                                             workspace_id: params[:workspace_id],
+                                             user_id: invitee_id
+                                           })
+
+    render status: 200, json: workspace_user
   end
 
   private
@@ -85,6 +88,6 @@ class WorkspacesController < ApplicationController
   end
 
   def invite_params
-    params.permit(:workspace_id, :user_id, :email)
+    params.permit(:workspace_id, :email)
   end
 end
