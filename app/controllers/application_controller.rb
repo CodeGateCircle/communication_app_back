@@ -10,10 +10,10 @@ class ApplicationController < ActionController::API
 
   # ユーザーがworkspaceに属しているかチェック
   def belong_to_workspace?
-    unless WorkspaceUser.find_by(workspace_id: params[:workspace_id], user_id: current_user.id)
-      render status: 401, json: { error: { text: "あなたはこのワークスペースに属していません" } }
-      return
-    end
+    return if WorkspaceUser.find_by(workspace_id: params[:workspace_id], user_id: current_user.id)
+
+    render status: 401, json: { error: { text: "あなたはこのワークスペースに属していません" } }
+    nil
   end
 
   # 自分以外のユーザーがworkspaceに属しているかチェック
@@ -24,10 +24,10 @@ class ApplicationController < ActionController::API
 
   # ユーザーがroomに属しているかチェック
   def belong_to_room?
-    unless RoomUser.find_by(room_id: params[:room_id], user_id: current_user.id)
-      render status: 401, json: { error: { text: "あなたはこのルームに属していません" } }
-      return
-    end
+    return if RoomUser.find_by(room_id: params[:room_id], user_id: current_user.id)
+
+    render status: 401, json: { error: { text: "あなたはこのルームに属していません" } }
+    nil
   end
 
   # 自分以外のユーザーがroomに属しているかチェック

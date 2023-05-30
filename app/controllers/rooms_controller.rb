@@ -19,7 +19,7 @@ class RoomsController < ApplicationController
       return
     end
 
-    each_category = categories.map{|p| p.attributes.symbolize_keys}
+    each_category = categories.map { |p| p.attributes.symbolize_keys }
 
     room_maps = Room.where(id: current_user.rooms, is_deleted: false).order(id: :desc)
     categories.each_with_index do |category, i|
@@ -80,7 +80,7 @@ class RoomsController < ApplicationController
   def create_params
     params.permit(:name, :description, :category_id, :workspace_id)
   end
-  
+
   def index_params
     params.permit(:workspace_id)
   end

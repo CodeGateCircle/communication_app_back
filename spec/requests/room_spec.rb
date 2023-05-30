@@ -282,18 +282,18 @@ RSpec.describe "Rooms", type: :request do
     let(:tokens) { get_auth_token(@user) }
     let(:body) do
       {
-        userId: [@userA.id, @userB.id, @userC.id]
+        userId: [@user_a.id, @user_b.id, @user_c.id]
       }
     end
     before(:each) do
-      @userA = FactoryBot.create(:user)
-      @room_userA = FactoryBot.create(:room_user, room_id: @room.id, user_id: @userA.id)
-      @userB = FactoryBot.create(:user)
-      @room_userB = FactoryBot.create(:room_user, room_id: @room.id, user_id: @userB.id)
-      @userC = FactoryBot.create(:user)
-      @room_userC = FactoryBot.create(:room_user, room_id: @room.id, user_id: @userC.id)
-      @userD = FactoryBot.create(:user)
-      @room_userD = FactoryBot.create(:room_user, room_id: @room.id, user_id: @userD.id)
+      @user_a = FactoryBot.create(:user)
+      @room_user_a = FactoryBot.create(:room_user, room_id: @room.id, user_id: @user_a.id)
+      @user_b = FactoryBot.create(:user)
+      @room_user_b = FactoryBot.create(:room_user, room_id: @room.id, user_id: @user_b.id)
+      @user_c = FactoryBot.create(:user)
+      @room_user_c = FactoryBot.create(:room_user, room_id: @room.id, user_id: @user_c.id)
+      @user_d = FactoryBot.create(:user)
+      @room_user_d = FactoryBot.create(:room_user, room_id: @room.id, user_id: @user_d.id)
       @deleted_room = FactoryBot.create(:room, is_deleted: true, category_id: @category.id, workspace_id: @workspace.id)
       @deleted_room_user = FactoryBot.create(:room_user, room_id: @deleted_room.id, user_id: @user.id)
     end
@@ -302,10 +302,10 @@ RSpec.describe "Rooms", type: :request do
         post url, params: body, headers: tokens
         expect(response).to have_http_status :ok
         expect(RoomUser.where(room_id: @room.id, user_id: @user.id)[0].id).to eq(@room_user.id)
-        expect(RoomUser.where(room_id: @room.id, user_id: @userA.id)).to be_blank
-        expect(RoomUser.where(room_id: @room.id, user_id: @userB.id)).to be_blank
-        expect(RoomUser.where(room_id: @room.id, user_id: @userC.id)).to be_blank
-        expect(RoomUser.where(room_id: @room.id, user_id: @userD.id)[0].id).to eq(@room_userD.id)
+        expect(RoomUser.where(room_id: @room.id, user_id: @user_a.id)).to be_blank
+        expect(RoomUser.where(room_id: @room.id, user_id: @user_b.id)).to be_blank
+        expect(RoomUser.where(room_id: @room.id, user_id: @user_c.id)).to be_blank
+        expect(RoomUser.where(room_id: @room.id, user_id: @user_d.id)[0].id).to eq(@room_user_d.id)
       end
     end
 
