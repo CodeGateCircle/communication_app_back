@@ -133,7 +133,7 @@ RSpec.describe "Rooms", type: :request do
       it 'you are not belong to this workspace' do
         @user_other = FactoryBot.create(:user)
         get url, params: body, headers: get_auth_token(@user_other)
-        expect(response).to have_http_status 401
+        expect(response).to have_http_status 400
         res = JSON.parse(response.body)
         expect("あなたはこのワークスペースに属していません").to eq(res['error']['text'])
       end
@@ -165,7 +165,7 @@ RSpec.describe "Rooms", type: :request do
       it 'you are not belong to this room' do
         @user_other = FactoryBot.create(:user)
         post url, headers: get_auth_token(@user_other)
-        expect(response).to have_http_status 401
+        expect(response).to have_http_status 400
         res = JSON.parse(response.body)
         expect("あなたはこのルームに属していません").to eq(res['error']['text'])
       end
@@ -207,7 +207,7 @@ RSpec.describe "Rooms", type: :request do
       it 'you are not belong to this room' do
         @user_other = FactoryBot.create(:user)
         put url, params: body, headers: get_auth_token(@user_other)
-        expect(response).to have_http_status 401
+        expect(response).to have_http_status 400
         res = JSON.parse(response.body)
         expect("あなたはこのルームに属していません").to eq(res['error']['text'])
       end
@@ -244,7 +244,7 @@ RSpec.describe "Rooms", type: :request do
       it 'you are not belong to this room' do
         @user_other = FactoryBot.create(:user)
         post url, params: body, headers: get_auth_token(@user_other)
-        expect(response).to have_http_status 401
+        expect(response).to have_http_status 400
         res = JSON.parse(response.body)
         expect("あなたはこのルームに属していません").to eq(res['error']['text'])
       end
@@ -254,7 +254,7 @@ RSpec.describe "Rooms", type: :request do
           userId: @user_other.id
         }
         post url, params: body_other, headers: get_auth_token(@user)
-        expect(response).to have_http_status 401
+        expect(response).to have_http_status 400
         res = JSON.parse(response.body)
         expect("そのユーザーはこのワークスペースに属していません").to eq(res['error']['text'])
       end
@@ -263,14 +263,14 @@ RSpec.describe "Rooms", type: :request do
           userId: @user.id
         }
         post url, params: body_other, headers: get_auth_token(@user)
-        expect(response).to have_http_status 401
+        expect(response).to have_http_status 400
         res = JSON.parse(response.body)
         expect("そのユーザーはすでにこのルームに所属しています").to eq(res['error']['text'])
       end
       it 'this room is not exist' do
         url_other = "/rooms/#{@deleted_room.id}/invite"
         post url_other, params: body, headers: get_auth_token(@user)
-        expect(response).to have_http_status 401
+        expect(response).to have_http_status 400
         res = JSON.parse(response.body)
         expect("そのルームは存在していません").to eq(res['error']['text'])
       end
@@ -318,14 +318,14 @@ RSpec.describe "Rooms", type: :request do
       it 'you are not belong to this room' do
         @user_other = FactoryBot.create(:user)
         post url, params: body, headers: get_auth_token(@user_other)
-        expect(response).to have_http_status 401
+        expect(response).to have_http_status 400
         res = JSON.parse(response.body)
         expect("あなたはこのルームに属していません").to eq(res['error']['text'])
       end
       it 'this room is not exist' do
         url_other = "/rooms/#{@deleted_room.id}/remove"
         post url_other, params: body, headers: get_auth_token(@user)
-        expect(response).to have_http_status 401
+        expect(response).to have_http_status 400
         res = JSON.parse(response.body)
         expect("そのルームは存在していません").to eq(res['error']['text'])
       end

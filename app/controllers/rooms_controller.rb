@@ -46,17 +46,17 @@ class RoomsController < ApplicationController
   def invite
     workspace_id = Room.find(params[:room_id]).workspace_id
     if guest_belong_to_workspace?(workspace_id, params[:user_id])
-      render status: 401, json: { error: { text: "そのユーザーはこのワークスペースに属していません" } }
+      render status: 400, json: { error: { text: "そのユーザーはこのワークスペースに属していません" } }
       return
     end
 
     if exist_room?(params[:room_id])
-      render status: 401, json: { error: { text: "そのルームは存在していません" } }
+      render status: 400, json: { error: { text: "そのルームは存在していません" } }
       return
     end
 
     unless guest_belong_to_room?(params[:room_id], params[:user_id])
-      render status: 401, json: { error: { text: "そのユーザーはすでにこのルームに所属しています" } }
+      render status: 400, json: { error: { text: "そのユーザーはすでにこのルームに所属しています" } }
       return
     end
 
@@ -66,7 +66,7 @@ class RoomsController < ApplicationController
 
   def remove
     if exist_room?(params[:room_id])
-      render status: 401, json: { error: { text: "そのルームは存在していません" } }
+      render status: 400, json: { error: { text: "そのルームは存在していません" } }
       return
     end
 

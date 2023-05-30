@@ -12,7 +12,7 @@ class ApplicationController < ActionController::API
   def belong_to_workspace?
     return if WorkspaceUser.find_by(workspace_id: params[:workspace_id], user_id: current_user.id)
 
-    render status: 401, json: { error: { text: "あなたはこのワークスペースに属していません" } }
+    render status: 400, json: { error: { text: "あなたはこのワークスペースに属していません" } }
     nil
   end
 
@@ -26,7 +26,7 @@ class ApplicationController < ActionController::API
   def belong_to_room?
     return if RoomUser.find_by(room_id: params[:room_id], user_id: current_user.id)
 
-    render status: 401, json: { error: { text: "あなたはこのルームに属していません" } }
+    render status: 400, json: { error: { text: "あなたはこのルームに属していません" } }
     nil
   end
 

@@ -5,11 +5,6 @@ class CategoryController < ApplicationController
 
   def create
     params = create_params
-    # if belong_to_workspace?(params[:workspace_id])
-    #   render status: 401, text: "cannot edit category of workspace without auth"
-    #   return
-    # end
-
     category = Category.create!({
                                   name: params[:name],
                                   workspace_id: params[:workspace_id]
@@ -20,11 +15,6 @@ class CategoryController < ApplicationController
 
   def index
     params = index_params
-    # if belong_to_workspace?(params[:workspace_id])
-    #   render status: 401, text: "cannot edit category of workspace without auth"
-    #   return
-    # end
-
     categories = Category.where(workspace_id: params[:workspace_id])
 
     render status: 200, json: categories, each_serializer: CategorySerializer
@@ -32,11 +22,6 @@ class CategoryController < ApplicationController
 
   def update
     params = update_params
-    # if belong_to_workspace?(params[:workspace_id])
-    #   render status: 401, text: "cannot edit category of workspace without auth"
-    #   return
-    # end
-
     category = Category.find(params[:category_id])
     category.update!({ name: params[:name] })
 
@@ -78,10 +63,5 @@ class CategoryController < ApplicationController
 
   def delete_params
     params.permit(:category_id, :workspace_id)
-  end
-
-  def auth_edit_with_categoryid
-    workspace_id = Category.find(params[:category_id]).workspace_id
-    belong_to_workspace?(workspace_id)
   end
 end

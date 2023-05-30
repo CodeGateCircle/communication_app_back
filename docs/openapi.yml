@@ -347,7 +347,7 @@ paths:
                                 $ref: "#/components/schemas/roomId"
                               name:
                                 $ref: "#/components/schemas/roomName"
-        401:
+        400:
           description: Error operation
           content:
             application/json:
@@ -382,7 +382,7 @@ paths:
             application/json:
               schema:
                 example: { success: true }   
-        401:
+        400:
           description: Error operation
           content:
             application/json:
@@ -417,7 +417,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/room_data"
-        401:
+        400:
           description: Error operation
           content:
             application/json:
@@ -464,7 +464,7 @@ paths:
             application/json:
               schema:
                 example: { success: true }  
-        401:
+        400:
           description: Error operation
           content:
             application/json:
@@ -507,7 +507,7 @@ paths:
             application/json:
               schema:
                 example: { success: true }
-        401:
+        400:
           description: Error operation
           content:
             application/json:
