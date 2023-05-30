@@ -26,6 +26,10 @@ Rails.application.routes.draw do
   put '/rooms/:room_id', to: 'rooms#update'
   # room削除
   post '/rooms/:room_id/delete', to: 'rooms#delete'
+  # roomの招待
+  post '/rooms/:room_id/invite', to: 'rooms#invite'
+  # roomのユーザー削除
+  post '/rooms/:room_id/remove', to: 'rooms#remove'
 
   # category作成
   post '/categories', to: 'category#create'
