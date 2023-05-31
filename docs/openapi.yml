@@ -79,7 +79,7 @@ paths:
             application/json:
               schema:
                 example: { success: true }
-
+  # create
   /workspaces:
     post:
       tags:
@@ -108,7 +108,6 @@ paths:
                   $ref: "#/components/schemas/iconImageUrl"
                 coverImageUrl:
                   $ref: "#/components/schemas/coverImageUrl"
-
   # update
   /workspaces/{workspace_id}:
     put:
@@ -144,7 +143,7 @@ paths:
                   $ref: "#/components/schemas/iconImageUrl"
                 coverImageUrl:
                   $ref: "#/components/schemas/coverImageUrl"
-
+  # delete
   /workspaces/{workspace_id}/delete:
     post:
       tags:
@@ -191,8 +190,7 @@ paths:
                 email:
                   $ref: "#/components/schemas/userEmail"
 
-
-
+  # create
   /categories:
     post:
       tags:
@@ -251,7 +249,7 @@ paths:
                           $ref: '#/components/schemas/categoryName'
                         workspaceId:
                           $ref: '#/components/schemas/workspaceId'
-
+  # update
   /categories/{category_id}:
     put:
       tags:
@@ -282,7 +280,7 @@ paths:
                   $ref: "#/components/schemas/categoryName"
                 workspaceId:
                   $ref: "#/components/schemas/workspaceId"
-
+  # delete
   /categories/{category_id}/delete:
     post:
       tags:
@@ -304,6 +302,7 @@ paths:
               schema:
                 example: { success: true }
 
+  # create
   /rooms:
     post:
       tags:
@@ -318,7 +317,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/room_data"
-
       requestBody:
         content:
           application/json:
@@ -333,7 +331,7 @@ paths:
                   $ref: "#/components/schemas/categoryId"
                 workspaceId:
                   $ref: "#/components/schemas/workspaceId"
-
+  # index
   /rooms/{workspace_id}:
     get:
       tags:
@@ -374,7 +372,7 @@ paths:
                                 $ref: "#/components/schemas/roomId"
                               name:
                                 $ref: "#/components/schemas/roomName"
-        401:
+        400:
           description: Error operation
           content:
             application/json:
@@ -386,10 +384,9 @@ paths:
                     properties:
                       text:
                         description: error message
-                        example: you are not belong to this workspace
+                        example: あなたはこのワークスペースに属していません
                         type: string
-
-
+  # delete
   /rooms/{room_id}/delete:
     post:
       tags:
@@ -410,7 +407,7 @@ paths:
             application/json:
               schema:
                 example: { success: true }   
-        401:
+        400:
           description: Error operation
           content:
             application/json:
@@ -422,9 +419,9 @@ paths:
                     properties:
                       text:
                         description: error message
-                        example: you are not belong to this room
+                        example: あなたはこのルームに属していません
                         type: string
-
+  # update
   /rooms/{room_id}:
     put:
       tags:
@@ -445,6 +442,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/room_data"
+        400:
+          description: Error operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      text:
+                        description: error message
+                        example: あなたはこのルームに属していません
+                        type: string
       requestBody:
         content:
           application/json:
@@ -457,7 +468,94 @@ paths:
                   $ref: "#/components/schemas/roomDescription"
                 categoryId:
                   $ref: "#/components/schemas/categoryId"
-
+  # invite
+  /rooms/{room_id}/invite:
+    post:
+      tags:
+        - rooms
+      operationId: invite_room
+      summary: Invite the room
+      description: Invite the room
+      parameters:
+        - name: room_id
+          in: path
+          required: true
+          schema:
+            $ref: "#components/schemas/roomId"
+      responses:
+        200:
+          description:  Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true }  
+        400:
+          description: Error operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      text:
+                        description: error message
+                        example: あなたはこのルームに属していません
+                        type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  $ref: "#/components/schemas/userId"
+  # remove
+  /rooms/{room_id}/remove:
+    post:
+      tags:
+        - rooms
+      operationId: remove_room_user
+      summary: remove_room_user
+      description: Remove_room_user
+      parameters:
+        - name: room_id
+          in: path
+          required: true
+          schema:
+            $ref: "#components/schemas/roomId"
+      responses:
+        200:
+          description:  Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true }
+        400:
+          description: Error operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      text:
+                        description: error message
+                        example: あなたはこのルームに属していません
+                        type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/userId"
 
 components:
   schemas:
