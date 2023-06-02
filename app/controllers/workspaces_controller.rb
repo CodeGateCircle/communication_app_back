@@ -62,7 +62,8 @@ class WorkspacesController < ApplicationController
 
     invitee_id = User.find_by(email: params[:email]).id
 
-    unless WorkspaceUser.find_by(workspace_id: params[:workspace_id], user_id: current_user.id)
+    # applicationController
+    if guest_belong_to_workspace?(params[:workspace_id], current_user.id)
       render status: 401, json: { status: "no auth" }
       return
     end
