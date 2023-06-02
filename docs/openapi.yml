@@ -165,6 +165,31 @@ paths:
               schema:
                 example: { success: true }
 
+  /workspaces/invite:
+    post:
+      tags:
+        - workspaces
+      operationId: invite_ppl_to_workspace
+      summary: Invite people to workspace.
+      description: Invite people to workspace.
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workspace_id:
+                  $ref: "#/components/schemas/workspaceId"
+                email:
+                  $ref: "#/components/schemas/userEmail"
+
   # create
   /categories:
     post:

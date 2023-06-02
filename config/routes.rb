@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   post '/workspaces/:workspace_id/delete', to: 'workspaces#delete'
   # workspace更新
   put '/workspaces/:workspace_id', to: 'workspaces#update'
+  # workspace招待
+  post "/workspaces/invite", to: 'workspaces#invite'
 
   # room作成
   post '/rooms', to: 'rooms#create'

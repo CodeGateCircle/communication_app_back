@@ -10,8 +10,8 @@ RSpec.describe "Workspaces", type: :request do
     let(:tokens) { get_auth_token(@user) }
 
     before(:each) do
-      @workspace1 = FactoryBot.create(:workspace)
-      @workspace_user1 = FactoryBot.create(:workspace_user, user_id: @user.id, workspace_id: @workspace1.id)
+      @other_ws = FactoryBot.create(:workspace)
+      @workspace_user1 = FactoryBot.create(:workspace_user, user_id: @user.id, workspace_id: @other_ws.id)
       @workspace2 = FactoryBot.create(:workspace)
       @workspace_user2 = FactoryBot.create(:workspace_user, user_id: @user.id, workspace_id: @workspace2.id)
     end
@@ -22,11 +22,11 @@ RSpec.describe "Workspaces", type: :request do
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
         expect(res['workspaces'].length).to eq(2)
-        expect(res['workspaces'][0]['id']).to eq(@workspace1.id)
-        expect(res['workspaces'][0]['name']).to eq(@workspace1.name)
-        expect(res['workspaces'][0]['iconImageUrl']).to eq(@workspace1.icon_image_url)
-        expect(res['workspaces'][0]['description']).to eq(@workspace1.description)
-        expect(res['workspaces'][0]['coverImageUrl']).to eq(@workspace1.cover_image_url)
+        expect(res['workspaces'][0]['id']).to eq(@other_ws.id)
+        expect(res['workspaces'][0]['name']).to eq(@other_ws.name)
+        expect(res['workspaces'][0]['iconImageUrl']).to eq(@other_ws.icon_image_url)
+        expect(res['workspaces'][0]['description']).to eq(@other_ws.description)
+        expect(res['workspaces'][0]['coverImageUrl']).to eq(@other_ws.cover_image_url)
         expect(res['workspaces'][1]['id']).to eq(@workspace2.id)
         expect(res['workspaces'][1]['name']).to eq(@workspace2.name)
         expect(res['workspaces'][1]['iconImageUrl']).to eq(@workspace2.icon_image_url)
@@ -121,6 +121,80 @@ RSpec.describe "Workspaces", type: :request do
       it 'cannot delete workspace' do
         post url
         expect(response).to have_http_status 401
+      end
+    end
+  end
+
+  describe "POST /workspaces/invite" do
+    # 必要なもの
+    # workspace(only user), workspaceUser(only user)
+    # user(another, user)
+    before(:each) do
+      @workspace = FactoryBot.create(:workspace)
+      FactoryBot.create(:workspace_user, workspace_id: @workspace.id, user_id: @user.id)
+      @other_ws = FactoryBot.create(:workspace)
+      @another = FactoryBot.create(:user)
+
+      @body_t = {
+        workspace_id: @workspace.id,
+        email: @another.email
+      }
+    end
+
+    let(:token) { get_auth_token(@user) }
+    let(:url) { "/workspaces/invite/" }
+
+    context "success" do
+      it "can invite" do
+        post url, params: @body_t, headers: token
+        expect(response).to have_http_status :ok
+
+        res = JSON.parse(response.body)
+        expect(res["user_id"]).to eq(@another.id)
+        expect(res["workspace_id"]).to eq(@workspace.id)
+      end
+    end
+
+    context "error" do
+      let(:body) do
+        {
+          workspace_id: @other_ws.id,
+          email: @another.email
+        }
+      end
+
+      it "cannot invite" do
+        post url, params: body, headers: token
+        expect(response).to have_http_status 401
+      end
+
+      it "exist now" do
+        FactoryBot.create(:workspace_user, workspace_id: @workspace.id, user_id: @another.id, role: 3)
+        post url, params: @body_t, headers: token
+        expect(response).to have_http_status 400
+      end
+    end
+
+    context "test code" do
+      # @user @workspace @other_ws
+      # @another @body_t
+      # workspace_user : workspace - user
+
+      # token url
+      it "workspace owner-member" do
+        body = {
+          workspace_id: @workspace.id,
+          email: @user.id
+        }
+        post url, params: body, headers: token
+        expect(response).to have_http_status 400
+      end
+
+      it "workspace member-member" do
+        post url, params: @body_t, headers: token
+        expect(response).to have_http_status :ok
+        post url, params: @body_t, headers: token
+        expect(response).to have_http_status 400
       end
     end
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_230_515_072_728) do
+ActiveRecord::Schema[7.0].define(version: 20_230_530_131_434) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -66,6 +66,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_515_072_728) do
     t.datetime "updated_at", null: false
     t.integer "role", default: 3, null: false
     t.index ["user_id"], name: "index_workspace_users_on_user_id"
+    t.index %w[workspace_id user_id], name: "index_workspace_users_on_workspace_id_and_user_id", unique: true
     t.index ["workspace_id"], name: "index_workspace_users_on_workspace_id"
   end
 
