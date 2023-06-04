@@ -42,13 +42,33 @@ paths:
               schema:
                 type: object
                 properties:
-                    user:
-                      $ref: "#/components/schemas/userData"
+                    users:
+                      type: object
+                      properties:
+                        id:
+                          $ref: "#/components/schemas/userId"
+                        name:
+                          $ref: "#/components/schemas/userName"
+                        email:
+                          $ref: "#/components/schemas/userEmail"
+                        userImageUrl:
+                          $ref: "#/components/schemas/userImageUrl"
                     workspaces:
                       description: explain
                       type: array
                       items:
-                        $ref: "#/components/schemas/workspace_data"
+                        type: object
+                        properties:
+                          id:
+                            $ref: "#/components/schemas/workspaceId"
+                          name:
+                            $ref: "#/components/schemas/workspaceName"
+                          description:
+                            $ref: "#/components/schemas/workspaceDescription"
+                          iconImageUrl:
+                            $ref: "#/components/schemas/iconImageUrl"
+                          coverImageUrl:
+                            $ref: "#/components/schemas/coverImageUrl"
 
     put:
       tags:
