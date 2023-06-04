@@ -582,6 +582,11 @@ components:
               $ref: "#/components/schemas/userEmail"
             userImageUrl:
               $ref: "#/components/schemas/userImageUrl"
+        workspaces:
+          description: explain
+          type: array
+          items:
+            $ref: "#/components/schemas/workspace_data"
 
     workspace_data:
       description: explain
