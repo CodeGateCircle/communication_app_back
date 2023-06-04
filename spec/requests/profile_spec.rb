@@ -3,6 +3,17 @@ require 'rails_helper'
 RSpec.describe "Profiles", type: :request do
   before(:each) do
     @user = FactoryBot.create(:user)
+    @workspaces = [FactoryBot.create(:workspace), FactoryBot.create(:workspace)]
+    @workspace_user = FactoryBot.create(
+      :workspace_user,
+      workspace: @workspaces[0],
+      user: @user
+    )
+    @workspace_user = FactoryBot.create(
+      :workspace_user,
+      workspace: @workspaces[1],
+      user: @user
+    )
   end
 
   describe "GET /index" do
@@ -15,6 +26,16 @@ RSpec.describe "Profiles", type: :request do
       expect(res['user']['email']).to eq(@user.email)
       expect(res['user']['name']).to eq(@user.name)
       expect(res['user']['image']).to eq(@user.image)
+      expect(res['user']['workspaces'][0]['id']).to eq(@workspaces[0].id)
+      expect(res['user']['workspaces'][0]['name']).to eq(@workspaces[0].name)
+      expect(res['user']['workspaces'][0]['coverImageUrl']).to eq(@workspaces[0].cover_image_url)
+      expect(res['user']['workspaces'][0]['description']).to eq(@workspaces[0].description)
+      expect(res['user']['workspaces'][0]['iconImageUrl']).to eq(@workspaces[0].icon_image_url)
+      expect(res['user']['workspaces'][1]['id']).to eq(@workspaces[1].id)
+      expect(res['user']['workspaces'][1]['name']).to eq(@workspaces[1].name)
+      expect(res['user']['workspaces'][1]['coverImageUrl']).to eq(@workspaces[1].cover_image_url)
+      expect(res['user']['workspaces'][1]['description']).to eq(@workspaces[1].description)
+      expect(res['user']['workspaces'][1]['iconImageUrl']).to eq(@workspaces[1].icon_image_url)
     end
 
     it 'can not get profile without auth' do
