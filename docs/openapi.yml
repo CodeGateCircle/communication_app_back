@@ -24,7 +24,7 @@ servers:
       host:
         default: localhost
       port:
-        default: '3000'
+        default: "3000"
 
 paths:
   /profile:
@@ -40,7 +40,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/userData"
+                type: object
+                properties:
+                    user:
+                      $ref: "#/components/schemas/userData"
+                    workspaces:
+                      description: explain
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/workspace_data"
 
     put:
       tags:
@@ -242,13 +250,13 @@ paths:
                     items:
                       type: object
                       description: カテゴリー一覧
-                      properties: 
+                      properties:
                         id:
                           $ref: "#/components/schemas/categoryId"
                         name:
-                          $ref: '#/components/schemas/categoryName'
+                          $ref: "#/components/schemas/categoryName"
                         workspaceId:
-                          $ref: '#/components/schemas/workspaceId'
+                          $ref: "#/components/schemas/workspaceId"
   # update
   /categories/{category_id}:
     put:
@@ -337,12 +345,12 @@ paths:
       tags:
         - rooms
       operationId: index_room
-      summary:  Index your rooms.
+      summary: Index your rooms.
       description: Index your rooms.
       parameters:
         - name: workspace_id
           in: query
-          description: 'workspace_id'
+          description: "workspace_id"
           required: true
           schema:
             $ref: "#/components/schemas/workspaceId"
@@ -406,7 +414,7 @@ paths:
           content:
             application/json:
               schema:
-                example: { success: true }   
+                example: { success: true }
         400:
           description: Error operation
           content:
@@ -426,7 +434,7 @@ paths:
     put:
       tags:
         - rooms
-      operationId: update_room 
+      operationId: update_room
       summary: Update the room
       description: Update the room
       parameters:
@@ -481,14 +489,14 @@ paths:
           in: path
           required: true
           schema:
-            $ref: "#components/schemas/roomId"
+            $ref: "#components/schema/roomId"
       responses:
         200:
-          description:  Successful operation
+          description: Successful operation
           content:
             application/json:
               schema:
-                example: { success: true }  
+                example: { success: true }
         400:
           description: Error operation
           content:
@@ -527,7 +535,7 @@ paths:
             $ref: "#components/schemas/roomId"
       responses:
         200:
-          description:  Successful operation
+          description: Successful operation
           content:
             application/json:
               schema:
@@ -582,11 +590,6 @@ components:
               $ref: "#/components/schemas/userEmail"
             userImageUrl:
               $ref: "#/components/schemas/userImageUrl"
-        workspaces:
-          description: explain
-          type: array
-          items:
-            $ref: "#/components/schemas/workspace_data"
 
     workspace_data:
       description: explain
@@ -714,7 +717,7 @@ components:
       description: room unique id
       example: 222
       type: integer
-    
+
     roomName:
       description: name of room
       example: 雑談
