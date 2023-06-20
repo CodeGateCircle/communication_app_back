@@ -41,4 +41,7 @@ Rails.application.routes.draw do
   put '/categories/:category_id', to: 'category#update'
   # category削除
   post '/categories/:category_id/delete', to: 'category#delete'
+
+  # message取得
+  get '/messages', to: 'messages#index'
 end
