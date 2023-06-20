@@ -1,5 +1,6 @@
 class MessagesController < ApplicationController
   before_action :authenticate_user!
+  before_action :belong_to_room?, only: %i[index]
   def index
     params = index_params
     messages = Room.find(params[:room_id]).messages
