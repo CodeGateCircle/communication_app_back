@@ -41,4 +41,11 @@ Rails.application.routes.draw do
   put '/categories/:category_id', to: 'category#update'
   # category削除
   post '/categories/:category_id/delete', to: 'category#delete'
+
+  # reaction作成
+  post '/reaction', to: 'reaction#create'
+  # reaction取得
+  get '/reaction', to: 'reaction#index'
+  # reaction削除
+  post 'reaction/delete', to: 'reaction#delete'
 end
