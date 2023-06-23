@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :reaction do
     name { Faker::Name.name }
-    association :room
+    association :message
     association :user
   end
 end
