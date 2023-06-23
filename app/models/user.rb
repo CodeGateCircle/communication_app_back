@@ -14,6 +14,10 @@ class User < ActiveRecord::Base
   has_many :room_users, dependent: :destroy
   has_many :rooms, through: :room_users
 
+  
+  has_many :messages
+  has_many :reaction
+
   def self.from_omniauth(auth)
     user = User.where(provider: auth.provider, uid: auth.uid).first
     user ||= User.create(

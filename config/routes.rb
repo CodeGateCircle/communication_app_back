@@ -42,6 +42,9 @@ Rails.application.routes.draw do
   # category削除
   post '/categories/:category_id/delete', to: 'category#delete'
 
+  # message取得
+  get '/messages', to: 'messages#index'
+
   # reaction作成
   post '/reaction', to: 'reaction#create'
   # reaction取得
