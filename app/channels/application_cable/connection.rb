@@ -9,15 +9,14 @@ module ApplicationCable
     private
 
     def find_verified_user
-      return User.all.sample
       # ここで認証を行う
-      uid = params[:uid]
-      token = params[:token]
-      client_id = params[:client]
+      uid = request.query_parameters[:uid]
+      token = request.query_parameters[:access_token]
+      client = request.query_parameters[:client]
 
       user = User.find_by_uid(uid)
 
-      if user && user.valid_token?(token, client_id)
+      if user&.valid_token?(token, client)
         user
       else
         reject_unauthorized_connection
