@@ -8,7 +8,6 @@ class ReactionController < ApplicationController
   end
 
   def index
-    params = index_params
     reactions = Reaction.where(index_params).order(name: :desc)
     render status: 200, json: reactions, each_serializer: ReactionSerializer
   end

@@ -14,6 +14,8 @@ tags:
     description: about categories
   - name: rooms
     description: about rooms
+  - name: reactions
+    description: about reactions
 
 servers:
   - url: ---
@@ -585,6 +587,89 @@ paths:
                   items:
                     $ref: "#/components/schemas/userId"
 
+
+  /reactions:
+    # create
+    put:
+      tags:
+        - reactions
+      operationId: create_reactions
+      summary: Create the reactions
+      description: Create the reactions
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/reaction_data"
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                messageId:
+                  $ref: "#/components/schemas/messageId"
+                name:
+                  $ref: "#/components/schemas/reactionName"
+
+    # index
+    get:
+      tags:
+        - reactions
+      operationId: index_reactions
+      summary: Index the reactions
+      description: Index the reactions
+      parameters:
+        - name: message_id
+          in: query
+          description: "message_id"
+          required: true
+          schema:
+            $ref: "#/components/schemas/messageId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reactions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/reaction_data"
+                      
+  /reactions/delete:
+    # delete
+    put:
+      tags:
+        - reactions
+      operationId: delete_reactions
+      summary: Delete the reactions
+      description: Delete the reactions
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true }
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                messageId:
+                  $ref: "#/components/schemas/messageId"
+                name:
+                  $ref: "#/components/schemas/reactionName"
+
+
 components:
   schemas:
     userData:
@@ -688,6 +773,21 @@ components:
             workspaceId:
               $ref: "#/components/schemas/workspaceId"
 
+    reaction_data:
+      description: explain
+      type: object
+      required:
+        - messageId
+        - name
+        - userId
+      properties:
+        messageId:
+          $ref: "#/components/schemas/messageId"
+        name:
+          $ref: "#/components/schemas/reactionName"
+        userId:
+          $ref: "#/components/schemas/userId"
+
     userId:
       description: user unique id
       example: 1
@@ -756,4 +856,14 @@ components:
     categoryName:
       description: name of category
       example: general
+      type: string
+
+    messageId:
+      description: message unique id
+      example: 14949
+      type: integer
+
+    reactionName:
+      description: name of reaction
+      example: 祈り
       type: string

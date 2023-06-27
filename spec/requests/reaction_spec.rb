@@ -40,7 +40,6 @@ RSpec.describe "Reactions", type: :request do
     end
   end
 
-
   describe "GET /reactions" do
     let(:url) { "/reactions" }
     let(:tokens) { get_auth_token(@user) }
@@ -70,7 +69,6 @@ RSpec.describe "Reactions", type: :request do
       end
     end
   end
-
 
   describe "POST /reactions/delete" do
     let(:url) { "/reactions/delete" }
