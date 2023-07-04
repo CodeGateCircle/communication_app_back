@@ -123,7 +123,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/workspace_data"
+                $ref: "#/components/schemas/workspaceData"
       requestBody:
         content:
           application/json:
@@ -158,7 +158,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/workspace_data"
+                $ref: "#/components/schemas/workspaceData"
       requestBody:
         content:
           application/json:
@@ -234,7 +234,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/category_data"
+                $ref: "#/components/schemas/categoryData"
 
       requestBody:
         content:
@@ -299,7 +299,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/category_data"
+                $ref: "#/components/schemas/categoryData"
       requestBody:
         content:
           application/json:
@@ -346,7 +346,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/room_data"
+                $ref: "#/components/schemas/roomData"
       requestBody:
         content:
           application/json:
@@ -471,7 +471,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/room_data"
+                $ref: "#/components/schemas/roomData"
         400:
           description: Error operation
           content:
@@ -602,7 +602,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/reaction_data"
+                $ref: "#/components/schemas/reactionData"
 
       requestBody:
         content:
@@ -640,7 +640,7 @@ paths:
                   reactions:
                     type: array
                     items:
-                      $ref: "#/components/schemas/reaction_data"
+                      $ref: "#/components/schemas/reactionData"
                       
   /reactions/delete:
     # delete
@@ -696,7 +696,7 @@ components:
             userImageUrl:
               $ref: "#/components/schemas/userImageUrl"
 
-    workspace_data:
+    workspaceData:
       description: explain
       type: object
       required:
@@ -723,7 +723,7 @@ components:
             coverImageUrl:
               $ref: "#/components/schemas/coverImageUrl"
 
-    category_data:
+    categoryData:
       description: explain
       type: object
       required:
@@ -746,7 +746,7 @@ components:
             workspaceId:
               $ref: "#/components/schemas/workspaceId"
 
-    room_data:
+    roomData:
       description: explain
       type: object
       required:
@@ -773,7 +773,7 @@ components:
             workspaceId:
               $ref: "#/components/schemas/workspaceId"
 
-    reaction_data:
+    reactionData:
       description: explain
       type: object
       required:

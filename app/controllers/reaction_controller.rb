@@ -4,7 +4,7 @@ class ReactionController < ApplicationController
   def create
     params = create_params
     reaction = Reaction.create!({ message_id: params[:message_id], user_id: current_user.id, name: params[:name] })
-    render status: 200, json: reaction, serializer: ReactionSerializer
+    render status: 200, json: reaction
   end
 
   def index
