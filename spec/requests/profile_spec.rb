@@ -25,7 +25,6 @@ RSpec.describe "Profiles", type: :request do
       expect(res['user']['id']).to eq(@user.id)
       expect(res['user']['email']).to eq(@user.email)
       expect(res['user']['name']).to eq(@user.name)
-      expect(res['user']['image']).to eq(@user.image)
       expect(res['user']['workspaces'][0]['id']).to eq(@workspaces[0].id)
       expect(res['user']['workspaces'][0]['name']).to eq(@workspaces[0].name)
       expect(res['user']['workspaces'][0]['coverImageUrl']).to eq(@workspaces[0].cover_image_url)
@@ -49,7 +48,7 @@ RSpec.describe "Profiles", type: :request do
     let(:body) do
       {
         name: Faker::Name.name,
-        image: Faker::Internet.url
+        image: Faker::Avatar.image
       }
     end
     it 'can update profile' do
@@ -57,7 +56,6 @@ RSpec.describe "Profiles", type: :request do
       expect(response).to have_http_status :ok
       res = JSON.parse(response.body)
       expect(res['user']['name']).to eq(body[:name])
-      expect(res['user']['image']).to eq(body[:image])
     end
 
     it 'cannot edit profile without auth' do

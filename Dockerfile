@@ -5,7 +5,6 @@ RUN mkdir /communication_app_back
 WORKDIR /communication_app_back
 COPY Gemfile /communication_app_back/Gemfile
 COPY Gemfile.lock /communication_app_back/Gemfile.lock
-RUN gem install azure-storage-blob
 RUN bundle install
 COPY . /communication_app_back
 

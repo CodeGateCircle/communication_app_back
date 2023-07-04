@@ -15,7 +15,9 @@ module CommunicationAppBack
     config.hosts.clear
 
     # Configuration for the application, engines, and railties goes here.
-    #
+    config.active_storage.variable_content_types += ['image/jpg']
+    config.active_storage.silence_invalid_content_types_warning = true
+
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
