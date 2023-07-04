@@ -8,38 +8,11 @@ class ProfileController < ApplicationController
   end
 
   def edit
-    params = update_params
-    user = User.find(current_user.id)
-
     if params[:image].present?
-      image_url = String(params[:image])
-
-      url = URI.parse(image_url)
-      http = Net::HTTP.new(url.host, url.port)
-      http.use_ssl = (url.scheme == 'https') # HTTPSの場合はSSLを使用
-
-      response = http.get(url.request_uri)
-
-      if response.is_a?(Net::HTTPSuccess)
-        io = StringIO.new(response.body)
-        user.user_image.attach(io:, filename: "#{current_user.name}_image")
-        path = Rails.application.routes.url_helpers.rails_blob_path(user.user_image, only_path: true)
-        user.update({
-                      name: params[:name],
-                      image: path
-                    })
-
-      else
-        # エラーハンドリング
-        p "error"
-        exit(status = 1)
-      end
+      update_with_image
     else
-      user.update({
-                    name: params[:name]
-                  })
+      update_without_image
     end
-
     render json: user
   end
 
@@ -57,5 +30,36 @@ class ProfileController < ApplicationController
 
   def update_params
     params.permit(:name, :image)
+  end
+
+  def update_with_image
+    params = update_params
+    user = User.find(current_user.id)
+
+    image_url = String(params[:image])
+
+    url = URI.parse(image_url)
+    http = Net::HTTP.new(url.host, url.port)
+    http.use_ssl = (url.scheme == 'https') # HTTPSの場合はSSLを使用
+
+    response = http.get(url.request_uri)
+
+    return unless response.is_a?(Net::HTTPSuccess)
+
+    io = StringIO.new(response.body)
+    user.user_image.attach(io:, filename: "#{current_user.name}_image")
+    path = Rails.application.routes.url_helpers.rails_blob_path(user.user_image, only_path: true)
+    user.update({
+                  name: params[:name],
+                  image: path
+                })
+  end
+
+  def update_without_image
+    params = update_params
+    user = User.find(current_user.id)
+    user.update({
+                  name: params[:name]
+                })
   end
 end
