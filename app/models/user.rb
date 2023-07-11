@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   has_many :rooms, through: :room_users
   has_many :messages
   has_one_attached :user_image
+  validates :user_image, attached: true, size: { less_than: 10.megabytes, message: 'is too large' }
 
   def self.from_omniauth(auth)
     user = User.where(provider: auth.provider, uid: auth.uid).first

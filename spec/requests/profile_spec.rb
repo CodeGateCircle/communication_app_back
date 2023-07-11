@@ -55,6 +55,7 @@ RSpec.describe "Profiles", type: :request do
       put '/profile', params: body, headers: token
       expect(response).to have_http_status :ok
       res = JSON.parse(response.body)
+
       expect(res['user']['name']).to eq(body[:name])
     end
 

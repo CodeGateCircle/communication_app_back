@@ -8,11 +8,11 @@ class ProfileController < ApplicationController
   end
 
   def edit
-    if params[:image].present?
-      update_with_image
-    else
-      update_without_image
-    end
+    user = if params[:image].present?
+             update_with_image
+           else
+             update_without_image
+           end
     render json: user
   end
 
@@ -44,8 +44,6 @@ class ProfileController < ApplicationController
 
     response = http.get(url.request_uri)
 
-    return unless response.is_a?(Net::HTTPSuccess)
-
     io = StringIO.new(response.body)
     user.user_image.attach(io:, filename: "#{current_user.name}_image")
     path = Rails.application.routes.url_helpers.rails_blob_path(user.user_image, only_path: true)
@@ -53,6 +51,7 @@ class ProfileController < ApplicationController
                   name: params[:name],
                   image: path
                 })
+    user
   end
 
   def update_without_image
@@ -61,5 +60,6 @@ class ProfileController < ApplicationController
     user.update({
                   name: params[:name]
                 })
+    user
   end
 end
