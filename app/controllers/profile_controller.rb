@@ -36,6 +36,23 @@ class ProfileController < ApplicationController
     params = update_params
     user = User.find(current_user.id)
 
+    if String(params[:image]).start_with?('http')
+      user = update_with_url
+    else
+      user.user_image.attach(params[:image])
+    end
+
+    path = Rails.application.routes.url_helpers.rails_blob_path(user.user_image, only_path: true)
+    user.update({
+                  name: params[:name],
+                  image: path
+                })
+    user
+  end
+
+  def update_with_url
+    user = User.find(current_user.id)
+
     image_url = String(params[:image])
 
     url = URI.parse(image_url)
@@ -46,11 +63,6 @@ class ProfileController < ApplicationController
 
     io = StringIO.new(response.body)
     user.user_image.attach(io:, filename: "#{current_user.name}_image")
-    path = Rails.application.routes.url_helpers.rails_blob_path(user.user_image, only_path: true)
-    user.update({
-                  name: params[:name],
-                  image: path
-                })
     user
   end
 

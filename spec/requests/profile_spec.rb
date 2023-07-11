@@ -51,17 +51,32 @@ RSpec.describe "Profiles", type: :request do
         image: Faker::Avatar.image
       }
     end
-    it 'can update profile' do
-      put '/profile', params: body, headers: token
-      expect(response).to have_http_status :ok
-      res = JSON.parse(response.body)
 
-      expect(res['user']['name']).to eq(body[:name])
+    context "success" do
+      it 'can update profile' do
+        put '/profile', params: body, headers: token
+        expect(response).to have_http_status :ok
+        res = JSON.parse(response.body)
+        expect(res['user']['name']).to eq(body[:name])
+      end
+
+      it 'can update profile upload image' do
+        local_body = {
+          name: Faker::Name.name,
+          image: fixture_file_upload('spec/unnamed.jpg', 'image/jpg')
+        }
+        put '/profile', params: local_body, headers: token
+        expect(response).to have_http_status :ok
+        res = JSON.parse(response.body)
+        expect(res['user']['name']).to eq(local_body[:name])
+      end
     end
 
-    it 'cannot edit profile without auth' do
-      put '/profile', params: body
-      expect(response).to have_http_status 401
+    context "error" do
+      it 'cannot edit profile without auth' do
+        put '/profile', params: body
+        expect(response).to have_http_status 401
+      end
     end
   end
 
