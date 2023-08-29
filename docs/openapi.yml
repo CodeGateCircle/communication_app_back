@@ -14,6 +14,10 @@ tags:
     description: about categories
   - name: rooms
     description: about rooms
+  - name: reactions
+    description: about reactions
+  - name: messages
+    description: about messages
 
 servers:
   - url: ---
@@ -121,7 +125,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/workspace_data"
+                $ref: "#/components/schemas/workspaceData"
       requestBody:
         content:
           application/json:
@@ -156,7 +160,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/workspace_data"
+                $ref: "#/components/schemas/workspaceData"
       requestBody:
         content:
           application/json:
@@ -232,7 +236,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/category_data"
+                $ref: "#/components/schemas/categoryData"
 
       requestBody:
         content:
@@ -297,7 +301,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/category_data"
+                $ref: "#/components/schemas/categoryData"
       requestBody:
         content:
           application/json:
@@ -344,7 +348,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/room_data"
+                $ref: "#/components/schemas/roomData"
       requestBody:
         content:
           application/json:
@@ -469,7 +473,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/room_data"
+                $ref: "#/components/schemas/roomData"
         400:
           description: Error operation
           content:
@@ -584,6 +588,121 @@ paths:
                   type: array
                   items:
                     $ref: "#/components/schemas/userId"
+  # index
+  /messages:
+    get:
+      tags:
+        - messages
+      operationId: index_room
+      summary: Index your rooms.
+      description: Index your rooms.
+      parameters:
+        - name: room_id
+          in: query
+          description: "room_id"
+          required: true
+          schema:
+            $ref: "#/components/schemas/roomId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      $ref: "#/components/schemas/messageId"
+                    text:
+                      $ref: "#/components/schemas/messageText"
+                    userId:
+                      $ref: "#/components/schemas/userId"
+                    roomId:
+                      $ref: "#/components/schemas/roomId"
+
+  /reactions:
+    # create
+    put:
+      tags:
+        - reactions
+      operationId: create_reactions
+      summary: Create the reactions
+      description: Create the reactions
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/reactionData"
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                messageId:
+                  $ref: "#/components/schemas/messageId"
+                name:
+                  $ref: "#/components/schemas/reactionName"
+
+    # index
+    get:
+      tags:
+        - reactions
+      operationId: index_reactions
+      summary: Index the reactions
+      description: Index the reactions
+      parameters:
+        - name: message_id
+          in: query
+          description: "message_id"
+          required: true
+          schema:
+            $ref: "#/components/schemas/messageId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reactions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/reactionData"
+                      
+  /reactions/delete:
+    # delete
+    put:
+      tags:
+        - reactions
+      operationId: delete_reactions
+      summary: Delete the reactions
+      description: Delete the reactions
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true }
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                messageId:
+                  $ref: "#/components/schemas/messageId"
+                name:
+                  $ref: "#/components/schemas/reactionName"
+
 
 components:
   schemas:
@@ -611,7 +730,7 @@ components:
             userImageUrl:
               $ref: "#/components/schemas/userImageUrl"
 
-    workspace_data:
+    workspaceData:
       description: explain
       type: object
       required:
@@ -638,7 +757,7 @@ components:
             coverImageUrl:
               $ref: "#/components/schemas/coverImageUrl"
 
-    category_data:
+    categoryData:
       description: explain
       type: object
       required:
@@ -661,7 +780,7 @@ components:
             workspaceId:
               $ref: "#/components/schemas/workspaceId"
 
-    room_data:
+    roomData:
       description: explain
       type: object
       required:
@@ -687,6 +806,44 @@ components:
               $ref: "#/components/schemas/categoryId"
             workspaceId:
               $ref: "#/components/schemas/workspaceId"
+    message_data:
+      description: message
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          description: message
+          type: object
+          required:
+            - id
+            - text
+            - userId
+            - roomId
+          properties:
+            id:
+              $ref: "#/components/schemas/messageId"
+            text:
+              $ref: "#/components/schemas/messageText"
+            userId:
+              $ref: "#/components/schemas/userId"
+            roomId:
+              $ref: "#/components/schemas/roomId"
+
+    reactionData:
+      description: explain
+      type: object
+      required:
+        - messageId
+        - name
+        - userId
+      properties:
+        messageId:
+          $ref: "#/components/schemas/messageId"
+        name:
+          $ref: "#/components/schemas/reactionName"
+        userId:
+          $ref: "#/components/schemas/userId"
 
     userId:
       description: user unique id
@@ -756,4 +913,19 @@ components:
     categoryName:
       description: name of category
       example: general
+      type: string
+
+    messageId:
+      description: message unique id
+      example: 1
+      type: integer
+
+    messageText:
+      description: message text
+      example: hello
+      type: string
+
+    reactionName:
+      description: name of reaction
+      example: 祈り
       type: string
