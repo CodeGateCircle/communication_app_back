@@ -18,7 +18,6 @@ class User < ActiveRecord::Base
   has_one_attached :user_image
   has_many :reactions
 
-
   def self.from_omniauth(auth)
     user = User.where(provider: auth.provider, uid: auth.uid).first
     user ||= User.create(
