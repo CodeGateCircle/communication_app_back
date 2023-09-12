@@ -13,5 +13,3 @@ jobs:
           bundler-cache: true
       - name: Lint Ruby files
         run: bundle exec rubocop --parallel
-      - name: what
-        run: bundle lock --add-platform x86_64-linux
