@@ -33,7 +33,3 @@ jobs:
       # Add or replace test runners here
       - name: Run tests
         run: bundle exec rspec
-        with:
-          credentials: ${{ secrets.AZURE_CREDENTIALS }}
-        env:
-          credentials: ${{ secrets.AZURE_CREDENTIALS }}
