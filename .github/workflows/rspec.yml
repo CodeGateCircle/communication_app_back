@@ -40,3 +40,4 @@ jobs:
         env:
           credentials: ${{ secrets.AZURE_CREDENTIALS }}
         run: bundle exec rspec
+
