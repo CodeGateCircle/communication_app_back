@@ -38,5 +38,5 @@ jobs:
       # Add or replace test runners here
       - name: Run tests
         env:
-          STORAGE_ACCESS_KEY: ${{secrets.STORAGE_ACCESS_KEY}}
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
         run: bundle exec rspec
