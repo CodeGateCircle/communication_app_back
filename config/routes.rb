@@ -44,4 +44,11 @@ Rails.application.routes.draw do
 
   # message取得
   get '/messages', to: 'messages#index'
+
+  # reaction作成
+  post '/reactions', to: 'reaction#create'
+  # reaction取得
+  get '/reactions', to: 'reaction#index'
+  # reaction削除
+  post 'reactions/delete', to: 'reaction#delete'
 end
