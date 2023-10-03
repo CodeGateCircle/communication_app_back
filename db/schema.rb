@@ -76,7 +76,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_623_074_222) do
     t.datetime "updated_at", null: false
     t.boolean "is_deleted", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
+    t.index %w[uid provider], name: "index_users_on_uid_and_provider", unique: true
   end
 
   create_table "workspace_users", force: :cascade do |t|
@@ -86,7 +86,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_623_074_222) do
     t.datetime "updated_at", null: false
     t.integer "role", default: 3, null: false
     t.index ["user_id"], name: "index_workspace_users_on_user_id"
-    t.index ["workspace_id", "user_id"], name: "index_workspace_users_on_workspace_id_and_user_id", unique: true
+    t.index %w[workspace_id user_id], name: "index_workspace_users_on_workspace_id_and_user_id", unique: true
     t.index ["workspace_id"], name: "index_workspace_users_on_workspace_id"
   end
 
