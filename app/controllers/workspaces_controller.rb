@@ -24,6 +24,11 @@ class WorkspacesController < ApplicationController
                                          })
       workspace_user.save!
 
+      Category.create!({
+                         name: "Category",
+                         workspace_id: workspace.id
+                       })
+
       render status: 200, json: workspace
     end
   end
