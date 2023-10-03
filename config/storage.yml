@@ -25,7 +25,7 @@ local:
 microsoft:
  service: AzureStorage
  storage_account_name: imageurldb
- storage_access_key: <%= Rails.application.credentials.dig(:azure_storage, :storage_access_key) %>
+ storage_access_key: <%= ENV.fetch('AZURE_STORAGE_ACCESS_KEY', nil) %>
  container: image-db
 
 # mirror:
