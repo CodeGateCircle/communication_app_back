@@ -34,3 +34,5 @@
 start.bat
 
 /memo.txt
+
+/config/credentials/development.key
