@@ -2,6 +2,9 @@ inherit_from: .rubocop_todo.yml
 
 AllCops:
   NewCops: enable
+  Exclude:
+    - 'db/migrate/*' 
+    - 'db/schema.rb'
 
 Metrics/BlockLength:
   Enabled: false
