@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   has_many :rooms, through: :room_users
 
   has_many :messages
+  has_one_attached :user_image
   has_many :reactions
 
   def self.from_omniauth(auth)

@@ -56,3 +56,7 @@ end
 group :development do
   gem "rubocop", require: false
 end
+
+gem "azure-storage-blob"
+gem "faraday", "~> 1.8", ">= 1.8.2"
+gem "nokogiri", "~> 1.11", ">= 1.11.3"
