@@ -6,9 +6,29 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-Category.create([{ id: 0, name: "general" }, { id: 1, name: "chat" }])
+workspace = Workspace.create(
+  name: "general",
+  description: "general",
+  icon_image_url: "https://picsum.photos/200/300",
+  cover_image_url: "https://picsum.photos/200/300"
+)
+WorkspaceUser.create(
+  workspace_id: workspace.id,
+  user_id: 1
+)
 
-def reset_id(tablename)
-  connection = ActiveRecord::Base.connection
-  connection.execute("select setval('#{tablename}_id_seq',(select max(id) from #{tablename}))")
-end
+category = Category.create(
+  name: "general",
+  workspace_id: workspace.id
+)
+
+room = Room.create(
+  name: "general",
+  description: "general",
+  category_id: category.id,
+  workspace_id: workspace.id
+)
+RoomUser.create(
+  room_id: room.id,
+  user_id: 1
+)
