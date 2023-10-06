@@ -1,11 +1,11 @@
 class ReactionController < ApplicationController
   before_action :authenticate_user!
 
-  def create
-    params = create_params
-    reaction = Reaction.create!({ message_id: params[:message_id], user_id: current_user.id, name: params[:name] })
-    render status: 200, json: reaction
-  end
+  # def create
+  #   params = create_params
+  #   reaction = Reaction.create!({ message_id: params[:message_id], user_id: current_user.id, name: params[:name] })
+  #   render status: 200, json: reaction
+  # end
 
   def index
     reactions = Reaction.where(index_params).order(name: :desc)

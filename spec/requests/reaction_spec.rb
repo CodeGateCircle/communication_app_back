@@ -11,34 +11,34 @@ RSpec.describe "Reactions", type: :request do
     @message = FactoryBot.create(:message, room_id: @room.id, user_id: @user.id)
   end
 
-  describe "POST /reactions" do
-    let(:url) { "/reactions" }
-    let(:tokens) { get_auth_token(@user) }
-    let(:body) do
-      {
-        name: Faker::Name.name,
-        messageId: @message.id
-      }
-    end
+  # describe "POST /reactions" do
+  #   let(:url) { "/reactions" }
+  #   let(:tokens) { get_auth_token(@user) }
+  #   let(:body) do
+  #     {
+  #       name: Faker::Name.name,
+  #       messageId: @message.id
+  #     }
+  #   end
 
-    context "success" do
-      it 'can create reaction' do
-        post url, params: body, headers: tokens
-        expect(response).to have_http_status :ok
-        res = JSON.parse(response.body)
-        expect(res['reaction']['name']).to eq(body[:name])
-        expect(res['reaction']['messageId']).to eq(body[:messageId])
-        expect(res['reaction']['userId']).to eq(@user.id)
-      end
-    end
+  #   context "success" do
+  #     it 'can create reaction' do
+  #       post url, params: body, headers: tokens
+  #       expect(response).to have_http_status :ok
+  #       res = JSON.parse(response.body)
+  #       expect(res['reaction']['name']).to eq(body[:name])
+  #       expect(res['reaction']['messageId']).to eq(body[:messageId])
+  #       expect(res['reaction']['userId']).to eq(@user.id)
+  #     end
+  #   end
 
-    context "error" do
-      it 'can not create reaction without auth' do
-        post url, params: body
-        expect(response).to have_http_status 401
-      end
-    end
-  end
+  #   context "error" do
+  #     it 'can not create reaction without auth' do
+  #       post url, params: body
+  #       expect(response).to have_http_status 401
+  #     end
+  #   end
+  # end
 
   describe "GET /reactions" do
     let(:url) { "/reactions" }
