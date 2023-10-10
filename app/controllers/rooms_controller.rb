@@ -29,7 +29,7 @@ class RoomsController < ApplicationController
       end
       each_category[i].store(:rooms, tmp)
     end
-    render status: 200, json: each_category.to_json, each_serializer: CategorySerializer
+    render status: 200, json: { 'categories' => each_category }, each_serializer: CategorySerializer
   end
 
   def update
