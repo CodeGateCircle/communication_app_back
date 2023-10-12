@@ -34,5 +34,4 @@ class ChatChannel < ApplicationCable::Channel
     reaction.destroy!
     ActionCable.server.broadcast("chat_channel_#{reaction.message.room.workspace.id}", reaction)
   end
-
 end
