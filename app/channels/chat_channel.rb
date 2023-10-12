@@ -24,4 +24,15 @@ class ChatChannel < ApplicationCable::Channel
     )
     ActionCable.server.broadcast("chat_channel_#{reaction.message.room.workspace.id}", reaction)
   end
+
+  def reaction_delete(data)
+    reaction = Reaction.find_by(
+      message_id: data['messageId'],
+      user_id: current_user.id,
+      name: data['name']
+    )
+    reaction.destroy!
+    ActionCable.server.broadcast("chat_channel_#{reaction.message.room.workspace.id}", reaction)
+  end
+
 end
