@@ -21,7 +21,6 @@ RSpec.describe "Workspaces", type: :request do
         get url, headers: tokens
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
-        p res
         expect(res['workspaces'].length).to eq(2)
         expect(res['workspaces'][0]['id']).to eq(@other_ws.id)
         expect(res['workspaces'][0]['name']).to eq(@other_ws.name)
