@@ -34,6 +34,8 @@ module CommunicationAppBack
 
     config.action_cable.mount_path = "/cable"
 
+    config.action_cable.allowed_request_origins = ['*']
+
     config.api_only = true
   end
 end
