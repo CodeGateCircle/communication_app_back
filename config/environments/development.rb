@@ -64,5 +64,5 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   # for action cable
-  config.action_cable.allowed_request_origins = ["http://localhost:5173"]
+  config.action_cable.allowed_request_origins = [ENV.fetch('FRONT_BASE_URL')]
 end
