@@ -71,17 +71,17 @@ RSpec.describe "Rooms", type: :request do
         categories = Category.where(workspace_id: @workspace.id).order(id: :desc)
         room_ids = RoomUser.where(user_id: @user.id).order(id: :desc).pluck(:room_id)
 
-        expect(res.length).to eq(categories.length)
+        expect(res['categories'].length).to eq(categories.length)
         categories.each_with_index do |category, i|
-          expect(category.id).to eq(res[i]['id'])
-          expect(category.name).to eq(res[i]['name'])
+          expect(category.id).to eq(res['categories'][i]['id'])
+          expect(category.name).to eq(res['categories'][i]['name'])
 
           rooms = Room.where(id: room_ids, category_id: category.id, is_deleted: false).order(id: :desc)
 
-          expect(res[i]['rooms'].length).to eq(rooms.length)
+          expect(res['categories'][i]['rooms'].length).to eq(rooms.length)
           rooms.each_with_index do |room, j|
-            expect(room.id).to eq(res[i]['rooms'][j]['id'])
-            expect(room.name).to eq(res[i]['rooms'][j]['name'])
+            expect(room.id).to eq(res['categories'][i]['rooms'][j]['id'])
+            expect(room.name).to eq(res['categories'][i]['rooms'][j]['name'])
           end
         end
       end
@@ -107,15 +107,14 @@ RSpec.describe "Rooms", type: :request do
 
         categories = Category.where(workspace_id: @workspace.id).order(id: :desc)
         room_ids = RoomUser.where(user_id: @user_other.id).order(id: :desc).pluck(:room_id)
-
-        expect(res.length).to eq(categories.length)
+        expect(res['categories'].length).to eq(categories.length)
         categories.each_with_index do |category, i|
-          expect(category.id).to eq(res[i]['id'])
-          expect(category.name).to eq(res[i]['name'])
+          expect(category.id).to eq(res['categories'][i]['id'])
+          expect(category.name).to eq(res['categories'][i]['name'])
 
           rooms = Room.where(id: room_ids, category_id: category.id, is_deleted: false).order(id: :desc)
 
-          expect(res[i]['rooms'].length).to eq(rooms.length)
+          expect(res['categories'][i]['rooms'].length).to eq(rooms.length)
           rooms.each_with_index do |room, j|
             expect(room.id).to eq(res[i]['rooms'][j]['id'])
             expect(room.name).to eq(res[i]['rooms'][j]['name'])
