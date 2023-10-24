@@ -624,7 +624,7 @@ paths:
 
   /reactions:
     # create
-    put:
+    post:
       tags:
         - reactions
       operationId: create_reactions
@@ -678,7 +678,7 @@ paths:
                       
   /reactions/delete:
     # delete
-    put:
+    post:
       tags:
         - reactions
       operationId: delete_reactions
