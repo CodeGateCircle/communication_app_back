@@ -34,7 +34,7 @@ module CommunicationAppBack
 
     config.action_cable.mount_path = "/cable"
 
-    config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/, nil]
+    config.action_cable.allowed_request_origins = [%r{http://*}, %r{https://*}, nil]
 
     config.api_only = true
   end
