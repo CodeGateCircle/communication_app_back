@@ -41,4 +41,22 @@ class ApplicationController < ActionController::API
     room = Room.find_by(id: room_id, is_deleted: false)
     room.nil?
   end
+
+  # 画像を保存する
+  def preserve_image(image_data, attach_element)
+    if String(image_data).start_with?('http')
+      url = URI.parse(image_data)
+      nil if url.host.nil?
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = (url.scheme == 'https')
+      response = http.get(url.request_uri)
+
+      io = StringIO.new(response.body)
+
+      attach_element.attach(io:, filename: "#{current_user.name}_image")
+    else
+      attach_element.attach(image_data)
+    end
+    url_for(attach_element)
+  end
 end
