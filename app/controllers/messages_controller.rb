@@ -8,9 +8,10 @@ class MessagesController < ApplicationController
     render status: 200, json: messages, each_serializer: MessageSerializer
   end
 
+  # TODO: "./profile_controller.rb" 参照
   def post
     params = post_params
-    message = Messages.create!({
+    message = Message.create!({
                                  room_id: params[:room_id],
                                  user_id: current_user.id,
                                  content: params[:content]

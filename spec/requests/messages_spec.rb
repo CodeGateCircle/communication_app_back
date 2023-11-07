@@ -45,4 +45,35 @@ RSpec.describe "Messages", type: :request do
       end
     end
   end
+
+  describe "POST /post" do
+    let(:url) { "/messages?room_id=#{@room.id}" }
+    let(:tokens) { get_auth_token(@user) }
+    let(:body) do 
+      {
+        content: Faker::Lorem.sentence,
+        image: Faker::Avatar.image
+      }
+    end
+
+    context 'success' do
+      it 'can post message' do
+        post url, params: body, headers: tokens
+        expect(response).to have_http_status :ok
+        res = JSON.parse(response.body)
+        expect(res['message']['room_id']).to eq(@room.id)
+        expect(res['message']['text']).to eq(body[:text])
+        expect(res['message']['image']).to eq(body[:image])
+      end
+
+      it 'can post message without image' do
+        post url, params: body.except(:image), headers: tokens
+        expect(response).to have_http_status :ok
+        res = JSON.parse(response.body)
+        expect(res['message']['room_id']).to eq(@room.id)
+        expect(res['message']['text']).to eq(body[:text])
+        expect(res['message']['image']).to eq(nil)
+      end
+    end
+  end
 end
