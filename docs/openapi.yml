@@ -603,6 +603,13 @@ paths:
           required: true
           schema:
             $ref: "#/components/schemas/roomId"
+        - name: page
+          in: query
+          description: "page"
+          required: true
+          schema:
+            $ref: "#/components/schemas/page"
+
       responses:
         200:
           description: Successful operation
@@ -929,3 +936,8 @@ components:
       description: name of reaction
       example: 祈り
       type: string
+
+    page:
+      description: page
+      example: 1
+      type: integer
