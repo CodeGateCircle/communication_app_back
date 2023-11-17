@@ -697,8 +697,8 @@ paths:
                   properties:
                     id:
                       $ref: "#/components/schemas/messageId"
-                    text:
-                      $ref: "#/components/schemas/messageText"
+                    content:
+                      $ref: "#/components/schemas/messageContent"
                     userId:
                       $ref: "#/components/schemas/userId"
                     roomId:
