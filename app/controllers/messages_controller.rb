@@ -1,7 +1,7 @@
 class MessagesController < ApplicationController
   before_action :authenticate_user!
   before_action :belong_to_room?, only: %i[index]
-  
+
   def index
     params = index_params
     messages = Room.find(params[:room_id]).messages
@@ -12,11 +12,15 @@ class MessagesController < ApplicationController
   def post
     params = post_params
     message = Message.create!({
-                                 room_id: params[:room_id],
-                                 user_id: current_user.id,
-                                 content: params[:content]
-                               })
-    message.image.attach(params[:image]) if params[:image]
+                                room_id: params[:room_id],
+                                user_id: current_user.id,
+                                content: params[:content]
+                              })
+    if params[:image]
+      path = preserve_image(params[:image], message.image_data)
+      message.update!({ image: path })
+    end
+
     render status: 200, json: message
   end
 

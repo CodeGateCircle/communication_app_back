@@ -1,4 +1,4 @@
-openapi: "3.0.0"
+openapi: 3.1.0
 
 info:
   version: 1.0.0
@@ -196,7 +196,7 @@ paths:
             application/json:
               schema:
                 example: { success: true }
-
+  # invite
   /workspaces/invite:
     post:
       tags:
@@ -513,7 +513,7 @@ paths:
           in: path
           required: true
           schema:
-            $ref: "#components/schema/roomId"
+            $ref: "#/components/schemas/roomId"
       responses:
         200:
           description: Successful operation
@@ -556,7 +556,7 @@ paths:
           in: path
           required: true
           schema:
-            $ref: "#components/schemas/roomId"
+            $ref: "#/components/schemas/roomId"
       responses:
         200:
           description: Successful operation
@@ -588,42 +588,9 @@ paths:
                   type: array
                   items:
                     $ref: "#/components/schemas/userId"
-  # index
-  /messages:
-    get:
-      tags:
-        - messages
-      operationId: index_room
-      summary: Index your rooms.
-      description: Index your rooms.
-      parameters:
-        - name: room_id
-          in: query
-          description: "room_id"
-          required: true
-          schema:
-            $ref: "#/components/schemas/roomId"
-      responses:
-        200:
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      $ref: "#/components/schemas/messageId"
-                    text:
-                      $ref: "#/components/schemas/messageText"
-                    userId:
-                      $ref: "#/components/schemas/userId"
-                    roomId:
-                      $ref: "#/components/schemas/roomId"
 
+  # create
   /reactions:
-    # create
     post:
       tags:
         - reactions
@@ -676,8 +643,8 @@ paths:
                     items:
                       $ref: "#/components/schemas/reactionData"
                       
+  # delete
   /reactions/delete:
-    # delete
     post:
       tags:
         - reactions
@@ -702,6 +669,70 @@ paths:
                   $ref: "#/components/schemas/messageId"
                 name:
                   $ref: "#/components/schemas/reactionName"
+
+  # index
+  /messages:
+    get:
+      tags:
+        - messages
+      operationId: index_room
+      summary: Index your rooms.
+      description: Index your rooms.
+      parameters:
+        - name: room_id
+          in: query
+          description: "room_id"
+          required: true
+          schema:
+            $ref: "#/components/schemas/roomId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      $ref: "#/components/schemas/messageId"
+                    text:
+                      $ref: "#/components/schemas/messageText"
+                    userId:
+                      $ref: "#/components/schemas/userId"
+                    roomId:
+                      $ref: "#/components/schemas/roomId"
+
+  /messages?room_id={room_id}:
+    post:
+      tags:
+        - messages
+      operationId: create_message
+      summary: Create new message.
+      description: Create new message.
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/message_data"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roomId:
+                  $ref: "#/components/schemas/roomId"
+                userId:
+                  $ref: "#/components/schemas/userId"
+                content:
+                  $ref: "#/components/schemas/messageContent"
+                image:
+                  $ref: "#/components/schemas/messageImage"
+
 
 
 components:
@@ -806,6 +837,7 @@ components:
               $ref: "#/components/schemas/categoryId"
             workspaceId:
               $ref: "#/components/schemas/workspaceId"
+
     message_data:
       description: message
       type: object
@@ -817,14 +849,14 @@ components:
           type: object
           required:
             - id
-            - text
+            - content
             - userId
             - roomId
           properties:
             id:
               $ref: "#/components/schemas/messageId"
-            text:
-              $ref: "#/components/schemas/messageText"
+            content:
+              $ref: "#/components/schemas/messageContent"
             userId:
               $ref: "#/components/schemas/userId"
             roomId:
@@ -920,10 +952,15 @@ components:
       example: 1
       type: integer
 
-    messageText:
-      description: message text
+    messageContent:
+      description: message content
       example: hello
       type: string
+
+    messageImage:
+        description: message image
+        example: http://message_image_url
+        type: string
 
     reactionName:
       description: name of reaction
