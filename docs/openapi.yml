@@ -373,7 +373,7 @@ paths:
       description: Index your rooms.
       parameters:
         - name: workspace_id
-          in: query
+          in: path
           description: "workspace_id"
           required: true
           schema:
