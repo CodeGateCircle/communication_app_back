@@ -22,6 +22,9 @@ RSpec.describe "Messages", type: :request do
 
     context 'success' do
       it 'can get messages' do
+        messages.each_with_index do |message, _i|
+          FactoryBot.create(:reaction, message:)
+        end
         get url, headers: tokens
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
