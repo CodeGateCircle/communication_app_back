@@ -47,6 +47,6 @@ class MessagesController < ApplicationController
   end
 
   def post_params
-    params.permit(:room_id, :content, :image)
+    params.permit(:room_id, :content, :image, :page)
   end
 end
