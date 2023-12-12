@@ -651,7 +651,6 @@ paths:
                                 $ref: "#/components/schemas/userId"
 
 
-
   /reactions:
     # create
     post:
@@ -761,8 +760,6 @@ paths:
                   $ref: "#/components/schemas/messageContent"
                 image:
                   $ref: "#/components/schemas/messageImage"
-
-
 
 components:
   schemas:
