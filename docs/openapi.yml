@@ -626,7 +626,7 @@ paths:
                         id:
                           $ref: "#/components/schemas/messageId"
                         content:
-                          $ref: "#/components/schemas/messageText"
+                          $ref: "#/components/schemas/messageContent"
                         user:
                           type: object
                           properties:
