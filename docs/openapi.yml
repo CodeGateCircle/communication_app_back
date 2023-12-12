@@ -705,7 +705,7 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/reactionData"
-                      
+
   # delete
   /reactions/delete:
     post:
@@ -732,40 +732,6 @@ paths:
                   $ref: "#/components/schemas/messageId"
                 name:
                   $ref: "#/components/schemas/reactionName"
-
-  # index
-  /messages:
-    get:
-      tags:
-        - messages
-      operationId: index_room
-      summary: Index your rooms.
-      description: Index your rooms.
-      parameters:
-        - name: room_id
-          in: query
-          description: "room_id"
-          required: true
-          schema:
-            $ref: "#/components/schemas/roomId"
-      responses:
-        200:
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      $ref: "#/components/schemas/messageId"
-                    content:
-                      $ref: "#/components/schemas/messageContent"
-                    userId:
-                      $ref: "#/components/schemas/userId"
-                    roomId:
-                      $ref: "#/components/schemas/roomId"
 
   /messages?room_id={room_id}:
     post:
