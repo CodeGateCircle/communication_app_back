@@ -603,24 +603,54 @@ paths:
           required: true
           schema:
             $ref: "#/components/schemas/roomId"
+        - name: page
+          in: query
+          description: "page"
+          required: true
+          schema:
+            $ref: "#/components/schemas/page"
+
       responses:
         200:
           description: Successful operation
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      $ref: "#/components/schemas/messageId"
-                    text:
-                      $ref: "#/components/schemas/messageText"
-                    userId:
-                      $ref: "#/components/schemas/userId"
-                    roomId:
-                      $ref: "#/components/schemas/roomId"
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          $ref: "#/components/schemas/messageId"
+                        content:
+                          $ref: "#/components/schemas/messageText"
+                        user:
+                          type: object
+                          properties:
+                            id:
+                              $ref: "#/components/schemas/userId"
+                            name:
+                              $ref: "#/components/schemas/userName"
+                            email:
+                              $ref: "#/components/schemas/userEmail"
+                            userImageUrl:
+                              $ref: "#/components/schemas/userImageUrl"
+                        roomId:
+                          $ref: "#/components/schemas/roomId"
+                        reactions:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                $ref: "#/components/schemas/reactionName"
+                              userId:
+                                $ref: "#/components/schemas/userId"
+
+
 
   /reactions:
     # create
@@ -929,3 +959,8 @@ components:
       description: name of reaction
       example: 祈り
       type: string
+
+    page:
+      description: page
+      example: 1
+      type: integer

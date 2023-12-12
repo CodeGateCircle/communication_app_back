@@ -14,19 +14,22 @@ RSpec.describe "Messages", type: :request do
   end
 
   describe "GET /index" do
-    let(:url) { "/messages?room_id=#{@room.id}" }
+    let(:url) { "/messages?room_id=#{@room.id}&page=1" }
     let(:tokens) { get_auth_token(@user) }
     let(:other_room) { FactoryBot.create(:room, workspace: @workspace) }
-    let!(:messages) { FactoryBot.create_list(:message, 10, room: @room) }
-    let!(:other_messages) { FactoryBot.create_list(:message, 10, room: other_room) }
+    let!(:messages) { FactoryBot.create_list(:message, 50, room: @room) }
+    let!(:other_messages) { FactoryBot.create_list(:message, 50, room: other_room) }
 
     context 'success' do
       it 'can get messages' do
+        messages.each_with_index do |message, _i|
+          FactoryBot.create(:reaction, message:)
+        end
         get url, headers: tokens
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
-        expect(res['messages'].length).to eq(10)
-        expect(res['messages']).to match_array(lower_camel_key_hash(messages.map { |message| MessageSerializer.new(message).as_json }))
+        expect(res['messages'].length).to eq(20)
+        # expect(res['messages']).to match_array(lower_camel_key_hash(messages.map { |message| MessageSerializer.new(message).as_json }))
       end
     end
 

@@ -1,6 +1,7 @@
 class MessageSerializer < ActiveModel::Serializer
   type :message
   attributes :id, :content, :user, :room_id, :updated_at, :created_at
+  has_many :reactions, if: -> { object[:reactions].present? }, serializer: ReactionSerializer
 
   def user
     {
