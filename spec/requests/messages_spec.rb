@@ -48,4 +48,46 @@ RSpec.describe "Messages", type: :request do
       end
     end
   end
+
+  describe "POST /post" do
+    let(:url) { "/messages?room_id=#{@room.id}" }
+    let(:token) { get_auth_token(@user) }
+    let(:body) do
+      {
+        content: Faker::Lorem.sentence,
+        image: Faker::Avatar.image
+      }
+    end
+
+    context 'success' do
+      it 'can post message' do
+        post url, params: body, headers: token
+        expect(response).to have_http_status :ok
+        res = JSON.parse(response.body)
+        expect(res['message']['roomId']).to eq(@room.id)
+        expect(res['message']['content']).to eq(body[:content])
+      end
+
+      it 'can update profile upload image' do
+        local_body = {
+          content: Faker::Lorem.sentence,
+          image: fixture_file_upload('spec/unnamed.jpg', 'image/jpg')
+        }
+        post url, params: local_body, headers: token
+        expect(response).to have_http_status :ok
+        res = JSON.parse(response.body)
+        expect(res['message']['roomId']).to eq(@room.id)
+        expect(res['message']['content']).to eq(local_body[:content])
+      end
+
+      it 'can post message without image' do
+        post url, params: body.except(:image), headers: token
+        expect(response).to have_http_status :ok
+        res = JSON.parse(response.body)
+        expect(res['message']['roomId']).to eq(@room.id)
+        expect(res['message']['content']).to eq(body[:content])
+        expect(res['message']['image']).to eq(nil)
+      end
+    end
+  end
 end
