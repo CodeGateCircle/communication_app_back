@@ -90,4 +90,29 @@ RSpec.describe "Messages", type: :request do
       end
     end
   end
+
+  describe "POST /messages/delete" do
+    let(:url) { "/messages/delete" }
+    let(:tokens) { get_auth_token(@user) }
+    let(:message) { FactoryBot.create(:message, room: @room) }
+    let(:body) do
+      {
+        messageId: message.id
+      }
+    end
+    context "success" do
+      it 'can delete reaction' do
+        post url, params: body, headers: tokens
+        expect(response).to have_http_status :ok
+        expect(Message.find_by(id: message.id)).to be_blank
+      end
+    end
+
+    context "error" do
+      it 'cannot delete reaction' do
+        post url, params: body
+        expect(response).to have_http_status 401
+      end
+    end
+  end
 end

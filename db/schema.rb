@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_231_107_120_023) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_07_120023) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,7 +21,7 @@ ActiveRecord::Schema[7.0].define(version: 20_231_107_120_023) do
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index %w[record_type record_id name blob_id], name: "index_active_storage_attachments_uniqueness", unique: true
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
@@ -39,7 +39,7 @@ ActiveRecord::Schema[7.0].define(version: 20_231_107_120_023) do
   create_table "active_storage_variant_records", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
-    t.index %w[blob_id variation_digest], name: "index_active_storage_variant_records_uniqueness", unique: true
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "categories", force: :cascade do |t|
@@ -105,7 +105,7 @@ ActiveRecord::Schema[7.0].define(version: 20_231_107_120_023) do
     t.datetime "updated_at", null: false
     t.boolean "is_deleted", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index %w[uid provider], name: "index_users_on_uid_and_provider", unique: true
+    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
   create_table "workspace_users", force: :cascade do |t|
@@ -115,7 +115,7 @@ ActiveRecord::Schema[7.0].define(version: 20_231_107_120_023) do
     t.datetime "updated_at", null: false
     t.integer "role", default: 3, null: false
     t.index ["user_id"], name: "index_workspace_users_on_user_id"
-    t.index %w[workspace_id user_id], name: "index_workspace_users_on_workspace_id_and_user_id", unique: true
+    t.index ["workspace_id", "user_id"], name: "index_workspace_users_on_workspace_id_and_user_id", unique: true
     t.index ["workspace_id"], name: "index_workspace_users_on_workspace_id"
   end
 

@@ -453,6 +453,7 @@ paths:
                         description: error message
                         example: あなたはこのルームに属していません
                         type: string
+  
   # update
   /rooms/{room_id}:
     put:
@@ -588,6 +589,7 @@ paths:
                   type: array
                   items:
                     $ref: "#/components/schemas/userId"
+  
   # index
   /messages:
     get:
@@ -649,89 +651,7 @@ paths:
                                 $ref: "#/components/schemas/reactionName"
                               userId:
                                 $ref: "#/components/schemas/userId"
-
-
-  /reactions:
-    # create
-    post:
-      tags:
-        - reactions
-      operationId: create_reactions
-      summary: Create the reactions
-      description: Create the reactions
-      responses:
-        200:
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/reactionData"
-
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                messageId:
-                  $ref: "#/components/schemas/messageId"
-                name:
-                  $ref: "#/components/schemas/reactionName"
-
-    # index
-    get:
-      tags:
-        - reactions
-      operationId: index_reactions
-      summary: Index the reactions
-      description: Index the reactions
-      parameters:
-        - name: message_id
-          in: query
-          description: "message_id"
-          required: true
-          schema:
-            $ref: "#/components/schemas/messageId"
-      responses:
-        200:
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  reactions:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/reactionData"
-
-  # delete
-  /reactions/delete:
-    post:
-      tags:
-        - reactions
-      operationId: delete_reactions
-      summary: Delete the reactions
-      description: Delete the reactions
-      responses:
-        200:
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                example: { success: true }
-
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                messageId:
-                  $ref: "#/components/schemas/messageId"
-                name:
-                  $ref: "#/components/schemas/reactionName"
-
+  # create
   /messages?room_id={room_id}:
     post:
       tags:
@@ -760,6 +680,109 @@ paths:
                   $ref: "#/components/schemas/messageContent"
                 image:
                   $ref: "#/components/schemas/messageImage"
+  # delete
+  /messages/delete:
+    post:
+      tags:
+        - messages
+      operationId: delete_messages
+      summary: Delete the messages
+      description: Delete the messages
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true }
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                messageId:
+                  $ref: "#/components/schemas/messageId"
+
+  /reactions:
+    # create
+    post:
+      tags:
+        - reactions
+      operationId: create_reactions
+      summary: Create the reactions
+      description: Create the reactions
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/reactionData"
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                messageId:
+                  $ref: "#/components/schemas/messageId"
+                name:
+                  $ref: "#/components/schemas/reactionName"
+    # index
+    get:
+      tags:
+        - reactions
+      operationId: index_reactions
+      summary: Index the reactions
+      description: Index the reactions
+      parameters:
+        - name: message_id
+          in: query
+          description: "message_id"
+          required: true
+          schema:
+            $ref: "#/components/schemas/messageId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reactions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/reactionData"
+  # delete
+  /reactions/delete:
+    post:
+      tags:
+        - reactions
+      operationId: delete_reactions
+      summary: Delete the reactions
+      description: Delete the reactions
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true }
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                messageId:
+                  $ref: "#/components/schemas/messageId"
+                name:
+                  $ref: "#/components/schemas/reactionName"
 
 components:
   schemas:
