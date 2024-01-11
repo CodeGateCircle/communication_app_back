@@ -46,6 +46,8 @@ Rails.application.routes.draw do
   get '/messages', to: 'messages#index'
   # message作成
   post '/messages', to: 'messages#post'
+  # message削除
+  post '/messages/delete', to: 'messages#delete'
 
   # reaction作成
   post '/reactions', to: 'reaction#create'

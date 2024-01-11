@@ -40,6 +40,13 @@ class MessagesController < ApplicationController
     render status: 200, json: message
   end
 
+  def delete
+    params = delete_params
+    message = Message.find(params[:message_id])
+    message.destroy!
+    render status: 200, json: { success: true }
+  end
+
   private
 
   def index_params
@@ -48,5 +55,9 @@ class MessagesController < ApplicationController
 
   def post_params
     params.permit(:room_id, :content, :image, :page)
+  end
+
+  def delete_params
+    params.permit(:message_id)
   end
 end
