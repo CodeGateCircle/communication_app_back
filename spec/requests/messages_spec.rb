@@ -29,6 +29,7 @@ RSpec.describe "Messages", type: :request do
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
         expect(res['messages'].length).to eq(20)
+        print(res)
         # expect(res['messages']).to match_array(lower_camel_key_hash(messages.map { |message| MessageSerializer.new(message).as_json }))
       end
     end
