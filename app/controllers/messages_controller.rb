@@ -4,7 +4,7 @@ class MessagesController < ApplicationController
 
   def index
     params = index_params
-    messages = Room.find(params[:room_id]).messages.order("created_at DESC").page(params[:page]).per(20)
+    messages = Room.find(params[:room_id]).messages.order("created_at DESC").page(params[:page]).per(20).preload(:reactions, :user)
     if messages.blank?
       render status: 200, json: messages
       return
@@ -13,9 +13,9 @@ class MessagesController < ApplicationController
     each_message = messages.map { |p| p.attributes.symbolize_keys }
 
     messages.each_with_index do |message, i|
-      reactions = Reaction.where(message_id: message["id"]).order(name: :desc)
+      reactions = message.reactions.order(name: :desc)
       each_message[i].store(:reactions, reactions)
-      user = User.select(:id, :name, :email, :image).find(message["user_id"])
+      user = message.user.slice(:id, :name, :email, :image)
       each_message[i].store(:user, user)
       each_message[i].delete(:user_id)
     end

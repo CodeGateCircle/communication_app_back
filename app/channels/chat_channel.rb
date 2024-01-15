@@ -13,7 +13,15 @@ class ChatChannel < ApplicationCable::Channel
       user_id: current_user.id,
       content: data['text']
     )
-    ActionCable.server.broadcast("chat_channel_#{message.room.workspace.id}", message)
+    
+    message_data = message.attributes.symbolize_keys
+
+    reactions = Reaction.where(message_id: message_data["id"]).order(name: :desc)
+    message_data.store(:reactions, reactions)
+    user = User.select(:id, :name, :email, :image).find(message_data["user_id"])
+    message_data.store(:user, user)
+    message_data.delete(:user_id)
+    ActionCable.server.broadcast("chat_channel_#{message.room.workspace.id}", message_data)
   end
 
   def chat_delete(data)
