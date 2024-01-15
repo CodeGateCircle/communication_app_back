@@ -13,7 +13,7 @@ class ChatChannel < ApplicationCable::Channel
       user_id: current_user.id,
       content: data['text']
     )
-    
+
     message_data = message.attributes.symbolize_keys
 
     reactions = Reaction.where(message_id: message_data["id"]).order(name: :desc)
