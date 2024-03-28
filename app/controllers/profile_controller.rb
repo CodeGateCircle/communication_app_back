@@ -4,11 +4,11 @@ class ProfileController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    if current_user.workspaces.present?
-      user = current_user
-    else
-      user = initial_action
-    end
+    user = if current_user.workspaces.present?
+             current_user
+           else
+             initial_action
+           end
     render json: user
   end
 
@@ -52,11 +52,11 @@ class ProfileController < ApplicationController
                                   workspace_id: workspace.id
                                 })
     room = Room.create!({
-                   name: "default room",
-                   description: "default made room",
-                   category_id: category.id,
-                   workspace_id: workspace.id
-                 })
+                          name: "default room",
+                          description: "default made room",
+                          category_id: category.id,
+                          workspace_id: workspace.id
+                        })
     RoomUser.create!({
                        user_id: current_user,
                        room_id: room.id
