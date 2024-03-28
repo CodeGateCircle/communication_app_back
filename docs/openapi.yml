@@ -140,6 +140,36 @@ paths:
                   $ref: "#/components/schemas/iconImageUrl"
                 coverImageUrl:
                   $ref: "#/components/schemas/coverImageUrl"
+    get:
+      tags:
+        - workspaces
+      operationId: get_workspace
+      summary: Get workspaces
+      description: Get workspaces
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workspaces:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          $ref: "#/components/schemas/workspaceId"
+                        name:
+                          $ref: "#/components/schemas/workspaceName"
+                        description:
+                          $ref: "#/components/schemas/workspaceDescription"
+                        iconImageUrl:
+                          $ref: "#/components/schemas/iconImageUrl"
+                        coverImageUrl:
+                          $ref: "#/components/schemas/coverImageUrl"
+
   # update
   /workspaces/{workspace_id}:
     put:
