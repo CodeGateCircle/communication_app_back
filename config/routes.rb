@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   # room作成
   post '/rooms', to: 'rooms#create'
   # room一覧取得
-  get '/rooms', to: 'rooms#index'
+  get '/rooms/:workspace_id', to: 'rooms#index'
   # room更新
   put '/rooms/:room_id', to: 'rooms#update'
   # room削除
