@@ -21,13 +21,9 @@ class RoomsController < ApplicationController
 
     each_category = categories.map { |p| p.attributes.symbolize_keys }
 
-    room_maps = Room.where(id: current_user.rooms, is_deleted: false).order(id: :desc)
     categories.each_with_index do |category, i|
-      tmp = []
-      room_maps.each_with_index do |room_map, _j|
-        tmp.push(room_map.attributes.symbolize_keys) if room_map.category_id == category.id
-      end
-      each_category[i].store(:rooms, tmp)
+
+      each_category[i][:rooms] = Room.where(category_id: category.id, is_deleted: false).order(id: :desc)
     end
     render status: 200, json: { 'categories' => each_category }, each_serializer: CategorySerializer
   end
