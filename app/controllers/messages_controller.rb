@@ -4,7 +4,7 @@ class MessagesController < ApplicationController
 
   def index
     params = index_params
-    messages = Room.find(params[:room_id]).messages.order("created_at DESC").page(params[:page]).per(20)
+    messages = Room.find(params[:room_id]).messages.order(created_at: :asc).page(params[:page]).per(20)
     if messages.blank?
       render status: 200, json: messages
       return

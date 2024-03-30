@@ -57,10 +57,11 @@ class ProfileController < ApplicationController
                           category_id: category.id,
                           workspace_id: workspace.id
                         })
-    RoomUser.create!({
-                       user_id: current_user,
+    room_user = RoomUser.new({
+                       user_id: current_user.id,
                        room_id: room.id
                      })
+    room_user.save!
     workspace_user
   end
 
