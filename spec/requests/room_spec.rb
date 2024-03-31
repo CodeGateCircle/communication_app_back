@@ -44,13 +44,14 @@ RSpec.describe "Rooms", type: :request do
   end
 
   describe "GET /rooms/{workspace_id}" do
-    let(:url) { "/rooms" }
     let(:tokens) { get_auth_token(@user) }
     let(:body) do
       {
         workspace_id: @workspace.id
       }
     end
+    let(:url) { "/rooms/#{@workspace.id}" }
+
     before(:each) do
       @category1 = FactoryBot.create(:category, workspace_id: @workspace.id)
       @category2 = FactoryBot.create(:category, workspace_id: @workspace.id)
@@ -64,7 +65,7 @@ RSpec.describe "Rooms", type: :request do
 
     context "success" do
       it 'can show rooms' do
-        get url, params: body, headers: tokens
+        get url, headers: tokens
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)
 
@@ -92,6 +93,7 @@ RSpec.describe "Rooms", type: :request do
         body_other = {
           workspace_id: @workspace_other.id
         }
+        let(:url) { "/rooms/#{@workspace_other.id}" }
         get url, params: body_other, headers: get_auth_token(@user)
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)

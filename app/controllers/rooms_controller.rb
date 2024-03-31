@@ -22,7 +22,6 @@ class RoomsController < ApplicationController
     each_category = categories.map { |p| p.attributes.symbolize_keys }
 
     categories.each_with_index do |category, i|
-
       each_category[i][:rooms] = Room.where(category_id: category.id, is_deleted: false).order(id: :desc)
     end
     render status: 200, json: { 'categories' => each_category }, each_serializer: CategorySerializer
