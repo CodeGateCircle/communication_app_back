@@ -38,7 +38,6 @@ class ProfileController < ApplicationController
   end
 
   def initial_action
-
     Workspace.transaction do
       workspace = Workspace.create!({
                                       name: "#{current_user.name}'s workspace'",
