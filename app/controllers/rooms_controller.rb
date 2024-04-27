@@ -49,8 +49,9 @@ class RoomsController < ApplicationController
     invited_user = User.find_by_email(params[:email])
 
     if guest_belong_to_workspace?(workspace_id, invited_user.id)
-      render status: 400, json: { error: { text: "そのユーザーはこのワークスペースに属していません" } }
-      return
+      # render status: 400, json: { error: { text: "そのユーザーはこのワークスペースに属していません" } }
+      WorkspaceUser.create!(user_id: invited_user.id, workspace_id: workspace_id)
+      # return
     end
 
     if exist_room?(params[:room_id])
@@ -88,7 +89,7 @@ class RoomsController < ApplicationController
   end
 
   def index_params
-    params.permit(:workspace_id)
+    params.permit(:room_id)
   end
 
   def update_params

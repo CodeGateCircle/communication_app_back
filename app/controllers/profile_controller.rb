@@ -38,31 +38,34 @@ class ProfileController < ApplicationController
   end
 
   def initial_action
-    workspace = Workspace.create!({
-                                    name: "#{current_user.name}'s workspace'",
-                                    description: "this is default workspace"
+
+    Workspace.transaction do
+      workspace = Workspace.create!({
+                                      name: "#{current_user.name}'s workspace'",
+                                      description: "this is default workspace"
+                                    })
+      workspace_user = WorkspaceUser.new({
+                                           workspace_id: workspace[:id],
+                                           user_id: current_user.id
+                                         })
+      workspace_user.save!
+      category = Category.create!({
+                                    name: "category",
+                                    workspace_id: workspace.id
                                   })
-    workspace_user = WorkspaceUser.new({
-                                         workspace_id: workspace[:id],
-                                         user_id: current_user.id
-                                       })
-    workspace_user.save!
-    category = Category.create!({
-                                  name: "category",
-                                  workspace_id: workspace.id
-                                })
-    room = Room.create!({
-                          name: "default room",
-                          description: "default made room",
-                          category_id: category.id,
-                          workspace_id: workspace.id
-                        })
-    room_user = RoomUser.new({
-                               user_id: current_user.id,
-                               room_id: room.id
-                             })
-    room_user.save!
-    workspace_user
+      room = Room.create!({
+                            name: "default room",
+                            description: "default made room",
+                            category_id: category.id,
+                            workspace_id: workspace.id
+                          })
+      room_user = RoomUser.new({
+                                 user_id: current_user.id,
+                                 room_id: room.id
+                               })
+      room_user.save!
+      workspace_user
+    end
   end
 
   def update_with_image
