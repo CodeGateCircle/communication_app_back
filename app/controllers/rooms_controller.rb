@@ -39,8 +39,16 @@ class RoomsController < ApplicationController
   end
 
   def invite
-    workspace_id = Room.find(params[:room_id]).workspace_id
-    if guest_belong_to_workspace?(workspace_id, params[:user_id])
+    workspace_id = Room.find_by(id: params[:room_id]).workspace_id
+
+    if exist_user?(params[:email])
+      render status: 400, json: { error: { text: "そのユーザーは存在しません" } }
+      return
+    end
+
+    invited_user = User.find_by_email(params[:email])
+
+    if guest_belong_to_workspace?(workspace_id, invited_user.id)
       render status: 400, json: { error: { text: "そのユーザーはこのワークスペースに属していません" } }
       return
     end
@@ -50,12 +58,15 @@ class RoomsController < ApplicationController
       return
     end
 
-    unless guest_belong_to_room?(params[:room_id], params[:user_id])
+    unless guest_belong_to_room?(params[:room_id], invited_user.id)
       render status: 400, json: { error: { text: "そのユーザーはすでにこのルームに所属しています" } }
       return
     end
 
-    RoomUser.create!(invite_params)
+    RoomUser.create!({
+                       room_id: params[:room_id],
+                       user_id: invited_user.id
+                     })
     render status: 200, json: { success: true }
   end
 
@@ -89,7 +100,7 @@ class RoomsController < ApplicationController
   end
 
   def invite_params
-    params.permit(:room_id, :user_id)
+    params.permit(:room_id, :email)
   end
 
   def remove_params

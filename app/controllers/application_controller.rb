@@ -16,6 +16,11 @@ class ApplicationController < ActionController::API
     nil
   end
 
+  def exist_user?(email)
+    user = User.find_by_email(email)
+    user.nil?
+  end
+
   # 自分以外のユーザーがworkspaceに属しているかチェック
   def guest_belong_to_workspace?(workspace_id, user_id)
     user = WorkspaceUser.find_by(workspace_id:, user_id:)
