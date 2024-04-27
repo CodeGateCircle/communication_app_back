@@ -4,7 +4,12 @@ class ProfileController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    render json: current_user
+    user = if current_user.workspaces.present?
+             current_user
+           else
+             initial_action
+           end
+    render json: user
   end
 
   def edit
@@ -30,6 +35,36 @@ class ProfileController < ApplicationController
 
   def update_params
     params.permit(:name, :image)
+  end
+
+  def initial_action
+    Workspace.transaction do
+      workspace = Workspace.create!({
+                                      name: "#{current_user.name}'s workspace'",
+                                      description: "this is default workspace"
+                                    })
+      workspace_user = WorkspaceUser.new({
+                                           workspace_id: workspace[:id],
+                                           user_id: current_user.id
+                                         })
+      workspace_user.save!
+      category = Category.create!({
+                                    name: "category",
+                                    workspace_id: workspace.id
+                                  })
+      room = Room.create!({
+                            name: "default room",
+                            description: "default made room",
+                            category_id: category.id,
+                            workspace_id: workspace.id
+                          })
+      room_user = RoomUser.new({
+                                 user_id: current_user.id,
+                                 room_id: room.id
+                               })
+      room_user.save!
+      workspace_user
+    end
   end
 
   def update_with_image

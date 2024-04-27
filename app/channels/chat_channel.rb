@@ -8,12 +8,13 @@ class ChatChannel < ApplicationCable::Channel
   end
 
   def chat(data)
-    message = Message.create!(
-      room_id: data['roomId'],
-      user_id: current_user.id,
-      content: data['text']
-    )
-    ActionCable.server.broadcast("chat_channel_#{message.room.workspace.id}", message)
+    message = Message.create!({
+                                room_id: data['roomId'],
+                                user: current_user,
+                                content: data['text']
+                              })
+
+    ActionCable.server.broadcast("chat_channel_#{message.room.workspace.id}", { message:, user: current_user })
   end
 
   def chat_delete(data)

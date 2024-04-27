@@ -58,6 +58,7 @@ RSpec.describe "Categories", type: :request do
       it "can get categories" do
         all_index = 10
         category = FactoryBot.create_list(:category, all_index, workspace: @workspace)
+        FactoryBot.create(:room, category_id: category[0][:id], workspace_id: category[0][:workspace_id])
         get url, params: body, headers: tokens
         expect(response).to have_http_status :ok
         res = JSON.parse(response.body)

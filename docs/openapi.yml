@@ -140,6 +140,36 @@ paths:
                   $ref: "#/components/schemas/iconImageUrl"
                 coverImageUrl:
                   $ref: "#/components/schemas/coverImageUrl"
+    get:
+      tags:
+        - workspaces
+      operationId: get_workspace
+      summary: Get workspaces
+      description: Get workspaces
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workspaces:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          $ref: "#/components/schemas/workspaceId"
+                        name:
+                          $ref: "#/components/schemas/workspaceName"
+                        description:
+                          $ref: "#/components/schemas/workspaceDescription"
+                        iconImageUrl:
+                          $ref: "#/components/schemas/iconImageUrl"
+                        coverImageUrl:
+                          $ref: "#/components/schemas/coverImageUrl"
+
   # update
   /workspaces/{workspace_id}:
     put:
@@ -364,7 +394,7 @@ paths:
                 workspaceId:
                   $ref: "#/components/schemas/workspaceId"
   # index
-  /rooms/{workspace_id}:
+  /rooms/{room_id}:
     get:
       tags:
         - rooms
@@ -372,12 +402,12 @@ paths:
       summary: Index your rooms.
       description: Index your rooms.
       parameters:
-        - name: workspace_id
+        - name: room_id
           in: path
-          description: "workspace_id"
+          description: "room_id"
           required: true
           schema:
-            $ref: "#/components/schemas/workspaceId"
+            $ref: "#/components/schemas/roomId"
       responses:
         200:
           description: Successful operation
@@ -418,44 +448,8 @@ paths:
                         description: error message
                         example: あなたはこのワークスペースに属していません
                         type: string
-  # delete
-  /rooms/{room_id}/delete:
-    post:
-      tags:
-        - rooms
-      operationId: delete_room
-      summary: Delete the room
-      description: Delete the room
-      parameters:
-        - name: room_id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/roomId"
-      responses:
-        200:
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                example: { success: true }
-        400:
-          description: Error operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: object
-                    properties:
-                      text:
-                        description: error message
-                        example: あなたはこのルームに属していません
-                        type: string
-  
-  # update
-  /rooms/{room_id}:
+
+    # update
     put:
       tags:
         - rooms
@@ -501,6 +495,42 @@ paths:
                   $ref: "#/components/schemas/roomDescription"
                 categoryId:
                   $ref: "#/components/schemas/categoryId"
+  # delete
+  /rooms/{room_id}/delete:
+    post:
+      tags:
+        - rooms
+      operationId: delete_room
+      summary: Delete the room
+      description: Delete the room
+      parameters:
+        - name: room_id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/roomId"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                example: { success: true }
+        400:
+          description: Error operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      text:
+                        description: error message
+                        example: あなたはこのルームに属していません
+                        type: string
+
   # invite
   /rooms/{room_id}/invite:
     post:
